@@ -60,7 +60,7 @@ export default function ProductQuickViewModal() {
                                 <Link to="checkout.html" className="tf-btn w-100 animate-btn paypal btn-primary">Buy It Now</Link>
                                 <Link to="checkout.html" className="more-choose-payment link">More payment options</Link>
                             </div>
-                            <Link to="product-detail.html" className="view-details link">View full details <i
+                            <Link to="/product-details" className="view-details link">View full details <i
                                 className="icon icon-arrow-right"></i></Link>
                         </div>
                     </div>

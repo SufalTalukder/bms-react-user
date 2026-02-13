@@ -76,7 +76,7 @@ export default function ProductList() {
                         {/* <!-- Card Product 1 --> */}
                         <div className="loadItem card-product style-list" data-availability="In stock" data-brand="Vineta">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-16.jpg"
                                         src="/assets/images/products/fashion/product-16.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-9.jpg"
@@ -86,7 +86,7 @@ export default function ProductList() {
                             </div>
                             <div className="card-product-info">
                                 <div className="info-list">
-                                    <Link to="product-detail.html" className="name-product link fw-medium text-md">Graphic
+                                    <Link to="/product-details" className="name-product link fw-medium text-md">Graphic
                                         Printed Pure Cotton T-shirt</Link>
                                     <p className="price-wrap fw-medium text-md">
                                         <span className="price-new">$50.00</span>
@@ -153,7 +153,7 @@ export default function ProductList() {
                         {/* <!-- Card Product 2 --> */}
                         <div className="loadItem card-product style-list" data-availability="In stock" data-brand="Vineta">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-17.jpg"
                                         src="/assets/images/products/fashion/product-17.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-19.jpg"
@@ -162,7 +162,7 @@ export default function ProductList() {
                             </div>
                             <div className="card-product-info">
                                 <div className="info-list">
-                                    <Link to="product-detail.html" className="name-product link fw-medium text-md">Graphic
+                                    <Link to="/product-details" className="name-product link fw-medium text-md">Graphic
                                         Printed Drop Shoulder Sleeves</Link>
                                     <p className="price-wrap fw-medium text-md">
                                         <span className="price-new">$80.00</span>
@@ -228,7 +228,7 @@ export default function ProductList() {
                         {/* <!-- Card Product 3 --> */}
                         <div className="loadItem card-product style-list" data-availability="In stock" data-brand="Vineta">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload"
                                         data-src="/assets/images/products/fashion/women-grey-2.jpg"
                                         src="/assets/images/products/fashion/women-grey-2.jpg" alt="image-product" />
@@ -239,7 +239,7 @@ export default function ProductList() {
                             </div>
                             <div className="card-product-info">
                                 <div className="info-list">
-                                    <Link to="product-detail.html" className="name-product link fw-medium text-md">Women
+                                    <Link to="/product-details" className="name-product link fw-medium text-md">Women
                                         Solid Scoop Neck Slim Fit T-shirt</Link>
                                     <p className="price-wrap fw-medium text-md">
                                         <span className="price-new">$80.00</span>
@@ -303,7 +303,7 @@ export default function ProductList() {
                         <div className="loadItem card-product style-list" data-availability="Out of stock"
                             data-brand="Zotac">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-18.jpg"
                                         src="/assets/images/products/fashion/product-18.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-12.jpg"
@@ -312,7 +312,7 @@ export default function ProductList() {
                             </div>
                             <div className="card-product-info">
                                 <div className="info-list">
-                                    <Link to="product-detail.html" className="name-product link fw-medium text-md">Asymmetric
+                                    <Link to="/product-details" className="name-product link fw-medium text-md">Asymmetric
                                         Neck Tank Top</Link>
                                     <p className="price-wrap fw-medium text-md">
                                         <span className="price-new">$85.00</span>
@@ -374,7 +374,7 @@ export default function ProductList() {
                         <div className="loadItem card-product style-list" data-availability="Out of stock"
                             data-brand="Zotac">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-15.jpg"
                                         src="/assets/images/products/fashion/product-15.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-1.jpg"
@@ -383,7 +383,7 @@ export default function ProductList() {
                             </div>
                             <div className="card-product-info">
                                 <div className="info-list">
-                                    <Link to="product-detail.html" className="name-product link fw-medium text-md">Short
+                                    <Link to="/product-details" className="name-product link fw-medium text-md">Short
                                         Sleeve Sweat</Link>
                                     <p className="price-wrap fw-medium text-md">
                                         <span className="price-new">$55.00</span>
@@ -443,7 +443,7 @@ export default function ProductList() {
                         {/* <!-- Card Product 6 --> */}
                         <div className="loadItem card-product style-list" data-availability="In stock" data-brand="Zotac">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload"
                                         data-src="/assets/images/products/fashion/women-yellow-2.jpg"
                                         src="/assets/images/products/fashion/women-yellow-2.jpg" alt="image-product" />
@@ -453,7 +453,7 @@ export default function ProductList() {
                             </div>
                             <div className="card-product-info">
                                 <div className="info-list">
-                                    <Link to="product-detail.html" className="name-product link fw-medium text-md">Puff
+                                    <Link to="/product-details" className="name-product link fw-medium text-md">Puff
                                         Sleeve Shirred Blouse</Link>
                                     <p className="price-wrap fw-medium text-md">
                                         <span className="price-new">$57.00</span>
@@ -516,7 +516,7 @@ export default function ProductList() {
                         {/* <!-- Card Product 7 --> */}
                         <div className="loadItem card-product style-list" data-availability="In stock" data-brand="Zotac">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-26.jpg"
                                         src="/assets/images/products/fashion/product-26.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-26.jpg"
@@ -525,7 +525,7 @@ export default function ProductList() {
                             </div>
                             <div className="card-product-info">
                                 <div className="info-list">
-                                    <Link to="product-detail.html" className="name-product link fw-medium text-md">Printed
+                                    <Link to="/product-details" className="name-product link fw-medium text-md">Printed
                                         T-shirt</Link>
                                     <p className="price-wrap fw-medium text-md">
                                         <span className="price-new">$120.00</span>
@@ -588,7 +588,7 @@ export default function ProductList() {
                         {/* <!-- Card Product 8 --> */}
                         <div className="loadItem card-product style-list" data-availability="In stock" data-brand="Vineta">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-22.jpg"
                                         src="/assets/images/products/fashion/product-22.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-5.jpg"
@@ -634,7 +634,7 @@ export default function ProductList() {
                             </div>
                             <div className="card-product-info">
                                 <div className="info-list">
-                                    <Link to="product-detail.html" className="name-product link fw-medium text-md">Bow-Tie
+                                    <Link to="/product-details" className="name-product link fw-medium text-md">Bow-Tie
                                         T-Shirt</Link>
                                     <p className="price-wrap fw-medium text-md">
                                         <span className="price-new">$117.00</span>
@@ -718,7 +718,7 @@ export default function ProductList() {
                         <div className="loadItem card-product grid card-product-size" data-availability="In stock"
                             data-brand="Vineta">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-19.jpg"
                                         src="/assets/images/products/fashion/product-19.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/women-grey-2.jpg"
@@ -765,7 +765,7 @@ export default function ProductList() {
 
                             </div>
                             <div className="card-product-info">
-                                <Link to="product-detail.html" className="name-product link fw-medium text-md">Loose Fit
+                                <Link to="/product-details" className="name-product link fw-medium text-md">Loose Fit
                                     Tee</Link>
                                 <p className="price-wrap fw-medium">
                                     <span className="price-new">$120.00</span>
@@ -797,7 +797,7 @@ export default function ProductList() {
                         <div className="loadItem card-product grid out-of-stock" data-availability="Out of stock"
                             data-brand="Zotac">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-2.jpg"
                                         src="/assets/images/products/fashion/product-2.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-2.jpg"
@@ -805,7 +805,7 @@ export default function ProductList() {
                                 </Link>
                             </div>
                             <div className="card-product-info">
-                                <Link to="product-detail.html" className="name-product link fw-medium text-md">Regular Fit
+                                <Link to="/product-details" className="name-product link fw-medium text-md">Regular Fit
                                     Pima Cotton Polo Shirt</Link>
                                 <p className="price-wrap fw-medium">
                                     <span className="price-new">$130.00</span>
@@ -817,7 +817,7 @@ export default function ProductList() {
                         <div className="loadItem card-product grid card-product-size" data-availability="In stock"
                             data-brand="Vineta">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-3.jpg"
                                         src="/assets/images/products/fashion/product-3.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-4.jpg"
@@ -865,7 +865,7 @@ export default function ProductList() {
 
                             </div>
                             <div className="card-product-info">
-                                <Link to="product-detail.html" className="name-product link fw-medium text-md">Long Regular
+                                <Link to="/product-details" className="name-product link fw-medium text-md">Long Regular
                                     Fit Tee</Link>
                                 <p className="price-wrap fw-medium">
                                     <span className="price-new">$60.00</span>
@@ -897,7 +897,7 @@ export default function ProductList() {
                         <div className="loadItem card-product grid card-product-size" data-availability="In stock"
                             data-brand="Vineta">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-17.jpg"
                                         src="/assets/images/products/fashion/product-17.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-1.jpg"
@@ -940,7 +940,7 @@ export default function ProductList() {
 
                             </div>
                             <div className="card-product-info">
-                                <Link to="product-detail.html" className="name-product link fw-medium text-md">Regular Fit
+                                <Link to="/product-details" className="name-product link fw-medium text-md">Regular Fit
                                     Pima Cotton Polo Shirt</Link>
                                 <p className="price-wrap fw-medium">
                                     <span className="price-new">$80.00</span>
@@ -971,7 +971,7 @@ export default function ProductList() {
                         <div className="loadItem card-product grid card-product-size" data-availability="In stock"
                             data-brand="Vineta">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-25.jpg"
                                         src="/assets/images/products/fashion/product-25.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-24.jpg"
@@ -1014,7 +1014,7 @@ export default function ProductList() {
 
                             </div>
                             <div className="card-product-info">
-                                <Link to="product-detail.html" className="name-product link fw-medium text-md">Midi Knit
+                                <Link to="/product-details" className="name-product link fw-medium text-md">Midi Knit
                                     Dress</Link>
                                 <p className="price-wrap fw-medium">
                                     <span className="price-new">$40.00</span>
@@ -1045,7 +1045,7 @@ export default function ProductList() {
                         <div className="loadItem card-product grid card-product-size" data-availability="In stock"
                             data-brand="Vineta">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-6.jpg"
                                         src="/assets/images/products/fashion/product-6.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-21.jpg"
@@ -1089,7 +1089,7 @@ export default function ProductList() {
 
                             </div>
                             <div className="card-product-info">
-                                <Link to="product-detail.html" className="name-product link fw-medium text-md">Oversized Fit
+                                <Link to="/product-details" className="name-product link fw-medium text-md">Oversized Fit
                                     Tee</Link>
                                 <p className="price-wrap fw-medium">
                                     <span className="price-new">$60.00</span>
@@ -1114,7 +1114,7 @@ export default function ProductList() {
                         {/* <!-- Card Product 7 --> */}
                         <div className="loadItem card-product grid" data-availability="In stock" data-brand="Zotac">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload"
                                         data-src="/assets/images/products/fashion/women-yellow-2.jpg"
                                         src="/assets/images/products/fashion/women-yellow-2.jpg" alt="image-product" />
@@ -1152,7 +1152,7 @@ export default function ProductList() {
                                 </ul>
                             </div>
                             <div className="card-product-info">
-                                <Link to="product-detail.html" className="name-product link fw-medium text-md">Puff Sleeve
+                                <Link to="/product-details" className="name-product link fw-medium text-md">Puff Sleeve
                                     Shirred Blouse</Link>
                                 <p className="price-wrap fw-medium">
                                     <span className="price-new">$57.00</span>
@@ -1183,7 +1183,7 @@ export default function ProductList() {
                         <div className="loadItem card-product grid card-product-size" data-availability="In stock"
                             data-brand="Zotac">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-26.jpg"
                                         src="/assets/images/products/fashion/product-26.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-26.jpg"
@@ -1226,7 +1226,7 @@ export default function ProductList() {
 
                             </div>
                             <div className="card-product-info">
-                                <Link to="product-detail.html" className="name-product link fw-medium text-md">Printed
+                                <Link to="/product-details" className="name-product link fw-medium text-md">Printed
                                     T-shirt</Link>
                                 <p className="price-wrap fw-medium">
                                     <span className="price-new">$120.00</span>
@@ -1257,7 +1257,7 @@ export default function ProductList() {
                         <div className="loadItem card-product grid card-product-size" data-availability="In stock"
                             data-brand="Zotac">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-27.jpg"
                                         src="/assets/images/products/fashion/product-27.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-23.jpg"
@@ -1300,7 +1300,7 @@ export default function ProductList() {
 
                             </div>
                             <div className="card-product-info">
-                                <Link to="product-detail.html" className="name-product link fw-medium text-md">Basic Sports
+                                <Link to="/product-details" className="name-product link fw-medium text-md">Basic Sports
                                     T-Shirt Crew Neck Ribbed</Link>
                                 <p className="price-wrap fw-medium">
                                     <span className="price-new">80.00</span>
@@ -1330,7 +1330,7 @@ export default function ProductList() {
                         {/* <!-- Card Product 10 --> */}
                         <div className="loadItem card-product grid" data-availability="In stock" data-brand="Zotac">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-10.jpg"
                                         src="/assets/images/products/fashion/product-10.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-20.jpg"
@@ -1368,7 +1368,7 @@ export default function ProductList() {
 
                             </div>
                             <div className="card-product-info">
-                                <Link to="product-detail.html" className="name-product link fw-medium text-md">Regular Fit
+                                <Link to="/product-details" className="name-product link fw-medium text-md">Regular Fit
                                     Fine Knit Polo Shirt</Link>
                                 <p className="price-wrap fw-medium">
                                     <span className="price-new">$130.00</span>
@@ -1398,7 +1398,7 @@ export default function ProductList() {
                         {/* <!-- Card Product 11 --> */}
                         <div className="loadItem card-product grid" data-availability="In stock" data-brand="Vineta">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-21.jpg"
                                         src="/assets/images/products/fashion/product-21.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/women-black-3.jpg"
@@ -1435,7 +1435,7 @@ export default function ProductList() {
                                 </ul>
                             </div>
                             <div className="card-product-info">
-                                <Link to="product-detail.html" className="name-product link fw-medium text-md">Crop College
+                                <Link to="/product-details" className="name-product link fw-medium text-md">Crop College
                                     T-Shirt</Link>
                                 <p className="price-wrap fw-medium">
                                     <span className="price-new">$82.00</span>
@@ -1466,7 +1466,7 @@ export default function ProductList() {
                         <div className="loadItem card-product grid card-product-size" data-availability="In stock"
                             data-brand="Vineta">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-22.jpg"
                                         src="/assets/images/products/fashion/product-22.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-5.jpg"
@@ -1512,7 +1512,7 @@ export default function ProductList() {
 
                             </div>
                             <div className="card-product-info">
-                                <Link to="product-detail.html" className="name-product link fw-medium text-md">Bow-Tie
+                                <Link to="/product-details" className="name-product link fw-medium text-md">Bow-Tie
                                     T-Shirt</Link>
                                 <p className="price-wrap fw-medium">
                                     <span className="price-new">$92.00</span>
@@ -1544,7 +1544,7 @@ export default function ProductList() {
                         <div className="loadItem card-product grid card-product-size" data-availability="In stock"
                             data-brand="Vineta">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-13.jpg"
                                         src="/assets/images/products/fashion/product-13.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-14.jpg"
@@ -1587,7 +1587,7 @@ export default function ProductList() {
 
                             </div>
                             <div className="card-product-info">
-                                <Link to="product-detail.html" className="name-product link fw-medium text-md">COOLMAX® Loose
+                                <Link to="/product-details" className="name-product link fw-medium text-md">COOLMAX® Loose
                                     Fit Tee</Link>
                                 <p className="price-wrap fw-medium">
                                     <span className="price-new">$66.00</span>
@@ -1612,7 +1612,7 @@ export default function ProductList() {
                         <div className="loadItem card-product grid card-product-size" data-availability="In stock"
                             data-brand="Vineta">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-20.jpg"
                                         src="/assets/images/products/fashion/product-20.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-9.jpg"
@@ -1658,7 +1658,7 @@ export default function ProductList() {
 
                             </div>
                             <div className="card-product-info">
-                                <Link to="product-detail.html" className="name-product link fw-medium text-md">Long Sleeve
+                                <Link to="/product-details" className="name-product link fw-medium text-md">Long Sleeve
                                     T-Shirt</Link>
                                 <p className="price-wrap fw-medium">
                                     <span className="price-new">$100.00</span>
@@ -1690,7 +1690,7 @@ export default function ProductList() {
                         <div className="loadItem card-product grid card-product-size" data-availability="Out of stock"
                             data-brand="Zotac">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-7.jpg"
                                         src="/assets/images/products/fashion/product-7.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-11.jpg"
@@ -1735,7 +1735,7 @@ export default function ProductList() {
 
                             </div>
                             <div className="card-product-info">
-                                <Link to="product-detail.html" className="name-product link fw-medium text-md">Muscle Fit
+                                <Link to="/product-details" className="name-product link fw-medium text-md">Muscle Fit
                                     Polo Shirt</Link>
                                 <p className="price-wrap fw-medium">
                                     <span className="price-new">$111.00</span>
@@ -1765,7 +1765,7 @@ export default function ProductList() {
                         {/* <!-- Card Product 16 --> */}
                         <div className="loadItem card-product grid" data-availability="Out of stock" data-brand="Zotac">
                             <div className="card-product-wrapper">
-                                <Link to="product-detail.html" className="product-img">
+                                <Link to="/product-details" className="product-img">
                                     <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-17.jpg"
                                         src="/assets/images/products/fashion/product-16.jpg" alt="image-product" />
                                     <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-26.jpg"
@@ -1802,7 +1802,7 @@ export default function ProductList() {
                                 </ul>
                             </div>
                             <div className="card-product-info">
-                                <Link to="product-detail.html" className="name-product link fw-medium text-md">Graphic
+                                <Link to="/product-details" className="name-product link fw-medium text-md">Graphic
                                     Printed Drop Shoulder Sleeves</Link>
                                 <p className="price-wrap fw-medium">
                                     <span className="price-new">$88.00</span>

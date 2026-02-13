@@ -12,7 +12,7 @@ export default function Header() {
                             </Link>
                         </div>
                         <div className="col-xl-3 col-md-4 col-6">
-                            <Link to="/home" className="logo-header">
+                            <Link to="/" className="logo-header">
                                 <img src="/assets/images/logo/logo.svg" alt="logo" className="logo" />
                             </Link>
                         </div>
@@ -83,12 +83,12 @@ export default function Header() {
                         <div className="col-xl-4 col-md-4 col-3">
                             <ul className="nav-icon d-flex justify-content-end align-items-center">
                                 <li className="nav-search d-xl-none d-flex">
-                                    <Link to="#search" data-bs-toggle="modal" className="nav-icon-item">
+                                    <Link to="#search" data-bs-toggle="modal" data-bs-target="#search" className="nav-icon-item">
                                         <i className="icon icon-search"></i>
                                     </Link>
                                 </li>
                                 <li className="nav-account">
-                                    <Link to="#login" data-bs-toggle="offcanvas" className="nav-icon-item">
+                                    <Link to="#login" data-bs-toggle="offcanvas" data-bs-target="#login" className="nav-icon-item">
                                         <i className="icon icon-user"></i>
                                         <span className="text d-none d-xl-block">Login</span>
                                     </Link>
@@ -119,7 +119,7 @@ export default function Header() {
                                     categories</Link>
                                 <ul className="mega-categories rgb-primary">
                                     <li>
-                                        <Link to="/fiction" className="cate-item">
+                                        <Link to="/product/fiction" className="cate-item">
                                             <div className="img"><img src="/assets/images/cls-categories/book/fiction.png" alt="img" />
                                             </div>
                                             <span className="name-cate">Fiction</span>
@@ -244,6 +244,310 @@ export default function Header() {
                                                     <div className="d-none d-xl-flex swiper-button-next nav-swiper nav-next-cls-header">
                                                     </div>
                                                     <div className="d-none d-xl-flex swiper-button-prev nav-swiper nav-prev-cls-header">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li className="menu-item">
+                                        <Link to="#" className="item-link">Topic<i className="icon icon-arr-down"></i></Link>
+                                        <div className="sub-menu mega-menu mega-product">
+                                            <div className="wrapper-sub-menu">
+                                                <div className="mega-menu-item">
+                                                    <div className="menu-heading">product layouts</div>
+                                                    <ul className="menu-list">
+                                                        <li><Link to="product-detail.html" className="menu-link-text link">Product Single</Link></li>
+                                                        <li><Link to="product-right-thumbnail.html" className="menu-link-text link">Product Right
+                                                            Thumbnail</Link>
+                                                        </li>
+                                                        <li><Link to="product-detail.html" className="menu-link-text link">Product Left Thumbnail</Link>
+                                                        </li>
+                                                        <li><Link to="product-bottom-thumbnail.html" className="menu-link-text link">Product Bottom
+                                                            Thumbnail</Link>
+                                                        </li>
+                                                        <li><Link to="product-grid.html" className="menu-link-text link">Product
+                                                            Grid</Link></li>
+                                                        <li><Link to="product-grid-02.html" className="menu-link-text link">Product Grid 2</Link></li>
+                                                        <li><Link to="product-stacked.html" className="menu-link-text link">Product Stacked</Link></li>
+                                                        <li><Link to="product-drawer-sidebar.html" className="menu-link-text link">Product Drawer
+                                                            Sidebar</Link>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div className="mega-menu-item">
+                                                    <div className="menu-heading">product details</div>
+                                                    <ul className="menu-list">
+                                                        <li><Link to="product-inner-zoom.html" className="menu-link-text link">Product Inner Zoom</Link>
+                                                        </li>
+                                                        <li><Link to="product-inner-circle-zoom.html" className="menu-link-text link">Product Inner
+                                                            Circle
+                                                            Zoom</Link>
+                                                        </li>
+                                                        <li><Link to="product-no-zoom.html" className="menu-link-text link">Product No Zoom <span
+                                                            className="demo-label">Hot</span></Link></li>
+                                                        <li><Link to="product-external-zoom.html" className="menu-link-text link">Product External
+                                                            Zoom</Link>
+                                                        </li>
+                                                        <li><Link to="product-open-lightbox.html" className="menu-link-text link">Product Open Lightbox
+                                                            <span className="demo-label bg-primary">New</span></Link></li>
+                                                        <li><Link to="product-video.html" className="menu-link-text link">Product
+                                                            Video</Link></li>
+                                                        <li><Link to="product-3d.html" className="menu-link-text link">Product
+                                                            3D/AR</Link></li>
+                                                        <li><Link to="product-group.html" className="menu-link-text link">Product
+                                                            Group</Link></li>
+                                                        <li><Link to="product-affiliate.html" className="menu-link-text link">Product
+                                                            Affiliate</Link></li>
+                                                        <li><Link to="product-out-of-stock.html" className="menu-link-text link">Product
+                                                            Out Of Stock</Link></li>
+                                                    </ul>
+                                                </div>
+                                                <div className="mega-menu-item">
+                                                    <div className="menu-heading">product features</div>
+                                                    <ul className="menu-list">
+                                                        <li><Link to="product-together.html" className="menu-link-text link">Buy
+                                                            Together</Link></li>
+                                                        <li><Link to="product-countdown-timer.html" className="menu-link-text link">Countdown Timer</Link>
+                                                        </li>
+                                                        <li><Link to="product-volume-discount.html" className="menu-link-text link">Volume Discount</Link>
+                                                        </li>
+                                                        <li><Link to="product-volume-discount-thumbnail.html" className="menu-link-text link">Volume
+                                                            Discount
+                                                            Thumbnail</Link>
+                                                        </li>
+                                                        <li><Link to="product-swatch-dropdown.html" className="menu-link-text link">Swatch Dropdown</Link>
+                                                        </li>
+                                                        <li><Link to="product-swatch-dropdown-color.html" className="menu-link-text link">Swatch Dropdown
+                                                            Color</Link>
+                                                        </li>
+                                                        <li><Link to="product-swatch-image.html" className="menu-link-text link">Swatch Image</Link></li>
+                                                        <li><Link to="product-swatch-image-square.html" className="menu-link-text link">Swatch Image
+                                                            rectangle</Link>
+                                                        </li>
+                                                        <li><Link to="product-pickup-available.html" className="menu-link-text link">Pickup Available</Link>
+                                                        </li>
+                                                        <li><Link to="product-buyX-getY.html" className="menu-link-text link">Buy X Get Y</Link></li>
+                                                    </ul>
+                                                </div>
+                                                <div className="mega-menu-item">
+                                                    <div className="menu-heading">Product description</div>
+                                                    <ul className="menu-list">
+                                                        <li><Link to="product-description-vertical.html" className="menu-link-text link">Product
+                                                            Description
+                                                            Vertical</Link>
+                                                        </li>
+                                                        <li><Link to="product-description-tab.html" className="menu-link-text link">Product Description
+                                                            Tab</Link>
+                                                        </li>
+                                                        <li><Link to="product-description-accordions.html" className="menu-link-text link">Product
+                                                            Description
+                                                            Accordions</Link></li>
+                                                        <li><Link to="product-description-side-accordions.html" className="menu-link-text link">Product
+                                                            Description Side
+                                                            Accordions</Link></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div className="wrapper-sub-product">
+                                                <div dir="ltr" className="swiper tf-swiper wrap-sw-over" data-swiper='{
+                                                          "slidesPerView": 2,
+                                                          "spaceBetween": 24,
+                                                          "speed": 800,
+                                                          "observer": true,
+                                                          "observeParents": true,
+                                                          "slidesPerGroup": 2,
+                                                          "navigation": {
+                                                              "clickable": true,
+                                                              "nextEl": ".nav-next-product-header",
+                                                              "prevEl": ".nav-prev-product-header"
+                                                          },
+                                                          "pagination": { "el": ".sw-pagination-product-header", "clickable": true }
+                                                      }'>
+                                                    <div className="swiper-wrapper">
+                                                        {/* <!-- item 1 --> */}
+                                                        <div className="swiper-slide">
+                                                            <div className="card-product style-3 style-primary none-hover-img">
+                                                                <div className="card-product-wrapper asp-ratio-0">
+                                                                    <Link to="product-detail.html" className="product-img">
+                                                                        <img className="img-product lazyload" data-src="/assets/images/products/book/book10.jpg"
+                                                                            src="/assets/images/products/book/book10.jpg" alt="image-product" />
+                                                                    </Link>
+                                                                    <ul className="list-product-btn">
+                                                                        <li>
+                                                                            <Link to="#" className="box-icon hover-tooltip wishlist box-shadow1">
+                                                                                <span className="icon icon-heart2"></span>
+                                                                                <span className="tooltip">Add to Wishlist</span>
+                                                                            </Link>
+                                                                        </li>
+                                                                        <li>
+                                                                            <Link to="#quickView" data-bs-toggle="modal"
+                                                                                className="box-icon hover-tooltip quickview box-shadow1">
+                                                                                <span className="icon icon-view"></span>
+                                                                                <span className="tooltip">Quick View</span>
+                                                                            </Link>
+                                                                        </li>
+                                                                        <li>
+                                                                            <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
+                                                                                className="box-icon hover-tooltip compare box-shadow1">
+                                                                                <span className="icon icon-compare"></span>
+                                                                                <span className="tooltip">Add to Compare</span>
+                                                                            </Link>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div className="card-product-info text-center pb-0">
+                                                                    <Link to="product-detail.html" className="name-product link fw-medium text-md">Het Raadsel
+                                                                        Van De Zee</Link>
+                                                                    <p className="price-wrap fw-medium">
+                                                                        <span className="price-new text-dark">$80.00</span>
+                                                                    </p>
+                                                                    <Link to="#shoppingCart" data-bs-toggle="offcanvas" className="tf-btn rgb-primary mt_10">
+                                                                        <span className="text-md fw-medium">
+                                                                            Add to Cart
+                                                                        </span>
+                                                                    </Link>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {/* <!-- item 2 --> */}
+                                                        <div className="swiper-slide">
+                                                            <div className="card-product style-3 style-primary none-hover-img">
+                                                                <div className="card-product-wrapper asp-ratio-0">
+                                                                    <Link to="product-detail.html" className="product-img">
+                                                                        <img className="img-product lazyload" data-src="/assets/images/products/book/book11.jpg"
+                                                                            src="/assets/images/products/book/book11.jpg" alt="image-product" />
+                                                                    </Link>
+                                                                    <ul className="list-product-btn">
+                                                                        <li>
+                                                                            <Link to="#" className="box-icon hover-tooltip wishlist box-shadow1">
+                                                                                <span className="icon icon-heart2"></span>
+                                                                                <span className="tooltip">Add to Wishlist</span>
+                                                                            </Link>
+                                                                        </li>
+                                                                        <li>
+                                                                            <Link to="#quickView" data-bs-toggle="modal"
+                                                                                className="box-icon hover-tooltip quickview box-shadow1">
+                                                                                <span className="icon icon-view"></span>
+                                                                                <span className="tooltip">Quick View</span>
+                                                                            </Link>
+                                                                        </li>
+                                                                        <li>
+                                                                            <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
+                                                                                className="box-icon hover-tooltip compare box-shadow1">
+                                                                                <span className="icon icon-compare"></span>
+                                                                                <span className="tooltip">Add to Compare</span>
+                                                                            </Link>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div className="card-product-info text-center pb-0">
+                                                                    <Link to="product-detail.html"
+                                                                        className="name-product link fw-medium text-md">Enceladus</Link>
+                                                                    <p className="price-wrap fw-medium">
+                                                                        <span className="price-new text-dark">$70.00</span>
+                                                                    </p>
+                                                                    <Link to="#shoppingCart" data-bs-toggle="offcanvas" className="tf-btn rgb-primary mt_10">
+                                                                        <span className="text-md fw-medium">
+                                                                            Add to Cart
+                                                                        </span>
+                                                                    </Link>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {/* <!-- item 3 --> */}
+                                                        <div className="swiper-slide">
+                                                            <div className="card-product style-3 style-primary none-hover-img">
+                                                                <div className="card-product-wrapper asp-ratio-0">
+                                                                    <Link to="product-detail.html" className="product-img">
+                                                                        <img className="img-product lazyload" data-src="/assets/images/products/book/book12.jpg"
+                                                                            src="/assets/images/products/book/book12.jpg" alt="image-product" />
+                                                                    </Link>
+                                                                    <div className="on-sale-wrap pos2"><span className="on-sale-item">10% Off</span></div>
+                                                                    <ul className="list-product-btn">
+                                                                        <li>
+                                                                            <Link to="#" className="box-icon hover-tooltip wishlist box-shadow1">
+                                                                                <span className="icon icon-heart2"></span>
+                                                                                <span className="tooltip">Add to Wishlist</span>
+                                                                            </Link>
+                                                                        </li>
+                                                                        <li>
+                                                                            <Link to="#quickView" data-bs-toggle="modal"
+                                                                                className="box-icon hover-tooltip quickview box-shadow1">
+                                                                                <span className="icon icon-view"></span>
+                                                                                <span className="tooltip">Quick View</span>
+                                                                            </Link>
+                                                                        </li>
+                                                                        <li>
+                                                                            <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
+                                                                                className="box-icon hover-tooltip compare box-shadow1">
+                                                                                <span className="icon icon-compare"></span>
+                                                                                <span className="tooltip">Add to Compare</span>
+                                                                            </Link>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div className="card-product-info text-center pb-0">
+                                                                    <Link to="product-detail.html" className="name-product link fw-medium text-md">All This &
+                                                                        More</Link>
+                                                                    <p className="price-wrap fw-medium">
+                                                                        <span className="price-new">$60.00</span>
+                                                                        <span className="price-old">$70.00</span>
+                                                                    </p>
+                                                                    <Link to="#shoppingCart" data-bs-toggle="offcanvas" className="tf-btn rgb-primary mt_10">
+                                                                        <span className="text-md fw-medium">
+                                                                            Add to Cart
+                                                                        </span>
+                                                                    </Link>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {/* <!-- item 4 --> */}
+                                                        <div className="swiper-slide">
+                                                            <div className="card-product style-3 style-primary none-hover-img">
+                                                                <div className="card-product-wrapper asp-ratio-0">
+                                                                    <Link to="product-detail.html" className="product-img">
+                                                                        <img className="img-product lazyload" data-src="/assets/images/products/book/book13.jpg"
+                                                                            src="/assets/images/products/book/book13.jpg" alt="image-product" />
+                                                                    </Link>
+                                                                    <ul className="list-product-btn">
+                                                                        <li>
+                                                                            <Link to="#" className="box-icon hover-tooltip wishlist box-shadow1">
+                                                                                <span className="icon icon-heart2"></span>
+                                                                                <span className="tooltip">Add to Wishlist</span>
+                                                                            </Link>
+                                                                        </li>
+                                                                        <li>
+                                                                            <Link to="#quickView" data-bs-toggle="modal"
+                                                                                className="box-icon hover-tooltip quickview box-shadow1">
+                                                                                <span className="icon icon-view"></span>
+                                                                                <span className="tooltip">Quick View</span>
+                                                                            </Link>
+                                                                        </li>
+                                                                        <li>
+                                                                            <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
+                                                                                className="box-icon hover-tooltip compare box-shadow1">
+                                                                                <span className="icon icon-compare"></span>
+                                                                                <span className="tooltip">Add to Compare</span>
+                                                                            </Link>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div className="card-product-info text-center pb-0">
+                                                                    <Link to="product-detail.html" className="name-product link fw-medium text-md">Delivery
+                                                                        Girl</Link>
+                                                                    <p className="price-wrap fw-medium">
+                                                                        <span className="price-new text-dark">$82.00</span>
+                                                                    </p>
+                                                                    <Link to="#shoppingCart" data-bs-toggle="offcanvas" className="tf-btn rgb-primary mt_10">
+                                                                        <span className="text-md fw-medium">
+                                                                            Add to Cart
+                                                                        </span>
+                                                                    </Link>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="sw-dot-default sw-pagination-product-header justify-content-center">
                                                     </div>
                                                 </div>
                                             </div>
@@ -554,67 +858,7 @@ export default function Header() {
                                         </div>
                                     </li>
                                     <li className="menu-item position-relative">
-                                        <Link to="#" className="item-link">All Products<i className="icon icon-arr-down"></i></Link>
-                                        <div className="sub-menu sub-menu-style-3">
-                                            <ul className="menu-list mt-0">
-                                                <li>
-                                                    <div className="menu-heading">Blogs</div>
-                                                </li>
-                                                <li><Link to="blog-list-01.html" className="menu-link-text link">Blog List
-                                                    1</Link>
-                                                </li>
-                                                <li><Link to="blog-list-02.html" className="menu-link-text link">Blog List
-                                                    2</Link>
-                                                </li>
-                                                <li><Link to="blog-grid-01.html" className="menu-link-text link">Blog Grid
-                                                    1</Link>
-                                                </li>
-                                                <li><Link to="blog-grid-02.html" className="menu-link-text link">Blog Grid
-                                                    2</Link>
-                                                </li>
-                                                <li><Link to="blog-single.html" className="menu-link-text link">Single Blog
-                                                </Link>
-                                                </li>
-                                            </ul>
-                                            <div className="wrapper-sub-blog">
-                                                <div className="menu-heading">Recent Posts</div>
-                                                <ul className="list-recent-blog">
-                                                    <li className="item">
-                                                        <Link to="blog-single.html" className="img-box">
-                                                            <img src="/assets/images/blog/recent-1.jpg" alt="img-recent-blog" />
-                                                        </Link>
-                                                        <div className="content">
-                                                            <Link to="blog-single.html" className="fw-medium text-sm link title">The Power of
-                                                                Monochrome: Styling One Color</Link>
-                                                            <span className="text-xxs text-grey date-post">Sep 19
-                                                                2025</span>
-                                                        </div>
-                                                    </li>
-                                                    <li className="item">
-                                                        <Link to="blog-single.html" className="img-box">
-                                                            <img src="/assets/images/blog/recent-2.jpg" alt="img-recent-blog" />
-                                                        </Link>
-                                                        <div className="content">
-                                                            <Link to="blog-single.html" className="fw-medium text-sm link title">10 Must-Have
-                                                                Accessories htmlFor Every Season</Link>
-                                                            <span className="text-xxs text-grey date-post">Sep 19
-                                                                2025</span>
-                                                        </div>
-                                                    </li>
-                                                    <li className="item">
-                                                        <Link to="blog-single.html" className="img-box">
-                                                            <img src="/assets/images/blog/recent-3.jpg" alt="img-recent-blog" />
-                                                        </Link>
-                                                        <div className="content">
-                                                            <Link to="blog-single.html" className="fw-medium text-sm link title">How to Elevate Your
-                                                                Look with Layering</Link>
-                                                            <span className="text-xxs text-grey date-post">Sep 19
-                                                                2025</span>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                        <Link to="#" className="item-link">All Products</Link>
                                     </li>
                                 </ul>
                             </nav>
