@@ -3,6 +3,7 @@ import PageLayout from "../../PageLayout";
 import { Link } from "react-router-dom";
 import ProductGallery from "../../reusable-components/ProductGallery";
 import RecentlyViewed from "../../reusable-components/RecentlyViewedSwiper";
+import IconBoxSwiper from "../../reusable-components/IconBoxSwiper";
 
 export default function ProductDetailsView() {
 
@@ -23,7 +24,7 @@ export default function ProductDetailsView() {
                         </div>
                         <div className="breadcrumb-prev-next">
                             <Link to="#" className="breadcrumb-prev"><i className="icon icon-arr-left"></i></Link>
-                            <Link to="shop-default.html" className="breadcrumb-back"><i className="icon icon-shop"></i></Link>
+                            <Link to="/product-default" className="breadcrumb-back"><i className="icon icon-shop"></i></Link>
                             <Link to="#" className="breadcrumb-next"><i className="icon icon-arr-right2"></i></Link>
                         </div>
                     </div>
@@ -619,6 +620,8 @@ export default function ProductDetailsView() {
             {/* <!-- Recently Viewed --> */}
             <RecentlyViewed />
             {/* <!-- /Recently Viewed --> */}
+
+            <IconBoxSwiper />
         </PageLayout>
     );
 }

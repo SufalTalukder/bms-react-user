@@ -27,7 +27,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 1 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book1.jpg"
                                                 src="/assets/images/products/book/book1.jpg" alt="image-product" />
                                         </Link>
@@ -56,7 +56,7 @@ export default function FeaturedProductsTab() {
                                         <div className="on-sale-wrap"><span className="on-sale-item">20% Off</span></div>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Lost Boy</Link>
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">Lost Boy</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new">$60.00</span>
                                             <span className="price-old">$80.00</span>
@@ -71,7 +71,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 2 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book2.jpg"
                                                 src="/assets/images/products/book/book2.jpg" alt="image-product" />
                                         </Link>
@@ -99,7 +99,7 @@ export default function FeaturedProductsTab() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Let Go My Hand</Link>
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">Let Go My Hand</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new text-dark">$66.00</span>
                                         </p>
@@ -113,7 +113,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 3 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book3.jpg"
                                                 src="/assets/images/products/book/book3.jpg" alt="image-product" />
                                         </Link>
@@ -141,7 +141,7 @@ export default function FeaturedProductsTab() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Secret Behind The
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">Secret Behind The
                                             Jungle</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new text-dark">$50.00</span>
@@ -156,7 +156,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 4 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book4.jpg"
                                                 src="/assets/images/products/book/book4.jpg" alt="image-product" />
                                         </Link>
@@ -185,7 +185,7 @@ export default function FeaturedProductsTab() {
                                         <div className="on-sale-wrap"><span className="on-sale-item">20% Off</span></div>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Lost Boy</Link>
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">Lost Boy</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new">$45.00</span>
                                             <span className="price-old">$65.00</span>
@@ -200,7 +200,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 5 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book5.jpg"
                                                 src="/assets/images/products/book/book5.jpg" alt="image-product" />
                                         </Link>
@@ -229,7 +229,7 @@ export default function FeaturedProductsTab() {
                                         <div className="on-sale-wrap"><span className="on-sale-item">20% Off</span></div>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">The Other Side Of The
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">The Other Side Of The
                                             Sky</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new">$55.00</span>
@@ -245,7 +245,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 6 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book6.jpg"
                                                 src="/assets/images/products/book/book6.jpg" alt="image-product" />
                                         </Link>
@@ -273,7 +273,7 @@ export default function FeaturedProductsTab() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Avengers Assemble</Link>
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">Avengers Assemble</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new text-dark">$65.00</span>
                                         </p>
@@ -287,7 +287,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 7 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book7.jpg"
                                                 src="/assets/images/products/book/book7.jpg" alt="image-product" />
                                         </Link>
@@ -315,7 +315,7 @@ export default function FeaturedProductsTab() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">The Skylight Operation</Link>
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">The Skylight Operation</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new text-dark">$72.00</span>
                                         </p>
@@ -329,7 +329,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 8 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book8.jpg"
                                                 src="/assets/images/products/book/book8.jpg" alt="image-product" />
                                         </Link>
@@ -357,7 +357,7 @@ export default function FeaturedProductsTab() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Speak With No Fear</Link>
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">Speak With No Fear</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new text-dark">$75.00</span>
                                         </p>
@@ -375,7 +375,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 1 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book9.jpg"
                                                 src="/assets/images/products/book/book9.jpg" alt="image-product" />
                                         </Link>
@@ -404,7 +404,7 @@ export default function FeaturedProductsTab() {
                                         <div className="on-sale-wrap"><span className="on-sale-item">20% Off</span></div>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Enceladus</Link>
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">Enceladus</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new">$55.00</span>
                                             <span className="price-old">$75.00</span>
@@ -419,7 +419,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 2 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book10.jpg"
                                                 src="/assets/images/products/book/book10.jpg" alt="image-product" />
                                         </Link>
@@ -447,7 +447,7 @@ export default function FeaturedProductsTab() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Het Raadsel Van De Zee</Link>
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">Het Raadsel Van De Zee</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new text-dark">$60.00</span>
                                         </p>
@@ -461,7 +461,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 3 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book11.jpg"
                                                 src="/assets/images/products/book/book11.jpg" alt="image-product" />
                                         </Link>
@@ -489,7 +489,7 @@ export default function FeaturedProductsTab() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Notes From A Young
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">Notes From A Young
                                             Chef</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new text-dark">$64.00</span>
@@ -504,7 +504,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 4 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book12.jpg"
                                                 src="/assets/images/products/book/book12.jpg" alt="image-product" />
                                         </Link>
@@ -532,7 +532,7 @@ export default function FeaturedProductsTab() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">All This & More</Link>
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">All This & More</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new text-dark">$70.00</span>
                                         </p>
@@ -546,7 +546,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 5 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book13.jpg"
                                                 src="/assets/images/products/book/book13.jpg" alt="image-product" />
                                         </Link>
@@ -574,7 +574,7 @@ export default function FeaturedProductsTab() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Delivery Girl</Link>
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">Delivery Girl</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new text-dark">$68.00</span>
                                         </p>
@@ -588,7 +588,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 6 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book14.jpg"
                                                 src="/assets/images/products/book/book14.jpg" alt="image-product" />
                                         </Link>
@@ -616,7 +616,7 @@ export default function FeaturedProductsTab() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Voice Of Ancestors</Link>
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">Voice Of Ancestors</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new text-dark">$55.00</span>
                                         </p>
@@ -630,7 +630,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 7 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book5.jpg"
                                                 src="/assets/images/products/book/book5.jpg" alt="image-product" />
                                         </Link>
@@ -659,7 +659,7 @@ export default function FeaturedProductsTab() {
                                         <div className="on-sale-wrap"><span className="on-sale-item">20% Off</span></div>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">The Other Side Of The
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">The Other Side Of The
                                             Sky</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new">$55.00</span>
@@ -675,7 +675,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 8 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book6.jpg"
                                                 src="/assets/images/products/book/book6.jpg" alt="image-product" />
                                         </Link>
@@ -703,7 +703,7 @@ export default function FeaturedProductsTab() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Avengers Assemble</Link>
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">Avengers Assemble</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new text-dark">$65.00</span>
                                         </p>
@@ -721,7 +721,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 1 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book4.jpg"
                                                 src="/assets/images/products/book/book4.jpg" alt="image-product" />
                                         </Link>
@@ -750,7 +750,7 @@ export default function FeaturedProductsTab() {
                                         <div className="on-sale-wrap"><span className="on-sale-item">20% Off</span></div>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Lost Boy</Link>
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">Lost Boy</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new">$45.00</span>
                                             <span className="price-old">$65.00</span>
@@ -765,7 +765,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 2 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book5.jpg"
                                                 src="/assets/images/products/book/book5.jpg" alt="image-product" />
                                         </Link>
@@ -794,7 +794,7 @@ export default function FeaturedProductsTab() {
                                         <div className="on-sale-wrap"><span className="on-sale-item">20% Off</span></div>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">The Other Side Of The
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">The Other Side Of The
                                             Sky</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new">$55.00</span>
@@ -810,7 +810,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 3 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book6.jpg"
                                                 src="/assets/images/products/book/book6.jpg" alt="image-product" />
                                         </Link>
@@ -838,7 +838,7 @@ export default function FeaturedProductsTab() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Avengers Assemble</Link>
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">Avengers Assemble</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new text-dark">$65.00</span>
                                         </p>
@@ -852,7 +852,7 @@ export default function FeaturedProductsTab() {
                                 {/* <!-- item 4 --> */}
                                 <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                     <div className="card-product-wrapper">
-                                        <Link to="product-detail.html" className="product-img">
+                                        <Link to="/product-details" className="product-img">
                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book7.jpg"
                                                 src="/assets/images/products/book/book7.jpg" alt="image-product" />
                                         </Link>
@@ -880,7 +880,7 @@ export default function FeaturedProductsTab() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info text-center">
-                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">The Skylight Operation</Link>
+                                        <Link to="/product-details" className="name-product link fw-medium text-md">The Skylight Operation</Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new text-dark">$72.00</span>
                                         </p>

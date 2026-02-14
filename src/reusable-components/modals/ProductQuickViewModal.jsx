@@ -35,7 +35,7 @@ export default function ProductQuickViewModal() {
                     <div className="tf-product-info-wrap">
                         <div className="tf-product-info-inner">
                             <div className="tf-product-heading">
-                                <h6 className="product-name"><Link className="link" to="product-detail.html">RadRunner™ Plus</Link>
+                                <h6 className="product-name"><Link className="link" to="/product-details">RadRunner™ Plus</Link>
                                 </h6>
                                 <div className="product-price">
                                     <h6 className="price-new price-on-sale text-dark">$60.00</h6>

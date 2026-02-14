@@ -76,11 +76,11 @@ export default function CategorySwiper() {
                     {categories.map((item, index) => (
                         <SwiperSlide key={index}>
                             <div className="wg-cls style-circle hover-img">
-                                <Link to="/shop-default" className="bg-grey-4 image img-style d-block">
+                                <Link to="/product-default" className="bg-grey-4 image img-style d-block">
                                     <img src={item.img} alt="categories" />
                                 </Link>
                                 <div className="cls-content text-center">
-                                    <Link to="/shop-default" className="link text-lg fw-medium">
+                                    <Link to="/product-default" className="link text-lg fw-medium">
                                         {item.title}
                                     </Link>
                                     <span className="count text-sm">{item.count}</span>

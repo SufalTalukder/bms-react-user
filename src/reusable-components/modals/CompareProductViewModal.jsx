@@ -12,13 +12,13 @@ export default function CompareProductViewModal() {
                             <div className="tf-compare-list">
                                 <div className="tf-compare-item file-delete">
                                     <span className="icon-close remove"></span>
-                                    <Link to="product-detail.html" className="image">
+                                    <Link to="/product-details" className="image">
                                         <img className="lazyload" data-src="/assets/images/products/book/book1.jpg" src="/assets/images/products/book/book1.jpg"
                                             alt="" />
                                     </Link>
                                     <div className="content">
                                         <div className="text-title">
-                                            <Link className="link text-line-clamp-2" to="product-detail.html">Lost Boy</Link>
+                                            <Link className="link text-line-clamp-2" to="/product-details">Lost Boy</Link>
                                         </div>
                                         <p className="price-wrap">
                                             <span className="new-price text-primary">$60.00</span>
@@ -28,13 +28,13 @@ export default function CompareProductViewModal() {
                                 </div>
                                 <div className="tf-compare-item file-delete">
                                     <span className="icon-close remove"></span>
-                                    <Link to="product-detail.html" className="image">
+                                    <Link to="/product-details" className="image">
                                         <img className="lazyload" data-src="/assets/images/products/book/book5.jpg" src="/assets/images/products/book/book5.jpg"
                                             alt="" />
                                     </Link>
                                     <div className="content">
                                         <div className="text-title">
-                                            <Link className="link text-line-clamp-2" to="product-detail.html">The Other Side Of The Sky</Link>
+                                            <Link className="link text-line-clamp-2" to="/product-details">The Other Side Of The Sky</Link>
                                         </div>
                                         <p className="price-wrap">
                                             <span className="new-price">$75.00</span>
@@ -43,13 +43,13 @@ export default function CompareProductViewModal() {
                                 </div>
                                 <div className="tf-compare-item file-delete">
                                     <span className="icon-close remove"></span>
-                                    <Link to="product-detail.html" className="image">
+                                    <Link to="/product-details" className="image">
                                         <img className="lazyload" data-src="/assets/images/products/book/book6.jpg" src="/assets/images/products/book/book6.jpg"
                                             alt="" />
                                     </Link>
                                     <div className="content">
                                         <div className="text-title">
-                                            <Link className="link text-line-clamp-2" to="product-detail.html">Avengers Assemble</Link>
+                                            <Link className="link text-line-clamp-2" to="/product-details">Avengers Assemble</Link>
                                         </div>
                                         <p className="price-wrap">
                                             <span className="new-price text-primary">$65.00</span>

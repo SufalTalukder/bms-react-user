@@ -37,7 +37,7 @@ export default function ToolbarForPhone() {
                 </Link>
             </div>
             <div className="toolbar-item">
-                <Link to="shop-default.html">
+                <Link to="/product-default">
                     <div className="toolbar-icon">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fillRule="evenodd" clipRule="evenodd"
@@ -61,7 +61,7 @@ export default function ToolbarForPhone() {
                 </Link>
             </div>
             <div className="toolbar-item">
-                <Link to="wish-list.html">
+                <Link to="/wish-list">
                     <div className="toolbar-icon">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clipPath="url(#clip0_4013_1872)">

@@ -18,31 +18,31 @@ export default function ProductFilterViewModal() {
                         <div id="collections" className="collapse show">
                             <ul className="collapse-body list-categories current-scrollbar">
                                 <li className="cate-item">
-                                    <Link className="text-sm link" href="shop-default.html">
+                                    <Link className="text-sm link" to="/product-default">
                                         <span>Men’s top</span>
                                         <span className="count">(20)</span>
                                     </Link>
                                 </li>
                                 <li className="cate-item">
-                                    <Link className="text-sm link" href="shop-default.html">
+                                    <Link className="text-sm link" to="/product-default">
                                         <span>Men</span>
                                         <span className="count">(20)</span>
                                     </Link>
                                 </li>
                                 <li className="cate-item">
-                                    <Link className="text-sm link" href="shop-default.html">
+                                    <Link className="text-sm link" to="/product-default">
                                         <span>Women</span>
                                         <span className="count">(20)</span>
                                     </Link>
                                 </li>
                                 <li className="cate-item">
-                                    <Link className="text-sm link" href="shop-default.html">
+                                    <Link className="text-sm link" to="/product-default">
                                         <span>Kid</span>
                                         <span className="count">(20)</span>
                                     </Link>
                                 </li>
                                 <li className="cate-item">
-                                    <Link className="text-sm link" href="shop-default.html">
+                                    <Link className="text-sm link" to="/product-default">
                                         <span>T-shirt</span>
                                         <span className="count">(20)</span>
                                     </Link>
@@ -170,10 +170,10 @@ export default function ProductFilterViewModal() {
                         <ul className="collapse-body list-recent">
                             <li>
                                 <div className="recent-blog-item">
-                                    <Link href="product-detail.html" className="img-product"><img
+                                    <Link to="/product-details" className="img-product"><img
                                         src="/assets/images/products/recent/recent6.jpg" alt="img" /></Link>
                                     <div className="content">
-                                        <Link href="product-detail.html" className="title text-md link fw-medium">Striped short
+                                        <Link to="/product-details" className="title text-md link fw-medium">Striped short
                                             sleeve shirt</Link>
                                         <div className="price text-md fw-medium">
                                             <span className="new-price">$80.00</span>
@@ -185,10 +185,10 @@ export default function ProductFilterViewModal() {
                             </li>
                             <li>
                                 <div className="recent-blog-item">
-                                    <Link href="product-detail.html" className="img-product"><img
+                                    <Link to="/product-details" className="img-product"><img
                                         src="/assets/images/products/recent/recent7.jpg" alt="img" /></Link>
                                     <div className="content">
-                                        <Link href="product-detail.html" className="title text-md link fw-medium">Short Sleeve
+                                        <Link to="/product-details" className="title text-md link fw-medium">Short Sleeve
                                             Sweat</Link>
                                         <div className="price text-md fw-medium">
                                             <span className="new-price">$65.00</span>
@@ -209,7 +209,7 @@ export default function ProductFilterViewModal() {
                                 <p className="title">
                                     Elevate <br /> Your Style
                                 </p>
-                                <Link href="#" className="tf-btn btn-white hover-primary">Shop Now</Link>
+                                <Link to="#" className="tf-btn btn-white hover-primary">Shop Now</Link>
                             </div>
                         </div>
                     </div>

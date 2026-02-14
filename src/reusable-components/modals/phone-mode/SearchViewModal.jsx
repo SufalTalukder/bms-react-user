@@ -54,7 +54,7 @@ export default function SearchViewModalForPhone() {
                                                 <div
                                                     className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                                     <div className="card-product-wrapper">
-                                                        <Link to="product-detail.html" className="product-img">
+                                                        <Link to="/product-details" className="product-img">
                                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book1.jpg"
                                                                 src="/assets/images/products/book/book1.jpg" alt="image-product" />
                                                         </Link>
@@ -83,7 +83,7 @@ export default function SearchViewModalForPhone() {
                                                         <div className="on-sale-wrap"><span className="on-sale-item">20% Off</span></div>
                                                     </div>
                                                     <div className="card-product-info text-center">
-                                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Lost Boy</Link>
+                                                        <Link to="/product-details" className="name-product link fw-medium text-md">Lost Boy</Link>
                                                         <p className="price-wrap fw-medium">
                                                             <span className="price-new">$60.00</span>
                                                             <span className="price-old">$80.00</span>
@@ -100,7 +100,7 @@ export default function SearchViewModalForPhone() {
                                                 <div
                                                     className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                                     <div className="card-product-wrapper">
-                                                        <Link to="product-detail.html" className="product-img">
+                                                        <Link to="/product-details" className="product-img">
                                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book2.jpg"
                                                                 src="/assets/images/products/book/book2.jpg" alt="image-product" />
                                                         </Link>
@@ -128,7 +128,7 @@ export default function SearchViewModalForPhone() {
                                                         </ul>
                                                     </div>
                                                     <div className="card-product-info text-center">
-                                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Let Go My Hand</Link>
+                                                        <Link to="/product-details" className="name-product link fw-medium text-md">Let Go My Hand</Link>
                                                         <p className="price-wrap fw-medium">
                                                             <span className="price-new text-dark">$66.00</span>
                                                         </p>
@@ -144,7 +144,7 @@ export default function SearchViewModalForPhone() {
                                                 <div
                                                     className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                                     <div className="card-product-wrapper">
-                                                        <Link to="product-detail.html" className="product-img">
+                                                        <Link to="/product-details" className="product-img">
                                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book3.jpg"
                                                                 src="/assets/images/products/book/book3.jpg" alt="image-product" />
                                                         </Link>
@@ -172,7 +172,7 @@ export default function SearchViewModalForPhone() {
                                                         </ul>
                                                     </div>
                                                     <div className="card-product-info text-center">
-                                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Secret Behind The
+                                                        <Link to="/product-details" className="name-product link fw-medium text-md">Secret Behind The
                                                             Jungle</Link>
                                                         <p className="price-wrap fw-medium">
                                                             <span className="price-new text-dark">$50.00</span>
@@ -189,7 +189,7 @@ export default function SearchViewModalForPhone() {
                                                 <div
                                                     className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
                                                     <div className="card-product-wrapper">
-                                                        <Link to="product-detail.html" className="product-img">
+                                                        <Link to="/product-details" className="product-img">
                                                             <img className="img-product lazyload" data-src="/assets/images/products/book/book4.jpg"
                                                                 src="/assets/images/products/book/book4.jpg" alt="image-product" />
                                                         </Link>
@@ -218,7 +218,7 @@ export default function SearchViewModalForPhone() {
                                                         <div className="on-sale-wrap"><span className="on-sale-item">20% Off</span></div>
                                                     </div>
                                                     <div className="card-product-info text-center">
-                                                        <Link to="product-detail.html" className="name-product link fw-medium text-md">Lost Boy</Link>
+                                                        <Link to="/product-details" className="name-product link fw-medium text-md">Lost Boy</Link>
                                                         <p className="price-wrap fw-medium">
                                                             <span className="price-new">$45.00</span>
                                                             <span className="price-old">$65.00</span>

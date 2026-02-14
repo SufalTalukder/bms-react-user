@@ -12,7 +12,7 @@ export default function HamburgerMenu() {
                     </div>
                     <div className="mb-other-content">
                         <div className="group-icon">
-                            <Link to="wish-list.html" className="site-nav-icon">
+                            <Link to="/wish-list" className="site-nav-icon">
                                 <i className="icon icon-heart"></i>
                                 Wishlist
                             </Link>

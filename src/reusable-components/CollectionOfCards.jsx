@@ -65,7 +65,7 @@ export default function CollectionOfCards() {
                                         />
                                     </div>
                                     <div className="box-btn">
-                                        <Link to="/shop-default" className="tf-btn btn-primary animate-btn">
+                                        <Link to="/product-default" className="tf-btn btn-primary animate-btn">
                                             <span className="text-sm">Shop Now</span>
                                         </Link>
                                     </div>

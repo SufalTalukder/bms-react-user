@@ -26,14 +26,14 @@ export default function ShoppingCartViewModal() {
                                 <div className="tf-mini-cart-items">
                                     <div className="tf-mini-cart-item file-delete">
                                         <div className="tf-mini-cart-image">
-                                            <Link to="product-detail.html">
+                                            <Link to="/product-details">
                                                 <img className="lazyload obj-contain" data-src="/assets/images/products/book/book1.jpg"
                                                     src="/assets/images/products/book/book1.jpg" alt="img-product" />
                                             </Link>
                                         </div>
                                         <div className="tf-mini-cart-info">
                                             <div className="d-flex justify-content-between">
-                                                <Link className="title link text-md fw-medium" to="product-detail.html">Lost Boy</Link>
+                                                <Link className="title link text-md fw-medium" to="/product-details">Lost Boy</Link>
                                                 <i className="icon icon-close remove fs-12"></i>
                                             </div>
                                             <p className="price-wrap text-sm fw-medium">
@@ -49,14 +49,14 @@ export default function ShoppingCartViewModal() {
                                     </div>
                                     <div className="tf-mini-cart-item file-delete">
                                         <div className="tf-mini-cart-image">
-                                            <Link to="product-detail.html">
+                                            <Link to="/product-details">
                                                 <img className="lazyload obj-contain" data-src="/assets/images/products/book/book2.jpg"
                                                     src="/assets/images/products/book/book2.jpg" alt="img-product" />
                                             </Link>
                                         </div>
                                         <div className="tf-mini-cart-info">
                                             <div className="d-flex justify-content-between">
-                                                <Link className="title link text-md fw-medium" to="product-detail.html">Let Go My Hand</Link>
+                                                <Link className="title link text-md fw-medium" to="/product-details">Let Go My Hand</Link>
                                             </div>
                                             <p className="price-wrap text-sm fw-medium">
                                                 <span className="new-price">$90.00</span>
@@ -97,13 +97,13 @@ export default function ShoppingCartViewModal() {
                                             <div className="swiper-slide">
                                                 <div className="tf-mini-cart-item line radius-16">
                                                     <div className="tf-mini-cart-image">
-                                                        <Link to="product-detail.html">
+                                                        <Link to="/product-details">
                                                             <img className="lazyload obj-contain" data-src="/assets/images/products/book/book9.jpg"
                                                                 src="/assets/images/products/book/book9.jpg" alt="img-product" />
                                                         </Link>
                                                     </div>
                                                     <div className="tf-mini-cart-info justify-content-center">
-                                                        <Link className="title link text-md fw-medium" to="product-detail.html">Enceladus</Link>
+                                                        <Link className="title link text-md fw-medium" to="/product-details">Enceladus</Link>
                                                         <p className="price-wrap text-sm fw-medium">
                                                             <span className="new-price text-primary">$60.00</span>
                                                             <span className="old-price text-decoration-line-through text-dark-1">$80.00</span>
@@ -115,13 +115,13 @@ export default function ShoppingCartViewModal() {
                                             <div className="swiper-slide">
                                                 <div className="tf-mini-cart-item line radius-16">
                                                     <div className="tf-mini-cart-image">
-                                                        <Link to="product-detail.html">
+                                                        <Link to="/product-details">
                                                             <img className="lazyload obj-contain" data-src="/assets/images/products/book/book10.jpg"
                                                                 src="/assets/images/products/book/book10.jpg" alt="img-product" />
                                                         </Link>
                                                     </div>
                                                     <div className="tf-mini-cart-info justify-content-center">
-                                                        <Link className="title link text-md fw-medium" to="product-detail.html">Het Raadsel Van De Zee</Link>
+                                                        <Link className="title link text-md fw-medium" to="/product-details">Het Raadsel Van De Zee</Link>
                                                         <p className="price-wrap text-sm fw-medium">
                                                             <span className="new-price text-primary">$65.00</span>
                                                             <span className="old-price text-decoration-line-through text-dark-1">$80.00</span>
@@ -178,7 +178,7 @@ export default function ShoppingCartViewModal() {
                                     <Link to="checkout.html"
                                         className="tf-btn animate-btn d-inline-flex bg-dark-2 w-100 justify-content-center"><span>Check
                                             out</span></Link>
-                                    <Link to="view-cart.html" className="tf-btn btn-out-line-dark2 w-100 justify-content-center">View cart</Link>
+                                    <Link to="/cart-list" className="tf-btn btn-out-line-dark2 w-100 justify-content-center">View cart</Link>
                                 </div>
                             </div>
                         </div>

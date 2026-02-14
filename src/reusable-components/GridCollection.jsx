@@ -13,10 +13,10 @@ export default function GridCollection() {
                         <div className="content">
                             <div className="box-title">
                                 <p className="text-md fw-semibold text-dark-10">Best-selling</p>
-                                <h5 className="display-md-2 fw-semibold"><Link to="shop-default.html" className="link text-dark-10">Comics</Link>
+                                <h5 className="display-md-2 fw-semibold"><Link to="/product-default" className="link text-dark-10">Comics</Link>
                                 </h5>
                             </div>
-                            <Link to="shop-default.html" className="tf-btn btn-large border-0 btn-primary animate-btn">Shop Now</Link>
+                            <Link to="/product-default" className="tf-btn btn-large border-0 btn-primary animate-btn">Shop Now</Link>
                         </div>
                     </div>
                     <div className="item2 s-cls style-absolute hover-img abs-tb-center">
@@ -27,10 +27,10 @@ export default function GridCollection() {
                         <div className="content">
                             <div className="box-title">
                                 <p className="text-md fw-semibold text-dark-10">New Release</p>
-                                <h5 className="display-md-2 fw-semibold"><Link to="shop-default.html" className="link text-dark-10">Science</Link>
+                                <h5 className="display-md-2 fw-semibold"><Link to="/product-default" className="link text-dark-10">Science</Link>
                                 </h5>
                             </div>
-                            <Link to="shop-default.html" className="tf-btn btn-large border-0 btn-primary animate-btn">Shop Now</Link>
+                            <Link to="/product-default" className="tf-btn btn-large border-0 btn-primary animate-btn">Shop Now</Link>
                         </div>
                     </div>
                     <div className="item3 s-cls style-absolute hover-img abs-right-center">
@@ -39,10 +39,10 @@ export default function GridCollection() {
                                 alt="" className="lazyload" />
                         </div>
                         <div className="content">
-                            <h5 className="display-md-2 fw-semibold"><Link to="shop-default.html" className="link text-dark-10">Our Top <br />
+                            <h5 className="display-md-2 fw-semibold"><Link to="/product-default" className="link text-dark-10">Our Top <br />
                                 Rated
                                 Books</Link></h5>
-                            <Link to="shop-default.html" className="tf-btn btn-large border-0 btn-primary animate-btn">Shop Now</Link>
+                            <Link to="/product-default" className="tf-btn btn-large border-0 btn-primary animate-btn">Shop Now</Link>
 
                         </div>
                     </div>

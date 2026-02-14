@@ -51,7 +51,7 @@ export default function HeaderBannerSwiper() {
                                             </div>
                                             <div className="box-btn-slider">
                                                 <Link
-                                                    to="/shop-default"
+                                                    to="/product-default"
                                                     className="tf-btn btn-white fw-semibold animate-btn animate-dark"
                                                 >
                                                     Shop Collection
@@ -89,7 +89,7 @@ export default function HeaderBannerSwiper() {
                                             </div>
                                             <div className="box-btn-slider">
                                                 <Link
-                                                    to="/shop-default"
+                                                    to="/product-default"
                                                     className="tf-btn btn-white fw-semibold animate-btn animate-dark"
                                                 >
                                                     Shop Collection
