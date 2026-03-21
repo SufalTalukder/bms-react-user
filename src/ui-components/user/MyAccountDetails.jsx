@@ -68,7 +68,7 @@ export default function MyAccountDetails() {
                                     </li>
                                 }
                                 <li>
-                                    <Link to="" className="text-sm link fw-medium my-account-nav-item">Log
+                                    <Link to="#" className="text-sm link fw-medium my-account-nav-item">Log
                                         Out</Link>
                                 </li>
                             </ul>

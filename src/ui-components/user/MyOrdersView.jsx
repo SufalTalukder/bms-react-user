@@ -189,13 +189,13 @@ export default function MyOrdersView() {
                                     <div className="item">
                                         <div className="infor-content">
                                             <div className="image">
-                                                <Link href="product-detail.html">
+                                                <Link to="/product-details">
                                                     <img className="lazyload" data-src="/assets/images/products/fashion/product-1.jpg"
                                                         src="/assets/images/products/fashion/product-1.jpg" alt="img-product" />
                                                 </Link>
                                             </div>
                                             <div>
-                                                <Link className="link" href="product-detail.html">Loose Fit Tee</Link>
+                                                <Link className="link" to="/product-details">Loose Fit Tee</Link>
                                                 <div className="size">White / L</div>
                                             </div>
                                         </div>
@@ -214,13 +214,13 @@ export default function MyOrdersView() {
                                     <div className="item">
                                         <div className="infor-content">
                                             <div className="image">
-                                                <Link href="product-detail.html">
+                                                <Link to="/product-details">
                                                     <img className="lazyload" data-src="/assets/images/products/fashion/product-2.jpg"
                                                         src="/assets/images/products/fashion/product-2.jpg" alt="img-product" />
                                                 </Link>
                                             </div>
                                             <div>
-                                                <Link className="link" href="product-detail.html">Loose Fit Tee</Link>
+                                                <Link className="link" to="/product-details">Loose Fit Tee</Link>
                                                 <div className="size">White / L</div>
                                             </div>
                                         </div>
@@ -239,13 +239,13 @@ export default function MyOrdersView() {
                                     <div className="item">
                                         <div className="infor-content">
                                             <div className="image">
-                                                <Link href="product-detail.html">
+                                                <Link to="/product-details">
                                                     <img className="lazyload" data-src="/assets/images/products/fashion/product-3.jpg"
                                                         src="/assets/images/products/fashion/product-3.jpg" alt="img-product" />
                                                 </Link>
                                             </div>
                                             <div>
-                                                <Link className="link" href="product-detail.html">Loose Fit Tee</Link>
+                                                <Link className="link" to="/product-details">Loose Fit Tee</Link>
                                                 <div className="size">White / L</div>
                                             </div>
                                         </div>
@@ -273,7 +273,7 @@ export default function MyOrdersView() {
                             </div>
                         </div>
                         <div className="bottom text-center">
-                            Not happy with the order? You can <Link href="return-and-refund.html"
+                            Not happy with the order? You can <Link to="/return-refund"
                                 className="fw-medium btn-underline">Request a free return</Link> in <span className="fw-medium">14
                                     days</span>
                         </div>

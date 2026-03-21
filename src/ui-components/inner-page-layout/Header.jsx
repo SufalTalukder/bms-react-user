@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
+import { useUser } from "../../context/UserContext";
 
 export default function Header() {
+
+    const { user } = useUser();
+    const token = sessionStorage.getItem("accessToken");
+
     return (
         <header id="header" className="header-default header-search header-uppercase header-style-2">
             <div className="header-top line-bt">
@@ -87,30 +92,38 @@ export default function Header() {
                                         <i className="icon icon-search"></i>
                                     </Link>
                                 </li>
-                                <li className="nav-wishlist">
-                                    <Link to="/my-account" className="nav-icon-item">
-                                        <i className="icon icon-user"></i>
-                                        <span className="text d-none d-xl-block">My Account</span>
-                                    </Link>
-                                </li>
-                                <li className="nav-account">
-                                    <Link to="#login" data-bs-toggle="offcanvas" data-bs-target="#login" className="nav-icon-item">
-                                        <i className="icon icon-user"></i>
-                                        <span className="text d-none d-xl-block">Login</span>
-                                    </Link>
-                                </li>
-                                <li className="nav-wishlist">
-                                    <Link to="/wish-list" className="nav-icon-item">
-                                        <i className="icon icon-heart"></i>
-                                        <span className="text d-none d-xl-block">Wishlist</span>
-                                    </Link>
-                                </li>
-                                <li className="nav-cart">
-                                    <Link to="#shoppingCart" data-bs-toggle="offcanvas" className="nav-icon-item value-box">
-                                        <i className="icon icon-cart"></i>
-                                        <span className="text d-none d-xl-block">$0.00</span>
-                                    </Link>
-                                </li>
+                                {(user || token) &&
+                                    <li className="nav-wishlist">
+                                        <Link to="/my-account" className="nav-icon-item">
+                                            <i className="icon icon-user"></i>
+                                            <span className="text d-none d-xl-block">My Account</span>
+                                        </Link>
+                                    </li>
+                                }
+                                {(!user || !token) &&
+                                    <li className="nav-account">
+                                        <Link to="#login" data-bs-toggle="offcanvas" data-bs-target="#login" className="nav-icon-item">
+                                            <i className="icon icon-user"></i>
+                                            <span className="text d-none d-xl-block">Login</span>
+                                        </Link>
+                                    </li>
+                                }
+                                {(user || token) &&
+                                    <li className="nav-wishlist">
+                                        <Link to="/wish-list" className="nav-icon-item">
+                                            <i className="icon icon-heart"></i>
+                                            <span className="text d-none d-xl-block">Wishlist</span>
+                                        </Link>
+                                    </li>
+                                }
+                                {(user || token) &&
+                                    <li className="nav-cart">
+                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas" className="nav-icon-item value-box">
+                                            <i className="icon icon-cart"></i>
+                                            <span className="text d-none d-xl-block">$0.00</span>
+                                        </Link>
+                                    </li>
+                                }
                             </ul>
                         </div>
                     </div>
