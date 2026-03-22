@@ -34,11 +34,12 @@ export const UserProvider = ({ children }) => {
         setOtpSending(true);
         try {
             const res = await sendOtpApi({ phone_number: phoneNumber });
-            const { user_id } = res.data.data;
+            const { user_id, is_new_user } = res.data.data;
 
             setPendingUserId(user_id);
             setOtpStep("OTP");
-            toast.success("OTP sent successfully!");
+
+            toast.success(is_new_user ? "Welcome! OTP sent." : "Welcome back! OTP sent.");
             return true;
         } catch (err) {
             const msg = err.response?.data?.message || "Failed to send OTP.";

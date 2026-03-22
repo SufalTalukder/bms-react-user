@@ -81,6 +81,8 @@ export default function LoginViewModal() {
                                         placeholder="Phone Number*"
                                         value={phoneNumber}
                                         onChange={(e) => setPhoneNumber(e.target.value)}
+                                        maxLength={10}
+                                        minLength={10}
                                         required
                                     />
                                 </fieldset>
