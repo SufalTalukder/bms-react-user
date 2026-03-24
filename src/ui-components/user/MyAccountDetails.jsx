@@ -1,17 +1,76 @@
 import { Link, NavLink } from "react-router-dom";
 import PageLayout from "../../PageLayout";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { fetchUser } from "../../api/my-account-api";
 
 export default function MyAccountDetails() {
 
     const activeURI = window.location.pathname;
 
+    // STATE VARIABLES
+    const [userId, setUserId] = useState(null);
+    const [fullName, setFullName] = useState("");
+    const [emailAddress, setEmailAddress] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [dob, setDOB] = useState("");
+    const [userAddress, setUserAddress] = useState("");
+    const [userReferralCode, setUserReferralCode] = useState("");
+    const [userImage, setUserImage] = useState(null);
+
+    const [loading, setLoading] = useState(false);
+    const hasFetched = useRef(false);
+
     useEffect(() => {
         document.title = "My Account Details - BMS Book Store";
+        if (hasFetched.current) return;
+        hasFetched.current = true;
+        fetchUserDetails();
     }, []);
+
+    const fetchUserDetails = async () => {
+        try {
+            setLoading(true);
+            const res = await fetchUser();
+            setUserId(res.data?.data?.user_id);
+            setFullName(res.data?.data?.full_name);
+            setEmailAddress(res.data?.data?.email_address);
+            setPhoneNumber(res.data?.data?.phone_number);
+            setDOB(res.data?.data?.dob);
+            setUserAddress(res.data?.data?.user_address);
+            setUserReferralCode(res.data?.data?.user_referral_code);
+            setUserImage(res.data?.data?.user_image);
+            setLoading(false);
+        } catch (e) {
+            console.error("Error! while fetching user => ", e);
+        }
+    };
+
+    const handleSubmit = async () => { };
 
     return (
         <PageLayout>
+            {/* <!-- Logout Loading Overlay --> */}
+            {loading && (
+                <div
+                    style={{
+                        position: "fixed",
+                        inset: 0,
+                        backgroundColor: "rgba(0, 0, 0, 0.45)",
+                        zIndex: 9999,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "16px",
+                    }}
+                >
+                    <div className="spinner-border text-light" role="status" style={{ width: "48px", height: "48px" }} />
+                    <p style={{ color: "#fff", fontSize: "1.1rem", fontWeight: 600, margin: 0 }}>
+                        Loading...
+                    </p>
+                </div>
+            )}
+
             {/* <!-- Title Page --> */}
             <section className="tf-page-title">
                 <div className="container">
@@ -74,41 +133,37 @@ export default function MyAccountDetails() {
                             </ul>
                         </div>
                         <div className="my-acount-content account-dashboard">
-                            <form action="#" className="form-edit-account">
+                            <form className="form-edit-account" onSubmit={handleSubmit}>
                                 <h6 className="display-xs title-form">Account Details</h6>
                                 <div className="form-name">
                                     <div className="tf-field style-2 style-3">
-                                        <input className="tf-field-input tf-input" id="firstname" placeholder=" " type="text"
-                                            name="firstname" />
-                                        <label className="tf-field-label" htmlFor="firstname">First name</label>
-                                    </div>
-                                    <div className="tf-field style-2 style-3">
-                                        <input className="tf-field-input tf-input" id="lastname" placeholder=" " type="text"
-                                            name="lastname" />
-                                        <label className="tf-field-label" htmlFor="lastname">Last name</label>
+                                        <input className="tf-field-input tf-input" id="fullName" placeholder="Full name*" type="text" name="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                                        <label className="tf-field-label" htmlFor="fullName">First name</label>
                                     </div>
                                     <div className="tf-field style-2 style-3">
                                         <input className="tf-field-input tf-input" id="email" placeholder=" " type="email"
-                                            name="email" />
+                                            name="email" value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)} />
                                         <label className="tf-field-label" htmlFor="email">Email</label>
                                     </div>
-                                </div>
-                                <div className="form-pass">
-                                    <div className="text-lg title-pass">Password Change</div>
                                     <div className="tf-field style-2 style-3">
-                                        <input className="tf-field-input tf-input" id="pass" placeholder=" " type="text"
-                                            name="pass" />
-                                        <label className="tf-field-label" htmlFor="pass">Current password</label>
+                                        <input className="tf-field-input tf-input" id="phone" placeholder=" " type="tel"
+                                            name="phone" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+                                        <label className="tf-field-label" htmlFor="phone">Phone number</label>
                                     </div>
                                     <div className="tf-field style-2 style-3">
-                                        <input className="tf-field-input tf-input" id="newpass" placeholder=" " type="password"
-                                            name="newpass" />
-                                        <label className="tf-field-label" htmlFor="newpass">New password</label>
+                                        <input className="tf-field-input tf-input" id="dob" placeholder=" " type="date"
+                                            name="dob" value={dob} onChange={(e) => setDOB(e.target.value)} />
+                                        <label className="tf-field-label" htmlFor="dob">Date of Birth</label>
                                     </div>
                                     <div className="tf-field style-2 style-3">
-                                        <input className="tf-field-input tf-input" id="confirm-password" placeholder=" "
-                                            type="password" name="confirm-password" />
-                                        <label className="tf-field-label" htmlFor="confirm-password">Confirm password</label>
+                                        <input className="tf-field-input tf-input" id="address" placeholder=" " type="text"
+                                            name="address" value={userAddress} onChange={(e) => setUserAddress(e.target.value)} />
+                                        <label className="tf-field-label" htmlFor="address">Address</label>
+                                    </div>
+                                    <div className="tf-field style-2 style-3">
+                                        <input className="tf-field-input tf-input" id="referralCode" placeholder=" " type="text"
+                                            name="referralCode" value={userReferralCode} onChange={(e) => setUserReferralCode(e.target.value)} />
+                                        <label className="tf-field-label" htmlFor="referralCode">Referral Code</label>
                                     </div>
                                 </div>
                                 <button type="submit" className="tf-btn animate-btn">Save Changes</button>
