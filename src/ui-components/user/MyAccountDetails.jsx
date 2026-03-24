@@ -49,7 +49,7 @@ export default function MyAccountDetails() {
 
     return (
         <PageLayout>
-            {/* <!-- Logout Loading Overlay --> */}
+            {/* <!-- Loading Overlay --> */}
             {loading && (
                 <div
                     style={{
