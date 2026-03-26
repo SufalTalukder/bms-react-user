@@ -1,21 +1,20 @@
 import { Link, NavLink } from "react-router-dom";
 import PageLayout from "../../PageLayout";
 import { useEffect, useRef, useState } from "react";
-import { fetchUser } from "../../api/my-account-api";
+import { fetchUser, updateUser } from "../../api/my-account-api";
+import toast from "react-hot-toast";
 
 export default function MyAccountDetails() {
 
     const activeURI = window.location.pathname;
 
     // STATE VARIABLES
-    const [userId, setUserId] = useState(null);
     const [fullName, setFullName] = useState("");
     const [emailAddress, setEmailAddress] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [dob, setDOB] = useState("");
     const [userAddress, setUserAddress] = useState("");
     const [userReferralCode, setUserReferralCode] = useState("");
-    const [userImage, setUserImage] = useState(null);
 
     const [loading, setLoading] = useState(false);
     const hasFetched = useRef(false);
@@ -27,25 +26,66 @@ export default function MyAccountDetails() {
         fetchUserDetails();
     }, []);
 
+    // FETCH DETAILS
     const fetchUserDetails = async () => {
         try {
             setLoading(true);
             const res = await fetchUser();
-            setUserId(res.data?.data?.user_id);
             setFullName(res.data?.data?.full_name);
             setEmailAddress(res.data?.data?.email_address);
             setPhoneNumber(res.data?.data?.phone_number);
             setDOB(res.data?.data?.dob);
             setUserAddress(res.data?.data?.user_address);
             setUserReferralCode(res.data?.data?.user_referral_code);
-            setUserImage(res.data?.data?.user_image);
             setLoading(false);
         } catch (e) {
             console.error("Error! while fetching user => ", e);
         }
     };
 
-    const handleSubmit = async () => { };
+    // HANDLE SUBMIT
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!fullName.trim()) {
+            toast.error("Name is required.");
+            return;
+        }
+        if (!emailAddress.trim()) {
+            toast.error("Email is required.");
+            return;
+        }
+        if (!phoneNumber.trim()) {
+            toast.error("Phone number is required.");
+            return;
+        }
+        if (!dob.trim()) {
+            toast.error("Date of Birth is required.");
+            return;
+        }
+        if (!userAddress.trim()) {
+            toast.error("Address is required.");
+            return;
+        }
+
+        const form = new FormData();
+        form.append('full_name', fullName);
+        form.append('email_address', emailAddress);
+        form.append('phone_number', phoneNumber);
+        form.append('dob', dob);
+        form.append('user_address', userAddress);
+
+        try {
+            const res = await updateUser(form);
+            if (res.data?.status === 'Success') {
+                toast.success("Details updated." || res.data?.message);
+            } else {
+                toast.error("Failed to update." || res.data?.message);
+            }
+        } catch (e) {
+            console.error("Error! while updating user => ", e);
+        }
+    };
 
     return (
         <PageLayout>
@@ -137,17 +177,17 @@ export default function MyAccountDetails() {
                                 <h6 className="display-xs title-form">Account Details</h6>
                                 <div className="form-name">
                                     <div className="tf-field style-2 style-3">
-                                        <input className="tf-field-input tf-input" id="fullName" placeholder="Full name*" type="text" name="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                                        <input className="tf-field-input tf-input" id="fullName" placeholder="Full name*" type="text" name="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} autoComplete="none" />
                                         <label className="tf-field-label" htmlFor="fullName">First name</label>
                                     </div>
                                     <div className="tf-field style-2 style-3">
                                         <input className="tf-field-input tf-input" id="email" placeholder=" " type="email"
-                                            name="email" value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)} />
+                                            name="email" value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)} autoComplete="new-email-address" />
                                         <label className="tf-field-label" htmlFor="email">Email</label>
                                     </div>
                                     <div className="tf-field style-2 style-3">
                                         <input className="tf-field-input tf-input" id="phone" placeholder=" " type="tel"
-                                            name="phone" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+                                            name="phone" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} autoComplete="new-phone" disabled />
                                         <label className="tf-field-label" htmlFor="phone">Phone number</label>
                                     </div>
                                     <div className="tf-field style-2 style-3">
@@ -157,12 +197,12 @@ export default function MyAccountDetails() {
                                     </div>
                                     <div className="tf-field style-2 style-3">
                                         <input className="tf-field-input tf-input" id="address" placeholder=" " type="text"
-                                            name="address" value={userAddress} onChange={(e) => setUserAddress(e.target.value)} />
+                                            name="address" value={userAddress} onChange={(e) => setUserAddress(e.target.value)} autoComplete="new-address" />
                                         <label className="tf-field-label" htmlFor="address">Address</label>
                                     </div>
                                     <div className="tf-field style-2 style-3">
                                         <input className="tf-field-input tf-input" id="referralCode" placeholder=" " type="text"
-                                            name="referralCode" value={userReferralCode} onChange={(e) => setUserReferralCode(e.target.value)} />
+                                            name="referralCode" value={userReferralCode} onChange={(e) => setUserReferralCode(e.target.value)} disabled />
                                         <label className="tf-field-label" htmlFor="referralCode">Referral Code</label>
                                     </div>
                                 </div>

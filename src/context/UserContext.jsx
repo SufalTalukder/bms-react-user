@@ -68,7 +68,7 @@ export const UserProvider = ({ children }) => {
             setOtpStep("PHONE");
             setPendingUserId(null);
 
-            toast.success("OTP verified!");
+            toast.success("OTP verified.");
             return true;
         } catch (err) {
             const msg = err.response?.data?.message || "Invalid or expired OTP.";
