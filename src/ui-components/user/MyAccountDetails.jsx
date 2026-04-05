@@ -13,7 +13,6 @@ export default function MyAccountDetails() {
     const [emailAddress, setEmailAddress] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [dob, setDOB] = useState("");
-    const [userAddress, setUserAddress] = useState("");
     const [userReferralCode, setUserReferralCode] = useState("");
 
     const [loading, setLoading] = useState(false);
@@ -35,7 +34,6 @@ export default function MyAccountDetails() {
             setEmailAddress(res.data?.data?.email_address);
             setPhoneNumber(res.data?.data?.phone_number);
             setDOB(res.data?.data?.dob);
-            setUserAddress(res.data?.data?.user_address);
             setUserReferralCode(res.data?.data?.user_referral_code);
             setLoading(false);
         } catch (e) {
@@ -63,17 +61,12 @@ export default function MyAccountDetails() {
             toast.error("Date of Birth is required.");
             return;
         }
-        if (!userAddress.trim()) {
-            toast.error("Address is required.");
-            return;
-        }
 
         const form = new FormData();
         form.append('full_name', fullName);
         form.append('email_address', emailAddress);
         form.append('phone_number', phoneNumber);
         form.append('dob', dob);
-        form.append('user_address', userAddress);
 
         try {
             const res = await updateUser(form);
@@ -194,11 +187,6 @@ export default function MyAccountDetails() {
                                         <input className="tf-field-input tf-input" id="dob" placeholder=" " type="date"
                                             name="dob" value={dob} onChange={(e) => setDOB(e.target.value)} />
                                         <label className="tf-field-label" htmlFor="dob">Date of Birth</label>
-                                    </div>
-                                    <div className="tf-field style-2 style-3">
-                                        <input className="tf-field-input tf-input" id="address" placeholder=" " type="text"
-                                            name="address" value={userAddress} onChange={(e) => setUserAddress(e.target.value)} autoComplete="new-address" />
-                                        <label className="tf-field-label" htmlFor="address">Address</label>
                                     </div>
                                     <div className="tf-field style-2 style-3">
                                         <input className="tf-field-input tf-input" id="referralCode" placeholder=" " type="text"

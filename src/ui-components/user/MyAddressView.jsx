@@ -1,18 +1,285 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import PageLayout from "../../PageLayout";
 import { Link, NavLink } from "react-router-dom";
+import { fetchAddressDetails, fetchAllAddresses, addUpdateAddress, deleteAddress } from "../../api/my-account-api";
+
+const EMPTY_FORM = {
+    address_type: "",
+    user_address: "",
+    user_city: "",
+    user_state: "",
+    user_country: "",
+    user_pincode: "",
+};
+
+const ADDRESS_TYPES = ["Home", "Office", "Others"];
+
+function AddressForm({ activePanel, form, onChange, onSubmit, onCancel, submitLabel, loading }) {
+    return (
+        <form
+            onSubmit={onSubmit}
+            className="wd-form-address form-default show-form-address"
+            style={activePanel === "add" ? { display: "block", border: "1px solid #ebebeb" } : { display: "block", border: "0px solid #ebebeb" }}
+        >
+
+            <div className="cols">
+                <fieldset>
+                    <label htmlFor="address_type">Address Type <span className="text-danger">*</span></label>
+                    <select
+                        id="address_type"
+                        name="address_type"
+                        value={form.address_type}
+                        onChange={onChange}
+                        required
+                    >
+                        <option value="">-- Select --</option>
+                        {ADDRESS_TYPES.map((t) => (
+                            <option key={t} value={t}>{t}</option>
+                        ))}
+                    </select>
+                </fieldset>
+            </div>
+
+            <div className="cols">
+                <fieldset>
+                    <label htmlFor="user_address">Address <span className="text-danger">*</span></label>
+                    <input
+                        type="text"
+                        id="user_address"
+                        name="user_address"
+                        value={form.user_address}
+                        onChange={onChange}
+                        minLength={5}
+                        maxLength={100}
+                        autoComplete="off"
+                        required
+                    />
+                </fieldset>
+            </div>
+
+            <div className="cols">
+                <fieldset>
+                    <label htmlFor="user_city">City <span className="text-danger">*</span></label>
+                    <input
+                        type="text"
+                        id="user_city"
+                        name="user_city"
+                        value={form.user_city}
+                        onChange={onChange}
+                        minLength={3}
+                        maxLength={20}
+                        autoComplete="off"
+                        required
+                    />
+                </fieldset>
+                <fieldset>
+                    <label htmlFor="user_state">State <span className="text-danger">*</span></label>
+                    <input
+                        type="text"
+                        id="user_state"
+                        name="user_state"
+                        value={form.user_state}
+                        onChange={onChange}
+                        minLength={3}
+                        maxLength={20}
+                        autoComplete="off"
+                        required
+                    />
+                </fieldset>
+            </div>
+
+            <div className="cols">
+                <fieldset>
+                    <label htmlFor="user_country">Country <span className="text-danger">*</span></label>
+                    <select
+                        id="user_country"
+                        name="user_country"
+                        value={form.user_country}
+                        onChange={onChange}
+                        required
+                    >
+                        <option value="">-- Select --</option>
+                        <option value="India">India</option>
+                    </select>
+                </fieldset>
+                <fieldset>
+                    <label htmlFor="user_pincode">Pincode <span className="text-danger">*</span></label>
+                    <input
+                        type="text"
+                        id="user_pincode"
+                        name="user_pincode"
+                        value={form.user_pincode}
+                        onChange={onChange}
+                        minLength={6}
+                        maxLength={6}
+                        pattern="\d{6}"
+                        title="Enter a valid 6-digit pincode"
+                        autoComplete="off"
+                        required
+                    />
+                </fieldset>
+            </div>
+
+            <div className="box-btn">
+                <button className="tf-btn animate-btn" type="submit" disabled={loading}>
+                    {loading ? "Please wait…" : submitLabel}
+                </button>
+                <button type="button" className="tf-btn btn-out-line-dark" onClick={onCancel}>
+                    Cancel
+                </button>
+            </div>
+        </form>
+    );
+}
 
 export default function MyAddressView() {
 
     const activeURI = window.location.pathname;
 
+    const [addressList, setAddressList] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const [activePanel, setActivePanel] = useState(null);
+    const [editingId, setEditingId] = useState(null);
+    const [form, setForm] = useState(EMPTY_FORM);
+
+    const hasFetched = useRef(false);
+
     useEffect(() => {
         document.title = "My Addresses - BMS Book Store";
+        if (hasFetched.current) return;
+        hasFetched.current = true;
+        loadAddresses();
     }, []);
+
+    // RESET PANEL
+    const resetPanel = () => {
+        setActivePanel(null);
+        setEditingId(null);
+        setForm(EMPTY_FORM);
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm((prev) => ({ ...prev, [name]: value }));
+    };
+
+    // OPEN ADD NEW ADDRESS PANEL
+    const handleOpenAdd = () => {
+        if (activePanel === "add") {
+            resetPanel();
+        } else {
+            resetPanel();
+            setActivePanel("add");
+        }
+    };
+
+    // LOAD ALL ADDRESSES
+    const loadAddresses = async () => {
+        try {
+            setLoading(true);
+            const res = await fetchAllAddresses();
+            setAddressList(res.data?.data ?? []);
+        } catch (e) {
+            if (e?.response?.status !== 404) {
+                toast.error("Failed to load addresses.");
+            }
+            setAddressList([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // HANDLE SUBMIT FOR CREATE OR UPDATE ADDRESS
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const isEditing = activePanel === "edit";
+
+        try {
+            setLoading(true);
+            await addUpdateAddress(form, isEditing ? editingId : null);
+            toast.success(isEditing ? "Address updated." : "Address added.");
+            await loadAddresses();
+            resetPanel();
+        } catch (e) {
+            const msg = e?.response?.data?.message;
+            const errorText = msg && typeof msg === "object"
+                ? Object.values(msg).flat().join(" ")
+                : msg || "Something went wrong. Please try again.";
+            toast.error(errorText);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // HANDLE EDIT
+    const handleEdit = async (uaId) => {
+        if (activePanel === "edit" && editingId === uaId) {
+            resetPanel();
+            return;
+        }
+
+        try {
+            setLoading(true);
+            const res = await fetchAddressDetails(uaId);
+            const d = Array.isArray(res.data?.data) ? res.data.data[0] : res.data?.data;
+            if (!d) { toast.error("Address not found."); return; }
+
+            setForm({
+                address_type: d.address_type ?? "",
+                user_address: d.user_address ?? "",
+                user_city: d.user_city ?? "",
+                user_state: d.user_state ?? "",
+                user_country: d.user_country ?? "",
+                user_pincode: d.user_pincode ?? "",
+            });
+            setEditingId(uaId);
+            setActivePanel("edit");
+        } catch {
+            toast.error("Failed to load address details.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // DELETE ADDRESS
+    const handleDelete = async (uaId) => {
+        if (!window.confirm("Are you sure you want to delete this address ?")) return;
+        try {
+            setLoading(true);
+            await deleteAddress(uaId);
+            toast.success("Address deleted.");
+            if (editingId === uaId) resetPanel();
+            setAddressList((prev) => prev.filter((a) => a.user_address_id !== uaId));
+        } catch {
+            toast.error("Failed to delete address. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <PageLayout>
-            {/* <!-- Title Page --> */}
+
+            {/* Loading Overlay */}
+            {loading && (
+                <div style={{
+                    position: "fixed", inset: 0,
+                    backgroundColor: "rgba(0,0,0,0.45)",
+                    zIndex: 9999,
+                    display: "flex", flexDirection: "column",
+                    alignItems: "center", justifyContent: "center", gap: "16px",
+                }}>
+                    <div className="spinner-border text-light" role="status"
+                        style={{ width: "48px", height: "48px" }} />
+                    <p style={{ color: "#fff", fontSize: "1.1rem", fontWeight: 600, margin: 0 }}>
+                        Loading…
+                    </p>
+                </div>
+            )}
+
+            {/* Page Title */}
             <section className="tf-page-title">
                 <div className="container">
                     <div className="box-title text-center">
@@ -25,265 +292,164 @@ export default function MyAddressView() {
                     </div>
                 </div>
             </section>
-            {/* <!-- /Title Page --> */}
 
-            {/* <!-- Main Content --> */}
+            {/* Main Content */}
             <div className="flat-spacing-13">
                 <div className="container-7">
-                    {/* <!-- sidebar-account --> */}
+
                     <div className="btn-sidebar-mb d-lg-none">
                         <button data-bs-toggle="offcanvas" data-bs-target="#mbAccount">
                             <i className="icon icon-sidebar"></i>
                         </button>
                     </div>
-                    {/* <!-- /sidebar-account --> */}
-                    {/* <!-- Account --> */}
+
                     <div className="main-content-account">
+
+                        {/* Sidebar Nav */}
                         <div className="sidebar-account-wrap sidebar-content-wrap sticky-top d-lg-block d-none">
                             <ul className="my-account-nav">
                                 <li>
-                                    <Link to="/my-account"
-                                        className="text-sm link fw-medium my-account-nav-item">Dashboard</Link>
+                                    <Link to="/my-account" className="text-sm link fw-medium my-account-nav-item">
+                                        Dashboard
+                                    </Link>
                                 </li>
                                 <li>
-                                    <NavLink to="/my-orders" className="text-sm link fw-medium my-account-nav-item">My
-                                        Orders</NavLink>
+                                    <NavLink to="/my-orders" className="text-sm link fw-medium my-account-nav-item">
+                                        My Orders
+                                    </NavLink>
                                 </li>
                                 <li>
-                                    <Link to="/wish-list" className="text-sm link fw-medium my-account-nav-item">My
-                                        Wishlist</Link>
-                                </li>
-                                {activeURI === "/bms-book-store/my-addresses" ?
-                                    <li>
-                                        <NavLink to="/my-addresses"
-                                            className="text-sm link fw-medium my-account-nav-item">Addresses</NavLink>
-                                    </li> : <li>
-                                        <Link to="/my-addresses" className="text-sm link fw-medium my-account-nav-item">My
-                                            Addresses</Link>
-                                    </li>
-                                }
-                                <li>
-                                    <Link to="/my-account-details"
-                                        className="text-sm link fw-medium my-account-nav-item">Account Details</Link>
+                                    <Link to="/wish-list" className="text-sm link fw-medium my-account-nav-item">
+                                        My Wishlist
+                                    </Link>
                                 </li>
                                 <li>
-                                    <Link to="" className="text-sm link fw-medium my-account-nav-item">Log
-                                        Out</Link>
+                                    {activeURI === "/bms-book-store/my-addresses" ? (
+                                        <NavLink to="/my-addresses" className="text-sm link fw-medium my-account-nav-item">
+                                            Addresses
+                                        </NavLink>
+                                    ) : (
+                                        <Link to="/my-addresses" className="text-sm link fw-medium my-account-nav-item">
+                                            My Addresses
+                                        </Link>
+                                    )}
+                                </li>
+                                <li>
+                                    <Link to="/my-account-details" className="text-sm link fw-medium my-account-nav-item">
+                                        Account Details
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="" className="text-sm link fw-medium my-account-nav-item">
+                                        Log Out
+                                    </Link>
                                 </li>
                             </ul>
                         </div>
+
+                        {/* Account Content */}
                         <div className="my-acount-content account-address">
                             <h6 className="title-account">
-                                Your addresses (2)
+                                Your Addresses ({addressList.length})
                             </h6>
-                            <div className="widget-inner-address ">
-                                <button className="tf-btn btn-add-address animate-btn">
-                                    Add new address
-                                </button>
-                                <form action="#" className="wd-form-address form-default show-form-address">
-                                    <div className="cols">
-                                        <fieldset>
-                                            <label htmlFor="first-name">First Name</label>
-                                            <input type="text" id="first-name" required />
-                                        </fieldset>
-                                        <fieldset>
-                                            <label htmlFor="last-name">Last Name</label>
-                                            <input type="text" id="last-name" required />
-                                        </fieldset>
-                                    </div>
-                                    <div className="cols">
-                                        <fieldset>
-                                            <label htmlFor="company">Company</label>
-                                            <input type="text" id="company" required />
-                                        </fieldset>
-                                    </div>
-                                    <div className="cols">
-                                        <fieldset>
-                                            <label htmlFor="address-1">Address 1</label>
-                                            <input type="text" id="address-1" required />
-                                        </fieldset>
-                                    </div>
-                                    <div className="cols">
-                                        <fieldset>
-                                            <label htmlFor="city">City</label>
-                                            <input type="text" id="city" required />
-                                        </fieldset>
-                                    </div>
-                                    <div className="cols">
-                                        <fieldset>
-                                            <label htmlFor="region">Country/region</label>
-                                            <input type="text" id="region" required />
-                                        </fieldset>
-                                    </div>
-                                    <div className="cols">
-                                        <fieldset>
-                                            <label htmlFor="provice">Province</label>
-                                            <input type="text" id="provice" required />
-                                        </fieldset>
-                                    </div>
-                                    <div className="cols">
-                                        <fieldset>
-                                            <label htmlFor="zip-code">Postal/ZIP code</label>
-                                            <input type="text" id="zip-code" required />
-                                        </fieldset>
-                                    </div>
-                                    <div className="cols">
-                                        <fieldset>
-                                            <label htmlFor="phone">Phone</label>
-                                            <input type="text" id="phone" required />
-                                        </fieldset>
-                                    </div>
-                                    <div className="tf-cart-checkbox">
-                                        <input type="checkbox" name="availability" className="tf-check" defaultChecked
-                                            id="default-address-add" />
-                                        <label htmlFor="default-address-add" className="label">
-                                            <span>Set as default address</span>
-                                        </label>
-                                    </div>
-                                    <div className="box-btn">
-                                        <button className="tf-btn animate-btn" type="submit">
-                                            Update
-                                        </button>
-                                        <Link to="#" className="tf-btn btn-out-line-dark btn-hide-address">
-                                            Cancel
-                                        </Link>
-                                    </div>
-                                </form>
+
+                            <div className="widget-inner-address">
+                                {activePanel === "add" ? (
+                                    <></>
+                                ) : (
+                                    <button
+                                        className="tf-btn btn-add-address animate-btn"
+                                        onClick={handleOpenAdd}
+                                    >
+                                        + Add New Address
+                                    </button>
+                                )}
+
+                                {activePanel === "add" && (
+                                    <AddressForm
+                                        activePanel={activePanel}
+                                        form={form}
+                                        onChange={handleChange}
+                                        onSubmit={handleSubmit}
+                                        onCancel={resetPanel}
+                                        submitLabel="Save Address"
+                                        loading={loading}
+                                    />
+                                )}
+
+                                {addressList.length === 0 && !loading && (
+                                    <p className="text-md" style={{ marginTop: "1rem", color: "#888" }}>
+                                        No addresses saved yet.
+                                    </p>
+                                )}
+
                                 <ul className="list-account-address tf-grid-layout md-col-2">
-                                    <li className="account-address-item">
-                                        <p className="title text-md fw-medium">
-                                            15 Yarran st (Default address)
-                                        </p>
-                                        <div className="info-detail">
-                                            <div className="box-infor">
-                                                <p className="text-md">Vineta Pham</p>
-                                                <p className="text-md">account@vince.com</p>
-                                                <p className="text-md">Company</p>
-                                                <p className="text-md">16 Yarran st</p>
-                                                <p className="text-md">Punchbowl</p>
-                                                <p className="text-md">Australia</p>
-                                                <p className="text-md">2196</p>
-                                                <p className="text-md">+61 1234 3435</p>
-                                            </div>
-                                            <div className="box-btn">
-                                                <button className="tf-btn btn-out-line-dark btn-edit-address"
-                                                    data-form="form-edit-1">
-                                                    Edit
-                                                </button>
-                                                <button className="tf-btn btn-out-line-dark btn-delete-address"
-                                                    data-form="form-edit-1">
-                                                    Delete
-                                                </button>
-                                            </div>
-
-                                        </div>
-                                    </li>
-                                    <li className="account-address-item">
-                                        <p className="title text-md fw-medium">
-                                            17 Yarran st
-                                        </p>
-                                        <div className="info-detail">
-                                            <div className="box-infor">
-                                                <p className="text-md">Vineta Pham</p>
-                                                <p className="text-md">account@vince.com</p>
-                                                <p className="text-md">Company</p>
-                                                <p className="text-md">17 Yarran st</p>
-                                                <p className="text-md">Punchbowl</p>
-                                                <p className="text-md">Australia</p>
-                                                <p className="text-md">2196</p>
-                                                <p className="text-md">+61 1234 3435</p>
-                                            </div>
-                                            <div className="box-btn">
-                                                <button className="tf-btn btn-out-line-dark btn-edit-address"
-                                                    data-form="form-edit-2">
-                                                    Edit
-                                                </button>
-                                                <button className="tf-btn btn-out-line-dark btn-delete-address"
-                                                    data-form="form-edit-2">
-                                                    Delete
-                                                </button>
-                                            </div>
-
-                                        </div>
-                                    </li>
+                                    {addressList.map((row) => (
+                                        <li
+                                            className="account-address-item"
+                                            key={row.user_address_id}
+                                            id={`address-${row.user_address_id}`}
+                                        >
+                                            {activePanel === "edit" && editingId === row.user_address_id ? (
+                                                <AddressForm
+                                                    activePanel={activePanel}
+                                                    form={form}
+                                                    onChange={handleChange}
+                                                    onSubmit={handleSubmit}
+                                                    onCancel={resetPanel}
+                                                    submitLabel="Update Address"
+                                                    loading={loading}
+                                                />
+                                            ) : (
+                                                <>
+                                                    <p className="title text-md fw-medium">
+                                                        {row.address_type && (
+                                                            <span style={{
+                                                                marginRight: "6px",
+                                                                fontSize: "0.72rem",
+                                                                background: "#e8f0fe",
+                                                                color: "#1a56db",
+                                                                padding: "2px 8px",
+                                                                borderRadius: "4px",
+                                                                fontWeight: 600,
+                                                            }}>
+                                                                {row.address_type}
+                                                            </span>
+                                                        )}
+                                                        {row.user_address}
+                                                    </p>
+                                                    <div className="info-detail">
+                                                        <p className="text-md">
+                                                            {[row.user_city, row.user_state, row.user_country, row.user_pincode]
+                                                                .filter(Boolean)
+                                                                .join(", ")}
+                                                        </p>
+                                                        <div className="box-btn" style={{ marginTop: "10px" }}>
+                                                            <button
+                                                                className="tf-btn btn-out-line-dark btn-edit-address"
+                                                                onClick={() => handleEdit(row.user_address_id)}
+                                                            >
+                                                                Edit
+                                                            </button>
+                                                            <button
+                                                                className="tf-btn btn-out-line-dark btn-delete-address"
+                                                                onClick={() => handleDelete(row.user_address_id)}
+                                                            >
+                                                                Delete
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            )}
+                                        </li>
+                                    ))}
                                 </ul>
-                                <form action="#" className="wd-form-address form-default edit-form-address">
-                                    <div className="cols">
-                                        <fieldset>
-                                            <label htmlFor="first-name">First Name</label>
-                                            <input type="text" id="first-name" required />
-                                        </fieldset>
-                                        <fieldset>
-                                            <label htmlFor="last-name">Last Name</label>
-                                            <input type="text" id="last-name" required />
-                                        </fieldset>
-                                    </div>
-                                    <div className="cols">
-                                        <fieldset>
-                                            <label htmlFor="company">Company</label>
-                                            <input type="text" id="company" required />
-                                        </fieldset>
-                                    </div>
-                                    <div className="cols">
-                                        <fieldset>
-                                            <label htmlFor="address-1">Address 1</label>
-                                            <input type="text" id="address-1" required />
-                                        </fieldset>
-                                    </div>
-                                    <div className="cols">
-                                        <fieldset>
-                                            <label htmlFor="city">City</label>
-                                            <input type="text" id="city" required />
-                                        </fieldset>
-                                    </div>
-                                    <div className="cols">
-                                        <fieldset>
-                                            <label htmlFor="region">Country/region</label>
-                                            <input type="text" id="region" required />
-                                        </fieldset>
-                                    </div>
-                                    <div className="cols">
-                                        <fieldset>
-                                            <label htmlFor="provice">Province</label>
-                                            <input type="text" id="provice" required />
-                                        </fieldset>
-                                    </div>
-                                    <div className="cols">
-                                        <fieldset>
-                                            <label htmlFor="zip-code">Postal/ZIP code</label>
-                                            <input type="text" id="zip-code" required />
-                                        </fieldset>
-                                    </div>
-                                    <div className="cols">
-                                        <fieldset>
-                                            <label htmlFor="phone">Phone</label>
-                                            <input type="text" id="phone" required />
-                                        </fieldset>
-                                    </div>
-                                    <div className="tf-cart-checkbox">
-                                        <input type="checkbox" name="availability" className="tf-check" defaultChecked
-                                            id="default-address-edit" />
-                                        <label htmlFor="default-address-edit" className="label">
-                                            <span>Set as default address</span>
-                                        </label>
-                                    </div>
-                                    <div className="box-btn">
-                                        <button className="tf-btn animate-btn" type="submit">
-                                            Update
-                                        </button>
-                                        <Link to="#"
-                                            className="tf-btn btn-out-line-dark btn-hide-edit-address">
-                                            Cancel
-                                        </Link>
-                                    </div>
-                                </form>
+
                             </div>
                         </div>
                     </div>
-                    {/* <!-- /Account --> */}
                 </div>
             </div>
-            {/* <!-- /Main Content --> */}
         </PageLayout>
     );
 }
