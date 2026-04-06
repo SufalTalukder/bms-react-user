@@ -11,11 +11,14 @@ const EMPTY_FORM = {
     user_state: "",
     user_country: "",
     user_pincode: "",
+    set_address_default: 0,
 };
 
 const ADDRESS_TYPES = ["Home", "Office", "Others"];
 
 function AddressForm({ activePanel, form, onChange, onSubmit, onCancel, submitLabel, loading }) {
+    console.log(form);
+    
     return (
         <form
             onSubmit={onSubmit}
@@ -120,6 +123,21 @@ function AddressForm({ activePanel, form, onChange, onSubmit, onCancel, submitLa
                     />
                 </fieldset>
             </div>
+            <div className="cols">
+                <div className="tf-cart-checkbox">
+                    <input
+                        type="checkbox"
+                        id="set_address_default"
+                        name="set_address_default"
+                        className="tf-check"
+                        onChange={onChange}
+                        checked={form.set_address_default === 1}
+                    />
+                    <label htmlFor="set_address_default" className="label">
+                        <span>Set as default address</span>
+                    </label>
+                </div>
+            </div>
 
             <div className="box-btn">
                 <button className="tf-btn animate-btn" type="submit" disabled={loading}>
@@ -161,8 +179,11 @@ export default function MyAddressView() {
     };
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
+        const { name, value, type, checked } = e.target;
+        setForm((prev) => ({
+            ...prev,
+            [name]: type === "checkbox" ? (checked ? 1 : 0) : value,
+        }));
     };
 
     // OPEN ADD NEW ADDRESS PANEL
@@ -233,6 +254,7 @@ export default function MyAddressView() {
                 user_state: d.user_state ?? "",
                 user_country: d.user_country ?? "",
                 user_pincode: d.user_pincode ?? "",
+                set_address_default: d.set_address_default === 1 ? 1 : 0,
             });
             setEditingId(uaId);
             setActivePanel("edit");
