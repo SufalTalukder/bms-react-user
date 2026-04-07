@@ -5,41 +5,14 @@ import { Link } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-
-const categories = [
-    {
-        img: "/assets/images/cls-categories/book/fiction.png",
-        title: "Fiction",
-        count: "2 items",
-    },
-    {
-        img: "/assets/images/cls-categories/book/non-fiction.png",
-        title: "Non-Fiction",
-        count: "3 items",
-    },
-    {
-        img: "/assets/images/cls-categories/book/children.png",
-        title: "Children’s Books",
-        count: "1 items",
-    },
-    {
-        img: "/assets/images/cls-categories/book/personal.png",
-        title: "Personal Growth",
-        count: "3 items",
-    },
-    {
-        img: "/assets/images/cls-categories/book/mystery.png",
-        title: "Mystery & Thriller",
-        count: "4 items",
-    },
-    {
-        img: "/assets/images/cls-categories/book/science.png",
-        title: "Science Fiction",
-        count: "3 items",
-    },
-];
+import { useCategories } from "../context/CategoryContext";
 
 export default function CategorySwiper() {
+
+    const { categoriesList, defaultCategoryImage, loading } = useCategories();
+
+    if (loading) return <p>Loading…</p>;
+
     return (
         <section>
             <div className="container">
@@ -73,17 +46,17 @@ export default function CategorySwiper() {
                     }}
                     className="tf-swiper wow fadeInUp"
                 >
-                    {categories.map((item, index) => (
+                    {categoriesList.map((item, index) => (
                         <SwiperSlide key={index}>
                             <div className="wg-cls style-circle hover-img">
                                 <Link to="/product-default" className="bg-grey-4 image img-style d-block">
-                                    <img src={item.img} alt="categories" />
+                                    <img src={item?.category_image ?? defaultCategoryImage} alt="categories" />
                                 </Link>
                                 <div className="cls-content text-center">
                                     <Link to="/product-default" className="link text-lg fw-medium">
-                                        {item.title}
+                                        {item?.category_name}
                                     </Link>
-                                    <span className="count text-sm">{item.count}</span>
+                                    <span className="count text-sm">{item?.count}</span>
                                 </div>
                             </div>
                         </SwiperSlide>

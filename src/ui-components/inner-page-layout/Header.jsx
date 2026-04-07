@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
+import { useCategories } from "../../context/CategoryContext";
 
 export default function Header() {
 
     const { user } = useUser();
     const token = sessionStorage.getItem("accessToken");
+
+    const { categoriesList, defaultCategoryImage } = useCategories();
 
     return (
         <header id="header" className="header-default header-search header-uppercase header-style-2">
@@ -136,14 +139,16 @@ export default function Header() {
                             <div className="tf-mega-categories">
                                 <Link to="#" className="categories-title"><i className="icon icon-categories"></i>browse
                                     categories</Link>
-                                <ul className="mega-categories rgb-primary">
-                                    <li>
-                                        <Link to="/product/fiction" className="cate-item">
-                                            <div className="img"><img src="/assets/images/cls-categories/book/fiction.png" alt="img" />
-                                            </div>
-                                            <span className="name-cate">Fiction</span>
-                                        </Link>
-                                    </li>
+                                <ul className="mega-categories rgb-primary" style={{ maxHeight: "350px", overflowY: "scroll" }}>
+                                    {categoriesList.map((item, index) => (
+                                        <li key={index}>
+                                            <Link to="/product/fiction" className="cate-item">
+                                                <div className="img"><img src={item?.category_image ?? defaultCategoryImage} alt="categories" />
+                                                </div>
+                                                <span className="name-cate">{item?.category_name}</span>
+                                            </Link>
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
                             <nav className="box-navigation text-center">
@@ -168,6 +173,6 @@ export default function Header() {
                     </div>
                 </div>
             </div>
-        </header>
+        </header >
     );
 }
