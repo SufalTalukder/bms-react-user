@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useUser } from "../../context/UserContext";
 import { useCategories } from "../../context/CategoryContext";
+import { useSubCategories } from "../../context/SubCategoryContext";
+import { useLanguages } from "../../context/LanguageContext";
 
 export default function Header() {
 
@@ -8,6 +10,8 @@ export default function Header() {
     const token = sessionStorage.getItem("accessToken");
 
     const { categoriesList, defaultCategoryImage } = useCategories();
+    const { subCategoriesList, defaultSubCategoryImage } = useSubCategories();
+    const { languagesList, defaultLanguageImage } = useLanguages();
 
     return (
         <header id="header" className="header-default header-search header-uppercase header-style-2">
@@ -137,8 +141,9 @@ export default function Header() {
                     <div className="wrapper-header-bottom style-2">
                         <div className="inner-left">
                             <div className="tf-mega-categories">
-                                <Link to="#" className="categories-title"><i className="icon icon-categories"></i>browse
-                                    categories</Link>
+                                <Link to="#" className="categories-title"><i className="icon icon-categories"></i>
+                                    browse topics
+                                </Link>
                                 <ul className="mega-categories rgb-primary" style={{ maxHeight: "350px", overflowY: "scroll" }}>
                                     {categoriesList.map((item, index) => (
                                         <li key={index}>
@@ -150,6 +155,43 @@ export default function Header() {
                                         </li>
                                     ))}
                                 </ul>
+                            </div>
+                            <div className="tf-mega-categories">
+                                <Link to="#" className="categories-title"><i className="icon icon-categories"></i>
+                                    browse authors
+                                </Link>
+                                <ul className="mega-categories rgb-primary" style={{ maxHeight: "350px", overflowY: "scroll" }}>
+                                    {subCategoriesList.map((item, index) => (
+                                        <li key={index}>
+                                            <Link to="/product/fiction" className="cate-item">
+                                                <div className="img"><img src={item?.sub_category_image ?? defaultSubCategoryImage} alt="categories" />
+                                                </div>
+                                                <span className="name-cate">{item?.sub_category_name}</span>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <div className="tf-mega-categories">
+                                <Link to="#" className="categories-title"><i className="icon icon-categories"></i>
+                                    browse languages
+                                </Link>
+                                <ul className="mega-categories rgb-primary" style={{ maxHeight: "350px", overflowY: "scroll" }}>
+                                    {languagesList.map((item, index) => (
+                                        <li key={index}>
+                                            <Link to="/product/fiction" className="cate-item">
+                                                <div className="img"><img src={item?.language_image ?? defaultLanguageImage} alt="categories" />
+                                                </div>
+                                                <span className="name-cate">{item?.language_name}</span>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <div className="tf-mega-categories">
+                                <Link to="/product-default" className="categories-title"><i className="icon icon-categories"></i>
+                                    browse all
+                                </Link>
                             </div>
                             <nav className="box-navigation text-center">
                                 <ul className="box-nav-menu">
