@@ -75,11 +75,11 @@ export default function ProductDefaultView() {
         );
     };
 
-    const renderCollectionGrid = (list, defaultImage, page, setPage, basePath, idKey, nameKey, imageKey) => (
+    const renderCollectionGrid = (list, defaultImage, page, setPage, basePath, idKey, nameKey, slugKey, imageKey) => (
         <div className="flat-wrap-cls tf-grid-layout tf-col-2 xl-col-3">
             {paginate(list, page).map((item) => (
                 <div key={item[idKey]} className="wg-cls style-abs2 style-lg hover-img">
-                    <Link to={`${basePath}/${item[idKey]}`} className="image-wrap relative">
+                    <Link to={`${basePath}/${item[slugKey]}`} className="image-wrap relative">
                         <div className="image img-style">
                             <img
                                 src={item[imageKey] ?? defaultImage}
@@ -94,7 +94,7 @@ export default function ProductDefaultView() {
                         <span className="tf-overlay"></span>
                     </Link>
                     <div className="cls-content text-center">
-                        <Link to={`${basePath}/${item[idKey]}`} className="text-type text-xl-2 fw-medium link">
+                        <Link to={`${basePath}/${item[slugKey]}`} className="text-type text-xl-2 fw-medium link">
                             {item[nameKey]}
                         </Link>
                     </div>
@@ -132,9 +132,10 @@ export default function ProductDefaultView() {
                             defaultCategoryImage,
                             categoryPage,
                             setCategoryPage,
-                            "/product-default/category",
+                            "/product-default/topics",
                             "category_id",
                             "category_name",
+                            "category_slug",
                             "category_image"
                         )}
                     </div>
@@ -151,7 +152,7 @@ export default function ProductDefaultView() {
                             defaultSubCategoryImage,
                             subCategoryPage,
                             setSubCategoryPage,
-                            "/product-default/sub-category",
+                            "/product-default/authors",
                             "sub_category_id",
                             "sub_category_name",
                             "sub_category_image"
@@ -170,7 +171,7 @@ export default function ProductDefaultView() {
                             defaultLanguageImage,
                             languagePage,
                             setLanguagePage,
-                            "/product-default/language",
+                            "/product-default/languages",
                             "language_id",
                             "language_name",
                             "language_image"

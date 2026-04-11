@@ -18,6 +18,7 @@ import { UserProvider } from "./context/UserContext";
 import { CategoryProvider } from "./context/CategoryContext";
 import { SubCategoryProvider } from "./context/SubCategoryContext";
 import { LanguageProvider } from "./context/LanguageContext";
+import ProductList from "./reusable-components/ProductsList";
 
 export default function App() {
   return (
@@ -84,9 +85,10 @@ export default function App() {
               <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<HomeView />} />
-                <Route path="/product/fiction" element={<CategoryView />} />
                 <Route path="/product-details" element={<ProductDetailsView />} />
                 <Route path="/product-default" element={<ProductDefaultView />} />
+                {/* category/topic list view */}
+                <Route path="/product-default/topics/:slug" element={<ProductList />} />
                 <Route path="/return-refund" element={<ReturnAndRefundView />} />
 
                 {/* Protected Routes */}

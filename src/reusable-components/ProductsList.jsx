@@ -1,1848 +1,424 @@
-import { Link } from "react-router-dom";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { Link, useParams } from "react-router-dom";
+import { fetchProductsByCategoryId } from "../api/category-api";
+import { useCategories } from "../context/CategoryContext";
+import IconBoxSwiper from "./IconBoxSwiper";
+import PageLayout from "../PageLayout";
 
-export default function ProductList() {
-    return (
-        <section className="flat-spacing-24">
-            <div className="container">
-                <div className="tf-shop-control">
-                    <div className="tf-group-filter">
-                        <Link to="#filterShop" data-bs-toggle="offcanvas" aria-controls="filterShop"
-                            className="tf-btn-filter">
-                            <span className="icon icon-filter"></span><span className="text">Filter</span></Link>
-                        <div className="tf-dropdown-sort" data-bs-toggle="dropdown">
-                            <div className="btn-select">
-                                <span className="text-sort-value">Best selling</span>
-                                <span className="icon icon-arr-down"></span>
-                            </div>
-                            <div className="dropdown-menu">
-                                <div className="select-item active" data-sort-value="best-selling">
-                                    <span className="text-value-item">Best selling</span>
-                                </div>
-                                <div className="select-item" data-sort-value="a-z">
-                                    <span className="text-value-item">Alphabetically, A-Z</span>
-                                </div>
-                                <div className="select-item" data-sort-value="z-a">
-                                    <span className="text-value-item">Alphabetically, Z-A</span>
-                                </div>
-                                <div className="select-item" data-sort-value="price-low-high">
-                                    <span className="text-value-item">Price, low to high</span>
-                                </div>
-                                <div className="select-item" data-sort-value="price-high-low">
-                                    <span className="text-value-item">Price, high to low</span>
-                                </div>
-                            </div>
-                        </div>
+const DEFAULT_IMAGE = "/assets/images/cls-categories/book/fiction.png";
+
+function SkeletonCard({ layout = "grid" }) {
+    if (layout === "list") {
+        return (
+            <div className="skeleton-card-list">
+                <div className="skeleton-img skeleton-pulse" />
+                <div className="skeleton-info">
+                    <div className="skeleton-line skeleton-pulse" style={{ width: "60%", height: 18 }} />
+                    <div className="skeleton-line skeleton-pulse" style={{ width: "30%", height: 16, marginTop: 8 }} />
+                    <div className="skeleton-line skeleton-pulse" style={{ width: "90%", height: 12, marginTop: 12 }} />
+                    <div className="skeleton-line skeleton-pulse" style={{ width: "80%", height: 12, marginTop: 6 }} />
+                    <div className="skeleton-swatches">
+                        {[1, 2, 3].map((s) => <div key={s} className="skeleton-swatch skeleton-pulse" />)}
                     </div>
-                    <ul className="tf-control-layout">
-                        <li className="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
-                            <div className="item icon-list">
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </li>
-                        <li className="tf-view-layout-switch sw-layout-2" data-value-layout="tf-col-2">
-                            <div className="item icon-grid-2">
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </li>
-                        <li className="tf-view-layout-switch sw-layout-3" data-value-layout="tf-col-3">
-                            <div className="item icon-grid-3">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </li>
-                        <li className="tf-view-layout-switch sw-layout-4 active" data-value-layout="tf-col-4">
-                            <div className="item icon-grid-4">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-                        </li>
-
-                    </ul>
-                </div>
-                <div className="wrapper-control-shop">
-                    <div className="meta-filter-shop">
-                        <div id="product-count-grid" className="count-text"></div>
-                        <div id="product-count-list" className="count-text"></div>
-                        <div id="applied-filters"></div>
-                        <button id="remove-all" className="remove-all-filters" style={{ display: "none" }}><i
-                            className="icon icon-close"></i> Clear all filter</button>
-                    </div>
-                    <div className="tf-list-layout wrapper-shop" id="listLayout" style={{ display: "none" }}>
-                        {/* <!-- Card Product 1 --> */}
-                        <div className="loadItem card-product style-list" data-availability="In stock" data-brand="Vineta">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-16.jpg"
-                                        src="/assets/images/products/fashion/product-16.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-9.jpg"
-                                        src="/assets/images/products/fashion/product-9.jpg" alt="image-product" />
-                                </Link>
-                                <div className="on-sale-wrap"><span className="on-sale-item">20% Off</span></div>
-                            </div>
-                            <div className="card-product-info">
-                                <div className="info-list">
-                                    <Link to="/product-details" className="name-product link fw-medium text-md">Graphic
-                                        Printed Pure Cotton T-shirt</Link>
-                                    <p className="price-wrap fw-medium text-md">
-                                        <span className="price-new">$50.00</span>
-                                        <span className="price-old">$70.00</span>
-                                    </p>
-                                    <p className="desc text-sm text-main text-line-clamp-2">
-                                        Product Specifications Care for fiber: 30% more recycled polyester. We label
-                                        garments
-                                        manufactured using environmentally friendly technologies and raw materials with
-                                        the
-                                        Join
-                                        Life label.
-                                    </p>
-                                    <ul className="list-color-product">
-                                        <li className="list-color-item color-swatch hover-tooltip active">
-                                            <span className="tooltip color-filter">Yellow</span>
-                                            <span className="swatch-value bg-light-orange-2"></span>
-                                            <img className="lazyload" data-src="/assets/images/products/fashion/product-16.jpg"
-                                                src="/assets/images/products/fashion/product-16.jpg" alt="image-product" />
-                                        </li>
-                                        <li className="list-color-item color-swatch hover-tooltip">
-                                            <span className="tooltip color-filter">Black</span>
-                                            <span className="swatch-value bg-dark"></span>
-                                            <img className=" lazyload" data-src="/assets/images/products/fashion/product-9.jpg"
-                                                src="/assets/images/products/fashion/product-9.jpg" alt="image-product" />
-                                        </li>
-                                        <li className="list-color-item color-swatch hover-tooltip">
-                                            <span className="tooltip color-filter">Grey</span>
-                                            <span className="swatch-value bg-grey-4"></span>
-                                            <img className=" lazyload" data-src="/assets/images/products/fashion/product-4.jpg"
-                                                src="/assets/images/products/fashion/product-7.jpg" alt="image-product" />
-                                        </li>
-                                    </ul>
-                                    <ul className="size-box">
-                                        <li className="size-item text-xs">S</li>
-                                        <li className="size-item text-xs">M</li>
-                                        <li className="size-item text-xs">L</li>
-                                        <li className="size-item text-xs">XL</li>
-                                    </ul>
-                                </div>
-                                <div className="list-product-btn">
-                                    <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                        className="tf-btn btn-main-product add-to-cart animate-btn">Add
-                                        To
-                                        cart</Link>
-                                    <Link to="#" className="box-icon wishlist hover-tooltip">
-                                        <span className="icon icon-heart2"></span>
-                                        <span className="tooltip">Add to Wishlist</span>
-                                    </Link>
-                                    <Link to="#quickView" data-bs-toggle="modal"
-                                        className="box-icon hover-tooltip quickview">
-                                        <span className="icon icon-view"></span>
-                                        <span className="tooltip">Quick View</span>
-                                    </Link>
-                                    <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                        className="box-icon compare hover-tooltip">
-                                        <span className="icon icon-compare"></span>
-                                        <span className="tooltip">Add to Compare</span>
-                                    </Link>
-                                </div>
-
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 2 --> */}
-                        <div className="loadItem card-product style-list" data-availability="In stock" data-brand="Vineta">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-17.jpg"
-                                        src="/assets/images/products/fashion/product-17.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-19.jpg"
-                                        src="/assets/images/products/fashion/product-19.jpg" alt="image-product" />
-                                </Link>
-                            </div>
-                            <div className="card-product-info">
-                                <div className="info-list">
-                                    <Link to="/product-details" className="name-product link fw-medium text-md">Graphic
-                                        Printed Drop Shoulder Sleeves</Link>
-                                    <p className="price-wrap fw-medium text-md">
-                                        <span className="price-new">$80.00</span>
-                                    </p>
-                                    <p className="desc text-sm text-main text-line-clamp-2">
-                                        Product Specifications Care for fiber: 30% more recycled polyester. We label
-                                        garments
-                                        manufactured using environmentally friendly technologies and raw materials with
-                                        the
-                                        Join
-                                        Life label.
-                                    </p>
-                                    <ul className="list-color-product">
-                                        <li className="list-color-item color-swatch hover-tooltip line active">
-                                            <span className="tooltip color-filter">White</span>
-                                            <span className="swatch-value bg-white"></span>
-                                            <img className="lazyload" data-src="/assets/images/products/fashion/product-17.jpg"
-                                                src="/assets/images/products/fashion/product-17.jpg" alt="image-product" />
-                                        </li>
-                                        <li className="list-color-item color-swatch hover-tooltip">
-                                            <span className="tooltip color-filter">Dark Green</span>
-                                            <span className="swatch-value bg-dark-green"></span>
-                                            <img className=" lazyload" data-src="/assets/images/products/fashion/product-21.jpg"
-                                                src="/assets/images/products/fashion/product-21.jpg" alt="image-product" />
-                                        </li>
-                                        <li className="list-color-item color-swatch hover-tooltip">
-                                            <span className="tooltip color-filter">Grey</span>
-                                            <span className="swatch-value bg-grey-4"></span>
-                                            <img className="lazyload" data-src="/assets/images/products/fashion/product-19.jpg"
-                                                src="/assets/images/products/fashion/product-19.jpg" alt="image-product" />
-                                        </li>
-                                    </ul>
-                                    <ul className="size-box">
-                                        <li className="size-item text-xs">S</li>
-                                        <li className="size-item text-xs">M</li>
-                                        <li className="size-item text-xs">L</li>
-                                        <li className="size-item text-xs">XL</li>
-                                    </ul>
-                                </div>
-                                <div className="list-product-btn">
-                                    <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                        className="tf-btn btn-main-product add-to-cart animate-btn">Add
-                                        To
-                                        cart</Link>
-                                    <Link to="#" className="box-icon wishlist hover-tooltip">
-                                        <span className="icon icon-heart2"></span>
-                                        <span className="tooltip">Add to Wishlist</span>
-                                    </Link>
-                                    <Link to="#quickView" data-bs-toggle="modal"
-                                        className="box-icon hover-tooltip quickview">
-                                        <span className="icon icon-view"></span>
-                                        <span className="tooltip">Quick View</span>
-                                    </Link>
-                                    <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                        className="box-icon compare hover-tooltip">
-                                        <span className="icon icon-compare"></span>
-                                        <span className="tooltip">Add to Compare</span>
-                                    </Link>
-                                </div>
-
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 3 --> */}
-                        <div className="loadItem card-product style-list" data-availability="In stock" data-brand="Vineta">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload"
-                                        data-src="/assets/images/products/fashion/women-grey-2.jpg"
-                                        src="/assets/images/products/fashion/women-grey-2.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/women-grey-1.jpg"
-                                        src="/assets/images/products/fashion/women-grey-1.jpg" alt="image-product" />
-                                </Link>
-                                <div className="on-sale-wrap"><span className="on-sale-item">10% Off</span></div>
-                            </div>
-                            <div className="card-product-info">
-                                <div className="info-list">
-                                    <Link to="/product-details" className="name-product link fw-medium text-md">Women
-                                        Solid Scoop Neck Slim Fit T-shirt</Link>
-                                    <p className="price-wrap fw-medium text-md">
-                                        <span className="price-new">$80.00</span>
-                                        <span className="price-old">$90.00</span>
-                                    </p>
-                                    <p className="desc text-sm text-main text-line-clamp-2">
-                                        Product Specifications Care for fiber: 30% more recycled polyester. We label
-                                        garments
-                                        manufactured using environmentally friendly technologies and raw materials with
-                                        the
-                                        Join
-                                        Life label.
-                                    </p>
-                                    <ul className="list-color-product">
-                                        <li className="list-color-item color-swatch hover-tooltip active">
-                                            <span className="tooltip color-filter">Grey</span>
-                                            <span className="swatch-value bg-grey-4"></span>
-                                            <img className="lazyload" data-src="/assets/images/products/fashion/women-grey-2.jpg"
-                                                src="/assets/images/products/fashion/women-grey-2.jpg" alt="image-product" />
-                                        </li>
-                                        <li className="list-color-item color-swatch hover-tooltip">
-                                            <span className="tooltip color-filter">Yellow</span>
-                                            <span className="swatch-value bg-yellow"></span>
-                                            <img className="lazyload" data-src="/assets/images/products/fashion/women-yellow-2.jpg"
-                                                src="/assets/images/products/fashion/women-yellow-2.jpg" alt="image-product" />
-                                        </li>
-                                        <li className="list-color-item color-swatch hover-tooltip">
-                                            <span className="tooltip color-filter">Light Grey</span>
-                                            <span className="swatch-value bg-light-blue-2"></span>
-                                            <img className="lazyload"
-                                                data-src="/assets/images/products/fashion/women-light-blue-1.jpg"
-                                                src="/assets/images/products/fashion/women-light-blue-1.jpg"
-                                                alt="image-product" />
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="list-product-btn">
-                                    <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                        className="tf-btn btn-main-product add-to-cart animate-btn">Add
-                                        To
-                                        cart</Link>
-                                    <Link to="#" className="box-icon wishlist hover-tooltip">
-                                        <span className="icon icon-heart2"></span>
-                                        <span className="tooltip">Add to Wishlist</span>
-                                    </Link>
-                                    <Link to="#quickView" data-bs-toggle="modal"
-                                        className="box-icon hover-tooltip quickview">
-                                        <span className="icon icon-view"></span>
-                                        <span className="tooltip">Quick View</span>
-                                    </Link>
-                                    <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                        className="box-icon compare hover-tooltip">
-                                        <span className="icon icon-compare"></span>
-                                        <span className="tooltip">Add to Compare</span>
-                                    </Link>
-                                </div>
-
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 4 --> */}
-                        <div className="loadItem card-product style-list" data-availability="Out of stock"
-                            data-brand="Zotac">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-18.jpg"
-                                        src="/assets/images/products/fashion/product-18.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-12.jpg"
-                                        src="/assets/images/products/fashion/product-12.jpg" alt="image-product" />
-                                </Link>
-                            </div>
-                            <div className="card-product-info">
-                                <div className="info-list">
-                                    <Link to="/product-details" className="name-product link fw-medium text-md">Asymmetric
-                                        Neck Tank Top</Link>
-                                    <p className="price-wrap fw-medium text-md">
-                                        <span className="price-new">$85.00</span>
-                                    </p>
-                                    <p className="desc text-sm text-main text-line-clamp-2">
-                                        Product Specifications Care for fiber: 30% more recycled polyester. We label
-                                        garments
-                                        manufactured using environmentally friendly technologies and raw materials with
-                                        the
-                                        Join
-                                        Life label.
-                                    </p>
-                                    <ul className="list-color-product">
-                                        <li className="list-color-item color-swatch hover-tooltip active">
-                                            <span className="tooltip color-filter">Light Orange</span>
-                                            <span className="swatch-value bg-light-orange"></span>
-                                            <img className="lazyload" data-src="/assets/images/products/fashion/product-18.jpg"
-                                                src="/assets/images/products/fashion/product-18.jpg" alt="image-product" />
-                                        </li>
-                                        <li className="list-color-item color-swatch hover-tooltip">
-                                            <span className="tooltip color-filter">Black</span>
-                                            <span className="swatch-value bg-dark"></span>
-                                            <img className="lazyload" data-src="/assets/images/products/fashion/women-black-6.jpg"
-                                                src="/assets/images/products/fashion/women-black-6.jpg" alt="image-product" />
-                                        </li>
-
-                                    </ul>
-                                    <ul className="size-box">
-                                        <li className="size-item text-xs">S</li>
-                                        <li className="size-item text-xs">M</li>
-                                        <li className="size-item text-xs">L</li>
-                                        <li className="size-item text-xs">XL</li>
-                                    </ul>
-                                </div>
-                                <div className="list-product-btn">
-                                    <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                        className="tf-btn btn-main-product animate-btn add-to-cart">Add
-                                        To
-                                        cart</Link>
-                                    <Link to="#" className="box-icon wishlist hover-tooltip">
-                                        <span className="icon icon-heart2"></span>
-                                        <span className="tooltip">Add to Wishlist</span>
-                                    </Link>
-                                    <Link to="#quickView" data-bs-toggle="modal"
-                                        className="box-icon hover-tooltip quickview">
-                                        <span className="icon icon-view"></span>
-                                        <span className="tooltip">Quick View</span>
-                                    </Link>
-                                    <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                        className="box-icon compare hover-tooltip">
-                                        <span className="icon icon-compare"></span>
-                                        <span className="tooltip">Add to Compare</span>
-                                    </Link>
-                                </div>
-
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 5 --> */}
-                        <div className="loadItem card-product style-list" data-availability="Out of stock"
-                            data-brand="Zotac">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-15.jpg"
-                                        src="/assets/images/products/fashion/product-15.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-1.jpg"
-                                        src="/assets/images/products/fashion/product-1.jpg" alt="image-product" />
-                                </Link>
-                            </div>
-                            <div className="card-product-info">
-                                <div className="info-list">
-                                    <Link to="/product-details" className="name-product link fw-medium text-md">Short
-                                        Sleeve Sweat</Link>
-                                    <p className="price-wrap fw-medium text-md">
-                                        <span className="price-new">$55.00</span>
-                                    </p>
-                                    <p className="desc text-sm text-main text-line-clamp-2">
-                                        Product Specifications Care for fiber: 30% more recycled polyester. We label
-                                        garments
-                                        manufactured using environmentally friendly technologies and raw materials with
-                                        the
-                                        Join
-                                        Life label.
-                                    </p>
-                                    <ul className="list-color-product">
-                                        <li className="list-color-item color-swatch hover-tooltip active">
-                                            <span className="tooltip color-filter">Light Pink</span>
-                                            <span className="swatch-value bg-light-pink-4"></span>
-                                            <img className="lazyload" data-src="/assets/images/products/fashion/product-15.jpg"
-                                                src="/assets/images/products/fashion/product-15.jpg" alt="image-product" />
-                                        </li>
-                                        <li className="list-color-item color-swatch hover-tooltip line">
-                                            <span className="tooltip color-filter">White</span>
-                                            <span className="swatch-value bg-white"></span>
-                                            <img className="lazyload" data-src="/assets/images/products/fashion/product-1.jpg"
-                                                src="/assets/images/products/fashion/product-1.jpg" alt="image-product" />
-                                        </li>
-                                        <li className="list-color-item color-swatch hover-tooltip">
-                                            <span className="tooltip color-filter">Light Grey</span>
-                                            <span className="swatch-value bg-grey-4"></span>
-                                            <img className="lazyload" data-src="/assets/images/products/fashion/product-19.jpg"
-                                                src="/assets/images/products/fashion/product-19.jpg" alt="image-product" />
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="list-product-btn">
-                                    <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                        className="tf-btn btn-main-product add-to-cart animate-btn">Add
-                                        To
-                                        cart</Link>
-                                    <Link to="#" className="box-icon wishlist hover-tooltip">
-                                        <span className="icon icon-heart2"></span>
-                                        <span className="tooltip">Add to Wishlist</span>
-                                    </Link>
-                                    <Link to="#quickView" data-bs-toggle="modal"
-                                        className="box-icon hover-tooltip quickview">
-                                        <span className="icon icon-view"></span>
-                                        <span className="tooltip">Quick View</span>
-                                    </Link>
-                                    <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                        className="box-icon compare hover-tooltip">
-                                        <span className="icon icon-compare"></span>
-                                        <span className="tooltip">Add to Compare</span>
-                                    </Link>
-                                </div>
-
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 6 --> */}
-                        <div className="loadItem card-product style-list" data-availability="In stock" data-brand="Zotac">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload"
-                                        data-src="/assets/images/products/fashion/women-yellow-2.jpg"
-                                        src="/assets/images/products/fashion/women-yellow-2.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-28.jpg"
-                                        src="/assets/images/products/fashion/product-28.jpg" alt="image-product" />
-                                </Link>
-                            </div>
-                            <div className="card-product-info">
-                                <div className="info-list">
-                                    <Link to="/product-details" className="name-product link fw-medium text-md">Puff
-                                        Sleeve Shirred Blouse</Link>
-                                    <p className="price-wrap fw-medium text-md">
-                                        <span className="price-new">$57.00</span>
-                                    </p>
-                                    <p className="desc text-sm text-main text-line-clamp-2">
-                                        Product Specifications Care for fiber: 30% more recycled polyester. We label
-                                        garments
-                                        manufactured using environmentally friendly technologies and raw materials with
-                                        the
-                                        Join
-                                        Life label.
-                                    </p>
-                                    <ul className="list-color-product">
-                                        <li className="list-color-item color-swatch hover-tooltip active">
-                                            <span className="tooltip color-filter">Yellow</span>
-                                            <span className="swatch-value bg-yellow-2"></span>
-                                            <img className=" lazyload" data-src="/assets/images/products/fashion/women-yellow-2.jpg"
-                                                src="/assets/images/products/fashion/women-yellow-2.jpg" alt="image-product" />
-                                        </li>
-                                        <li className="list-color-item color-swatch hover-tooltip">
-                                            <span className="tooltip color-filter">Light Orange</span>
-                                            <span className="swatch-value bg-light-orange-2"></span>
-                                            <img className=" lazyload" data-src="/assets/images/products/fashion/product-28.jpg"
-                                                src="/assets/images/products/fashion/product-28.jpg" alt="image-product" />
-                                        </li>
-                                        <li className="list-color-item color-swatch hover-tooltip">
-                                            <span className="tooltip color-filter">Beige</span>
-                                            <span className="swatch-value bg-beige"></span>
-                                            <img className=" lazyload" data-src="/assets/images/products/fashion/product-7.jpg"
-                                                src="/assets/images/products/fashion/product-7.jpg" alt="image-product" />
-                                        </li>
-                                    </ul>
-                                    <ul className="size-box">
-                                        <li className="size-item text-xs">S</li>
-                                        <li className="size-item text-xs">M</li>
-                                        <li className="size-item text-xs">L</li>
-                                        <li className="size-item text-xs">XL</li>
-                                    </ul>
-                                </div>
-                                <div className="list-product-btn">
-                                    <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                        className="tf-btn btn-main-product add-to-cart animate-btn">Add To cart</Link>
-                                    <Link to="#" className="box-icon wishlist hover-tooltip">
-                                        <span className="icon icon-heart2"></span>
-                                        <span className="tooltip">Add to Wishlist</span>
-                                    </Link>
-                                    <Link to="#quickView" data-bs-toggle="modal"
-                                        className="box-icon hover-tooltip quickview">
-                                        <span className="icon icon-view"></span>
-                                        <span className="tooltip">Quick View</span>
-                                    </Link>
-                                    <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                        className="box-icon compare hover-tooltip">
-                                        <span className="icon icon-compare"></span>
-                                        <span className="tooltip">Add to Compare</span>
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 7 --> */}
-                        <div className="loadItem card-product style-list" data-availability="In stock" data-brand="Zotac">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-26.jpg"
-                                        src="/assets/images/products/fashion/product-26.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-26.jpg"
-                                        src="/assets/images/products/fashion/product-26.jpg" alt="image-product" />
-                                </Link>
-                            </div>
-                            <div className="card-product-info">
-                                <div className="info-list">
-                                    <Link to="/product-details" className="name-product link fw-medium text-md">Printed
-                                        T-shirt</Link>
-                                    <p className="price-wrap fw-medium text-md">
-                                        <span className="price-new">$120.00</span>
-                                    </p>
-                                    <p className="desc text-sm text-main text-line-clamp-2">
-                                        Product Specifications Care for fiber: 30% more recycled polyester. We label
-                                        garments
-                                        manufactured using environmentally friendly technologies and raw materials with
-                                        the
-                                        Join
-                                        Life label.
-                                    </p>
-                                    <ul className="list-color-product">
-                                        <li className="list-color-item color-swatch line hover-tooltip active">
-                                            <span className="tooltip color-filter">White</span>
-                                            <span className="swatch-value bg-white"></span>
-                                            <img className=" lazyload" data-src="/assets/images/products/fashion/product-26.jpg"
-                                                src="/assets/images/products/fashion/product-26.jpg" alt="image-product" />
-                                        </li>
-                                        <li className="list-color-item color-swatch hover-tooltip">
-                                            <span className="tooltip color-filter">Grey</span>
-                                            <span className="swatch-value bg-grey-4"></span>
-                                            <img className="lazyload" data-src="/assets/images/products/fashion/women-grey-1.jpg"
-                                                src="/assets/images/products/fashion/women-grey-1.jpg" alt="image-product" />
-                                        </li>
-                                        <li className="list-color-item color-swatch hover-tooltip">
-                                            <span className="tooltip color-filter">Black</span>
-                                            <span className="swatch-value bg-dark"></span>
-                                            <img className=" lazyload" data-src="/assets/images/products/fashion/women-black-6.jpg"
-                                                src="/assets/images/products/fashion/women-black-6.jpg" alt="image-product" />
-                                        </li>
-                                    </ul>
-                                    <ul className="size-box">
-                                        <li className="size-item text-xs">S</li>
-                                        <li className="size-item text-xs">M</li>
-                                        <li className="size-item text-xs">L</li>
-                                        <li className="size-item text-xs">XL</li>
-                                    </ul>
-                                </div>
-                                <div className="list-product-btn">
-                                    <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                        className="tf-btn btn-main-product add-to-cart animate-btn">Add To cart</Link>
-                                    <Link to="#" className="box-icon wishlist hover-tooltip">
-                                        <span className="icon icon-heart2"></span>
-                                        <span className="tooltip">Add to Wishlist</span>
-                                    </Link>
-                                    <Link to="#quickView" data-bs-toggle="modal"
-                                        className="box-icon hover-tooltip quickview">
-                                        <span className="icon icon-view"></span>
-                                        <span className="tooltip">Quick View</span>
-                                    </Link>
-                                    <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                        className="box-icon compare hover-tooltip">
-                                        <span className="icon icon-compare"></span>
-                                        <span className="tooltip">Add to Compare</span>
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 8 --> */}
-                        <div className="loadItem card-product style-list" data-availability="In stock" data-brand="Vineta">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-22.jpg"
-                                        src="/assets/images/products/fashion/product-22.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-5.jpg"
-                                        src="/assets/images/products/fashion/product-5.jpg" alt="image-product" />
-                                </Link>
-                                <ul className="list-product-btn">
-                                    <li>
-                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-cart2"></span>
-                                            <span className="tooltip">Add to Cart</span>
-                                        </Link>
-                                    </li>
-                                    <li className="wishlist">
-                                        <Link to="#" className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-heart2"></span>
-                                            <span className="tooltip">Add to Wishlist</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#quickView" data-bs-toggle="modal"
-                                            className="box-icon quickview hover-tooltip tooltip-left">
-                                            <span className="icon icon-view"></span>
-                                            <span className="tooltip">Quick View</span>
-                                        </Link>
-                                    </li>
-                                    <li className="compare">
-                                        <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-compare"></span>
-                                            <span className="tooltip">Add to Compare</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                                <ul className="size-box">
-                                    <li className="size-item text-xs text-white">XS</li>
-                                    <li className="size-item text-xs text-white">S</li>
-                                    <li className="size-item text-xs text-white">M</li>
-                                    <li className="size-item text-xs text-white">L</li>
-                                    <li className="size-item text-xs text-white">XL</li>
-                                    <li className="size-item text-xs text-white">2XL</li>
-                                </ul>
-                            </div>
-                            <div className="card-product-info">
-                                <div className="info-list">
-                                    <Link to="/product-details" className="name-product link fw-medium text-md">Bow-Tie
-                                        T-Shirt</Link>
-                                    <p className="price-wrap fw-medium text-md">
-                                        <span className="price-new">$117.00</span>
-                                    </p>
-                                    <p className="desc text-sm text-main text-line-clamp-2">
-                                        Product Specifications Care for fiber: 30% more recycled polyester. We label
-                                        garments
-                                        manufactured using environmentally friendly technologies and raw materials with
-                                        the
-                                        Join
-                                        Life label.
-                                    </p>
-                                    <ul className="list-color-product">
-                                        <li className="list-color-item color-swatch hover-tooltip active">
-                                            <span className="tooltip color-filter">Black</span>
-                                            <span className="swatch-value bg-dark"></span>
-                                            <img className="lazyload" data-src="/assets/images/products/fashion/product-22.jpg"
-                                                src="/assets/images/products/fashion/product-22.jpg" alt="image-product" />
-                                        </li>
-                                        <li className="list-color-item color-swatch hover-tooltip">
-                                            <span className="tooltip color-filter">Beige</span>
-                                            <span className="swatch-value bg-beige"></span>
-                                            <img className="lazyload" data-src="/assets/images/products/fashion/product-5.jpg"
-                                                src="/assets/images/products/fashion/product-5.jpg" alt="image-product" />
-                                        </li>
-                                        <li className="list-color-item color-swatch hover-tooltip line">
-                                            <span className="tooltip color-filter">White</span>
-                                            <span className="swatch-value bg-white"></span>
-                                            <img className="lazyload" data-src="/assets/images/products/fashion/product-1.jpg"
-                                                src="/assets/images/products/fashion/product-1.jpg" alt="image-product" />
-                                        </li>
-
-                                    </ul>
-                                    <ul className="size-box">
-                                        <li className="size-item text-xs">S</li>
-                                        <li className="size-item text-xs">M</li>
-                                        <li className="size-item text-xs">L</li>
-                                        <li className="size-item text-xs">XL</li>
-                                    </ul>
-                                </div>
-                                <div className="list-product-btn">
-                                    <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                        className="tf-btn btn-main-product add-to-cart animate-btn">Add To cart</Link>
-                                    <Link to="#" className="box-icon wishlist hover-tooltip">
-                                        <span className="icon icon-heart2"></span>
-                                        <span className="tooltip">Add to Wishlist</span>
-                                    </Link>
-                                    <Link to="#quickView" data-bs-toggle="modal"
-                                        className="box-icon hover-tooltip quickview">
-                                        <span className="icon icon-view"></span>
-                                        <span className="tooltip">Quick View</span>
-                                    </Link>
-                                    <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                        className="box-icon compare hover-tooltip">
-                                        <span className="icon icon-compare"></span>
-                                        <span className="tooltip">Add to Compare</span>
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                        {/* <!-- Load Item --> */}
-                        <div className="wd-load">
-                            <button id="infiniteScrollList"
-                                className="tf-btn btn-dark2 tf-loading animate-btn animate-dark">
-                                <div className="spinner-circle">
-                                    <span className="spinner-circle1 spinner-child"></span>
-                                    <span className="spinner-circle2 spinner-child"></span>
-                                    <span className="spinner-circle3 spinner-child"></span>
-                                    <span className="spinner-circle4 spinner-child"></span>
-                                    <span className="spinner-circle5 spinner-child"></span>
-                                    <span className="spinner-circle6 spinner-child"></span>
-                                    <span className="spinner-circle7 spinner-child"></span>
-                                    <span className="spinner-circle8 spinner-child"></span>
-                                    <span className="spinner-circle9 spinner-child"></span>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-                    <div className="wrapper-shop tf-grid-layout tf-col-4" id="gridLayout">
-                        {/* <!-- Card Product 1 --> */}
-                        <div className="loadItem card-product grid card-product-size" data-availability="In stock"
-                            data-brand="Vineta">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-19.jpg"
-                                        src="/assets/images/products/fashion/product-19.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/women-grey-2.jpg"
-                                        src="/assets/images/products/fashion/women-grey-2.jpg" alt="image-product" />
-                                </Link>
-                                <div className="on-sale-wrap"><span className="on-sale-item">20% Off</span></div>
-                                <ul className="list-product-btn">
-                                    <li>
-                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                            className="hover-tooltip tooltip-left box-icon">
-                                            <span className="icon icon-cart2"></span>
-                                            <span className="tooltip">Add to Cart</span>
-                                        </Link>
-                                    </li>
-                                    <li className="wishlist">
-                                        <Link to="#" className="hover-tooltip tooltip-left box-icon">
-                                            <span className="icon icon-heart2"></span>
-                                            <span className="tooltip">Add to Wishlist</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#quickView" data-bs-toggle="modal"
-                                            className="hover-tooltip tooltip-left box-icon quickview">
-                                            <span className="icon icon-view"></span>
-                                            <span className="tooltip">Quick View</span>
-                                        </Link>
-                                    </li>
-                                    <li className="compare">
-                                        <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                            className="hover-tooltip tooltip-left box-icon">
-                                            <span className="icon icon-compare"></span>
-                                            <span className="tooltip">Add to Compare</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                                <ul className="size-box">
-                                    <li className="size-item text-xs text-white">XS</li>
-                                    <li className="size-item text-xs text-white">S</li>
-                                    <li className="size-item text-xs text-white">M</li>
-                                    <li className="size-item text-xs text-white">L</li>
-                                    <li className="size-item text-xs text-white">XL</li>
-                                    <li className="size-item text-xs text-white">2XL</li>
-                                </ul>
-
-                            </div>
-                            <div className="card-product-info">
-                                <Link to="/product-details" className="name-product link fw-medium text-md">Loose Fit
-                                    Tee</Link>
-                                <p className="price-wrap fw-medium">
-                                    <span className="price-new">$120.00</span>
-                                    <span className="price-old">$150.00</span>
-                                </p>
-                                <ul className="list-color-product">
-                                    <li className="list-color-item hover-tooltip tooltip-bot color-swatch active">
-                                        <span className="tooltip color-filter">Grey</span>
-                                        <span className="swatch-value bg-grey-4"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-19.jpg"
-                                            src="/assets/images/products/fashion/product-19.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Black</span>
-                                        <span className="swatch-value bg-dark"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-9.jpg"
-                                            src="/assets/images/products/fashion/product-9.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot line">
-                                        <span className="tooltip color-filter">White</span>
-                                        <span className="swatch-value bg-white"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-4.jpg"
-                                            src="/assets/images/products/fashion/product-4.jpg" alt="image-product" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 2 --> */}
-                        <div className="loadItem card-product grid out-of-stock" data-availability="Out of stock"
-                            data-brand="Zotac">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-2.jpg"
-                                        src="/assets/images/products/fashion/product-2.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-2.jpg"
-                                        src="/assets/images/products/fashion/product-2.jpg" alt="image-product" />
-                                </Link>
-                            </div>
-                            <div className="card-product-info">
-                                <Link to="/product-details" className="name-product link fw-medium text-md">Regular Fit
-                                    Pima Cotton Polo Shirt</Link>
-                                <p className="price-wrap fw-medium">
-                                    <span className="price-new">$130.00</span>
-                                </p>
-
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 3 --> */}
-                        <div className="loadItem card-product grid card-product-size" data-availability="In stock"
-                            data-brand="Vineta">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-3.jpg"
-                                        src="/assets/images/products/fashion/product-3.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-4.jpg"
-                                        src="/assets/images/products/fashion/product-4.jpg" alt="image-product" />
-                                </Link>
-                                <ul className="list-product-btn">
-                                    <li>
-                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                            className="hover-tooltip tooltip-left box-icon">
-                                            <span className="icon icon-cart2"></span>
-                                            <span className="tooltip">Add to Cart</span>
-                                        </Link>
-                                    </li>
-                                    <li className="wishlist">
-                                        <Link to="#" className="hover-tooltip tooltip-left box-icon">
-                                            <span className="icon icon-heart2"></span>
-                                            <span className="tooltip">Add to Wishlist</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#quickView" data-bs-toggle="modal"
-                                            className="hover-tooltip tooltip-left box-icon quickview">
-                                            <span className="icon icon-view"></span>
-                                            <span className="tooltip">Quick View</span>
-                                        </Link>
-                                    </li>
-                                    <li className="compare">
-                                        <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                            className="hover-tooltip tooltip-left box-icon">
-                                            <span className="icon icon-compare"></span>
-                                            <span className="tooltip">Add to Compare</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                                <div className="countdown-box">
-                                    <div className="js-countdown" data-timer="1007500" data-labels="D  :,H  :,M  :,S"></div>
-                                </div>
-                                <ul className="size-box">
-                                    <li className="size-item text-xs text-white">S</li>
-                                    <li className="size-item text-xs text-white">M</li>
-                                    <li className="size-item text-xs text-white">L</li>
-                                    <li className="size-item text-xs text-white">XL</li>
-                                </ul>
-                                <div className="on-sale-wrap"><span className="on-sale-item">20% Off</span></div>
-
-                            </div>
-                            <div className="card-product-info">
-                                <Link to="/product-details" className="name-product link fw-medium text-md">Long Regular
-                                    Fit Tee</Link>
-                                <p className="price-wrap fw-medium">
-                                    <span className="price-new">$60.00</span>
-                                    <span className="price-old">$70.00</span>
-                                </p>
-                                <ul className="list-color-product">
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                        <span className="tooltip color-filter">Yellow</span>
-                                        <span className="swatch-value bg-yellow"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-3.jpg"
-                                            src="/assets/images/products/fashion/product-3.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Grey</span>
-                                        <span className="swatch-value bg-grey-4"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-6.jpg"
-                                            src="/assets/images/products/fashion/product-6.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot line">
-                                        <span className="tooltip color-filter">White</span>
-                                        <span className="swatch-value bg-white"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-4.jpg"
-                                            src="/assets/images/products/fashion/product-4.jpg" alt="image-product" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 4 --> */}
-                        <div className="loadItem card-product grid card-product-size" data-availability="In stock"
-                            data-brand="Vineta">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-17.jpg"
-                                        src="/assets/images/products/fashion/product-17.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-1.jpg"
-                                        src="/assets/images/products/fashion/product-1.jpg" alt="image-product" />
-                                </Link>
-                                <ul className="list-product-btn">
-                                    <li>
-                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-cart2"></span>
-                                            <span className="tooltip">Add to Cart</span>
-                                        </Link>
-                                    </li>
-                                    <li className="wishlist">
-                                        <Link to="#" className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-heart2"></span>
-                                            <span className="tooltip">Add to Wishlist</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#quickView" data-bs-toggle="modal"
-                                            className="box-icon quickview hover-tooltip tooltip-left">
-                                            <span className="icon icon-view"></span>
-                                            <span className="tooltip">Quick View</span>
-                                        </Link>
-                                    </li>
-                                    <li className="compare">
-                                        <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-compare"></span>
-                                            <span className="tooltip">Add to Compare</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                                <ul className="size-box">
-                                    <li className="size-item text-xs text-white">S</li>
-                                    <li className="size-item text-xs text-white">M</li>
-                                    <li className="size-item text-xs text-white">L</li>
-                                </ul>
-
-                            </div>
-                            <div className="card-product-info">
-                                <Link to="/product-details" className="name-product link fw-medium text-md">Regular Fit
-                                    Pima Cotton Polo Shirt</Link>
-                                <p className="price-wrap fw-medium">
-                                    <span className="price-new">$80.00</span>
-                                </p>
-                                <ul className="list-color-product">
-                                    <li className="list-color-item color-swatch active hover-tooltip tooltip-bot line">
-                                        <span className="tooltip color-filter">White</span>
-                                        <span className="swatch-value bg-white"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-17.jpg"
-                                            src="/assets/images/products/fashion/product-17.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Light Orange</span>
-                                        <span className="swatch-value bg-light-orange"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-16.jpg"
-                                            src="/assets/images/products/fashion/product-16.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Light Grey</span>
-                                        <span className="swatch-value bg-grey-4"></span>
-                                        <img className="lazyload" data-src="/assets/images/products/fashion/product-5.jpg"
-                                            src="/assets/images/products/fashion/product-5.jpg" alt="image-product" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 5 --> */}
-                        <div className="loadItem card-product grid card-product-size" data-availability="In stock"
-                            data-brand="Vineta">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-25.jpg"
-                                        src="/assets/images/products/fashion/product-25.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-24.jpg"
-                                        src="/assets/images/products/fashion/product-24.jpg" alt="image-product" />
-                                </Link>
-                                <ul className="list-product-btn">
-                                    <li>
-                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-cart2"></span>
-                                            <span className="tooltip">Add to Cart</span>
-                                        </Link>
-                                    </li>
-                                    <li className="wishlist">
-                                        <Link to="#" className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-heart2"></span>
-                                            <span className="tooltip">Add to Wishlist</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#quickView" data-bs-toggle="modal"
-                                            className="box-icon quickview hover-tooltip tooltip-left">
-                                            <span className="icon icon-view"></span>
-                                            <span className="tooltip">Quick View</span>
-                                        </Link>
-                                    </li>
-                                    <li className="compare">
-                                        <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-compare"></span>
-                                            <span className="tooltip">Add to Compare</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                                <ul className="size-box">
-                                    <li className="size-item text-xs text-white">XS</li>
-                                    <li className="size-item text-xs text-white">M</li>
-                                    <li className="size-item text-xs text-white">XL</li>
-                                </ul>
-
-                            </div>
-                            <div className="card-product-info">
-                                <Link to="/product-details" className="name-product link fw-medium text-md">Midi Knit
-                                    Dress</Link>
-                                <p className="price-wrap fw-medium">
-                                    <span className="price-new">$40.00</span>
-                                </p>
-                                <ul className="list-color-product">
-                                    <li className="list-color-item color-swatch active hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Beige</span>
-                                        <span className="swatch-value bg-beige"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-25.jpg"
-                                            src="/assets/images/products/fashion/product-25.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Black</span>
-                                        <span className="swatch-value bg-dark"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-22.jpg"
-                                            src="/assets/images/products/fashion/product-22.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Grey</span>
-                                        <span className="swatch-value bg-grey-4"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/women-grey-2.jpg"
-                                            src="/assets/images/products/fashion/women-grey-2.jpg" alt="image-product" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 6 --> */}
-                        <div className="loadItem card-product grid card-product-size" data-availability="In stock"
-                            data-brand="Vineta">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-6.jpg"
-                                        src="/assets/images/products/fashion/product-6.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-21.jpg"
-                                        src="/assets/images/products/fashion/product-21.jpg" alt="image-product" />
-                                </Link>
-                                <ul className="list-product-btn">
-                                    <li>
-                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-cart2"></span>
-                                            <span className="tooltip">Add to Cart</span>
-                                        </Link>
-                                    </li>
-                                    <li className="wishlist">
-                                        <Link to="#" className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-heart2"></span>
-                                            <span className="tooltip">Add to Wishlist</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#quickView" data-bs-toggle="modal"
-                                            className="box-icon quickview hover-tooltip tooltip-left">
-                                            <span className="icon icon-view"></span>
-                                            <span className="tooltip">Quick View</span>
-                                        </Link>
-                                    </li>
-                                    <li className="compare">
-                                        <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-compare"></span>
-                                            <span className="tooltip">Add to Compare</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                                <ul className="size-box">
-                                    <li className="size-item text-xs text-white">XS</li>
-                                    <li className="size-item text-xs text-white">S</li>
-                                    <li className="size-item text-xs text-white">M</li>
-                                    <li className="size-item text-xs text-white">L</li>
-                                </ul>
-
-                            </div>
-                            <div className="card-product-info">
-                                <Link to="/product-details" className="name-product link fw-medium text-md">Oversized Fit
-                                    Tee</Link>
-                                <p className="price-wrap fw-medium">
-                                    <span className="price-new">$60.00</span>
-                                </p>
-                                <ul className="list-color-product">
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot line active">
-                                        <span className="tooltip color-filter">White</span>
-                                        <span className="swatch-value bg-white"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-6.jpg"
-                                            src="/assets/images/products/fashion/product-6.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Dark Green</span>
-                                        <span className="swatch-value bg-dark-green"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-21.jpg"
-                                            src="/assets/images/products/fashion/product-21.jpg" alt="image-product" />
-                                    </li>
-
-                                </ul>
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 7 --> */}
-                        <div className="loadItem card-product grid" data-availability="In stock" data-brand="Zotac">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload"
-                                        data-src="/assets/images/products/fashion/women-yellow-2.jpg"
-                                        src="/assets/images/products/fashion/women-yellow-2.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-28.jpg"
-                                        src="/assets/images/products/fashion/product-28.jpg" alt="image-product" />
-                                </Link>
-                                <ul className="list-product-btn">
-                                    <li>
-                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-cart2"></span>
-                                            <span className="tooltip">Add to Cart</span>
-                                        </Link>
-                                    </li>
-                                    <li className="wishlist">
-                                        <Link to="#" className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-heart2"></span>
-                                            <span className="tooltip">Add to Wishlist</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#quickView" data-bs-toggle="modal"
-                                            className="box-icon quickview hover-tooltip tooltip-left">
-                                            <span className="icon icon-view"></span>
-                                            <span className="tooltip">Quick View</span>
-                                        </Link>
-                                    </li>
-                                    <li className="compare">
-                                        <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-compare"></span>
-                                            <span className="tooltip">Add to Compare</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="card-product-info">
-                                <Link to="/product-details" className="name-product link fw-medium text-md">Puff Sleeve
-                                    Shirred Blouse</Link>
-                                <p className="price-wrap fw-medium">
-                                    <span className="price-new">$57.00</span>
-                                </p>
-                                <ul className="list-color-product">
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                        <span className="tooltip color-filter">Yellow</span>
-                                        <span className="swatch-value bg-yellow-2"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/women-yellow-2.jpg"
-                                            src="/assets/images/products/fashion/women-yellow-2.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Light Orange</span>
-                                        <span className="swatch-value bg-light-orange-2"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-28.jpg"
-                                            src="/assets/images/products/fashion/product-28.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Beige</span>
-                                        <span className="swatch-value bg-beige"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-7.jpg"
-                                            src="/assets/images/products/fashion/product-7.jpg" alt="image-product" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 8 --> */}
-                        <div className="loadItem card-product grid card-product-size" data-availability="In stock"
-                            data-brand="Zotac">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-26.jpg"
-                                        src="/assets/images/products/fashion/product-26.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-26.jpg"
-                                        src="/assets/images/products/fashion/product-26.jpg" alt="image-product" />
-                                </Link>
-                                <ul className="list-product-btn">
-                                    <li>
-                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-cart2"></span>
-                                            <span className="tooltip">Add to Cart</span>
-                                        </Link>
-                                    </li>
-                                    <li className="wishlist">
-                                        <Link to="#" className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-heart2"></span>
-                                            <span className="tooltip">Add to Wishlist</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#quickView" data-bs-toggle="modal"
-                                            className="box-icon quickview hover-tooltip tooltip-left">
-                                            <span className="icon icon-view"></span>
-                                            <span className="tooltip">Quick View</span>
-                                        </Link>
-                                    </li>
-                                    <li className="compare">
-                                        <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-compare"></span>
-                                            <span className="tooltip">Add to Compare</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                                <ul className="size-box">
-                                    <li className="size-item text-xs text-white">S</li>
-                                    <li className="size-item text-xs text-white">M</li>
-                                    <li className="size-item text-xs text-white">L</li>
-                                </ul>
-
-                            </div>
-                            <div className="card-product-info">
-                                <Link to="/product-details" className="name-product link fw-medium text-md">Printed
-                                    T-shirt</Link>
-                                <p className="price-wrap fw-medium">
-                                    <span className="price-new">$120.00</span>
-                                </p>
-                                <ul className="list-color-product">
-                                    <li className="list-color-item color-swatch line hover-tooltip tooltip-bot active">
-                                        <span className="tooltip color-filter">White</span>
-                                        <span className="swatch-value bg-white"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-26.jpg"
-                                            src="/assets/images/products/fashion/product-26.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Grey</span>
-                                        <span className="swatch-value bg-grey-4"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/women-grey-1.jpg"
-                                            src="/assets/images/products/fashion/women-grey-1.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Black</span>
-                                        <span className="swatch-value bg-dark"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/women-black-6.jpg"
-                                            src="/assets/images/products/fashion/women-black-6.jpg" alt="image-product" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 9 --> */}
-                        <div className="loadItem card-product grid card-product-size" data-availability="In stock"
-                            data-brand="Zotac">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-27.jpg"
-                                        src="/assets/images/products/fashion/product-27.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-23.jpg"
-                                        src="/assets/images/products/fashion/product-23.jpg" alt="image-product" />
-                                </Link>
-                                <ul className="list-product-btn">
-                                    <li>
-                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-cart2"></span>
-                                            <span className="tooltip">Add to Cart</span>
-                                        </Link>
-                                    </li>
-                                    <li className="wishlist">
-                                        <Link to="#" className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-heart2"></span>
-                                            <span className="tooltip">Add to Wishlist</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#quickView" data-bs-toggle="modal"
-                                            className="box-icon quickview hover-tooltip tooltip-left">
-                                            <span className="icon icon-view"></span>
-                                            <span className="tooltip">Quick View</span>
-                                        </Link>
-                                    </li>
-                                    <li className="compare">
-                                        <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-compare"></span>
-                                            <span className="tooltip">Add to Compare</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                                <ul className="size-box">
-                                    <li className="size-item text-xs text-white">M</li>
-                                    <li className="size-item text-xs text-white">L</li>
-                                    <li className="size-item text-xs text-white">XL</li>
-                                </ul>
-
-                            </div>
-                            <div className="card-product-info">
-                                <Link to="/product-details" className="name-product link fw-medium text-md">Basic Sports
-                                    T-Shirt Crew Neck Ribbed</Link>
-                                <p className="price-wrap fw-medium">
-                                    <span className="price-new">80.00</span>
-                                </p>
-                                <ul className="list-color-product">
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                        <span className="tooltip color-filter">Light Purple</span>
-                                        <span className="swatch-value bg-light-purple-3"></span>
-                                        <img className="lazyload" data-src="/assets/images/products/fashion/product-27.jpg"
-                                            src="/assets/images/products/fashion/product-27.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Light Grey</span>
-                                        <span className="swatch-value bg-grey-4"></span>
-                                        <img className="lazyload" data-src="/assets/images/products/fashion/product-11.jpg"
-                                            src="/assets/images/products/fashion/product-11.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Light Orange</span>
-                                        <span className="swatch-value bg-light-orange"></span>
-                                        <img className="lazyload" data-src="/assets/images/products/fashion/product-12.jpg"
-                                            src="/assets/images/products/fashion/product-12.jpg" alt="image-product" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 10 --> */}
-                        <div className="loadItem card-product grid" data-availability="In stock" data-brand="Zotac">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-10.jpg"
-                                        src="/assets/images/products/fashion/product-10.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-20.jpg"
-                                        src="/assets/images/products/fashion/product-20.jpg" alt="image-product" />
-                                </Link>
-                                <ul className="list-product-btn">
-                                    <li>
-                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-cart2"></span>
-                                            <span className="tooltip">Add to Cart</span>
-                                        </Link>
-                                    </li>
-                                    <li className="wishlist">
-                                        <Link to="#" className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-heart2"></span>
-                                            <span className="tooltip">Add to Wishlist</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#quickView" data-bs-toggle="modal"
-                                            className="box-icon quickview hover-tooltip tooltip-left">
-                                            <span className="icon icon-view"></span>
-                                            <span className="tooltip">Quick View</span>
-                                        </Link>
-                                    </li>
-                                    <li className="compare">
-                                        <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-compare"></span>
-                                            <span className="tooltip">Add to Compare</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-
-                            </div>
-                            <div className="card-product-info">
-                                <Link to="/product-details" className="name-product link fw-medium text-md">Regular Fit
-                                    Fine Knit Polo Shirt</Link>
-                                <p className="price-wrap fw-medium">
-                                    <span className="price-new">$130.00</span>
-                                </p>
-                                <ul className="list-color-product">
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                        <span className="tooltip color-filter">Light Blue</span>
-                                        <span className="swatch-value bg-light-blue-2"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-10.jpg"
-                                            src="/assets/images/products/fashion/product-10.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Black</span>
-                                        <span className="swatch-value bg-dark"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-13.jpg"
-                                            src="/assets/images/products/fashion/product-13.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Purple</span>
-                                        <span className="swatch-value bg-light-purple"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-14.jpg"
-                                            src="/assets/images/products/fashion/product-14.jpg" alt="image-product" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 11 --> */}
-                        <div className="loadItem card-product grid" data-availability="In stock" data-brand="Vineta">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-21.jpg"
-                                        src="/assets/images/products/fashion/product-21.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/women-black-3.jpg"
-                                        src="/assets/images/products/fashion/women-black-3.jpg" alt="image-product" />
-                                </Link>
-                                <ul className="list-product-btn">
-                                    <li>
-                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-cart2"></span>
-                                            <span className="tooltip">Add to Cart</span>
-                                        </Link>
-                                    </li>
-                                    <li className="wishlist">
-                                        <Link to="#" className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-heart2"></span>
-                                            <span className="tooltip">Add to Wishlist</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#quickView" data-bs-toggle="modal"
-                                            className="box-icon quickview hover-tooltip tooltip-left">
-                                            <span className="icon icon-view"></span>
-                                            <span className="tooltip">Quick View</span>
-                                        </Link>
-                                    </li>
-                                    <li className="compare">
-                                        <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-compare"></span>
-                                            <span className="tooltip">Add to Compare</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="card-product-info">
-                                <Link to="/product-details" className="name-product link fw-medium text-md">Crop College
-                                    T-Shirt</Link>
-                                <p className="price-wrap fw-medium">
-                                    <span className="price-new">$82.00</span>
-                                </p>
-                                <ul className="list-color-product">
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                        <span className="tooltip color-filter">Dark Green</span>
-                                        <span className="swatch-value bg-dark-green"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-21.jpg"
-                                            src="/assets/images/products/fashion/product-21.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Black</span>
-                                        <span className="swatch-value bg-dark"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/women-black-3.jpg"
-                                            src="/assets/images/products/fashion/women-black-3.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Light Purple</span>
-                                        <span className="swatch-value bg-light-purple-3"></span>
-                                        <img className="lazyload" data-src="/assets/images/products/fashion/product-23.jpg"
-                                            src="/assets/images/products/fashion/product-23.jpg" alt="image-product" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 12 --> */}
-                        <div className="loadItem card-product grid card-product-size" data-availability="In stock"
-                            data-brand="Vineta">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-22.jpg"
-                                        src="/assets/images/products/fashion/product-22.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-5.jpg"
-                                        src="/assets/images/products/fashion/product-5.jpg" alt="image-product" />
-                                </Link>
-                                <ul className="list-product-btn">
-                                    <li>
-                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-cart2"></span>
-                                            <span className="tooltip">Add to Cart</span>
-                                        </Link>
-                                    </li>
-                                    <li className="wishlist">
-                                        <Link to="#" className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-heart2"></span>
-                                            <span className="tooltip">Add to Wishlist</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#quickView" data-bs-toggle="modal"
-                                            className="box-icon quickview hover-tooltip tooltip-left">
-                                            <span className="icon icon-view"></span>
-                                            <span className="tooltip">Quick View</span>
-                                        </Link>
-                                    </li>
-                                    <li className="compare">
-                                        <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-compare"></span>
-                                            <span className="tooltip">Add to Compare</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                                <ul className="size-box">
-                                    <li className="size-item text-xs text-white">XS</li>
-                                    <li className="size-item text-xs text-white">S</li>
-                                    <li className="size-item text-xs text-white">M</li>
-                                    <li className="size-item text-xs text-white">L</li>
-                                    <li className="size-item text-xs text-white">XL</li>
-                                    <li className="size-item text-xs text-white">2XL</li>
-                                </ul>
-
-                            </div>
-                            <div className="card-product-info">
-                                <Link to="/product-details" className="name-product link fw-medium text-md">Bow-Tie
-                                    T-Shirt</Link>
-                                <p className="price-wrap fw-medium">
-                                    <span className="price-new">$92.00</span>
-                                </p>
-                                <ul className="list-color-product">
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                        <span className="tooltip color-filter">Black</span>
-                                        <span className="swatch-value bg-dark"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-22.jpg"
-                                            src="/assets/images/products/fashion/product-22.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Beige</span>
-                                        <span className="swatch-value bg-beige"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-5.jpg"
-                                            src="/assets/images/products/fashion/product-5.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip line tooltip-bot">
-                                        <span className="tooltip color-filter">White</span>
-                                        <span className="swatch-value bg-white"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-1.jpg"
-                                            src="/assets/images/products/fashion/product-1.jpg" alt="image-product" />
-                                    </li>
-
-                                </ul>
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 13 --> */}
-                        <div className="loadItem card-product grid card-product-size" data-availability="In stock"
-                            data-brand="Vineta">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-13.jpg"
-                                        src="/assets/images/products/fashion/product-13.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-14.jpg"
-                                        src="/assets/images/products/fashion/product-14.jpg" alt="image-product" />
-                                </Link>
-                                <ul className="list-product-btn">
-                                    <li>
-                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-cart2"></span>
-                                            <span className="tooltip">Add to Cart</span>
-                                        </Link>
-                                    </li>
-                                    <li className="wishlist">
-                                        <Link to="#" className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-heart2"></span>
-                                            <span className="tooltip">Add to Wishlist</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#quickView" data-bs-toggle="modal"
-                                            className="box-icon quickview hover-tooltip tooltip-left">
-                                            <span className="icon icon-view"></span>
-                                            <span className="tooltip">Quick View</span>
-                                        </Link>
-                                    </li>
-                                    <li className="compare">
-                                        <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-compare"></span>
-                                            <span className="tooltip">Add to Compare</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                                <ul className="size-box">
-                                    <li className="size-item text-xs text-white">L</li>
-                                    <li className="size-item text-xs text-white">XL</li>
-                                    <li className="size-item text-xs text-white">2XL</li>
-                                </ul>
-
-                            </div>
-                            <div className="card-product-info">
-                                <Link to="/product-details" className="name-product link fw-medium text-md">COOLMAX® Loose
-                                    Fit Tee</Link>
-                                <p className="price-wrap fw-medium">
-                                    <span className="price-new">$66.00</span>
-                                </p>
-                                <ul className="list-color-product">
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                        <span className="tooltip color-filter">Black</span>
-                                        <span className="swatch-value bg-dark"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-13.jpg"
-                                            src="/assets/images/products/fashion/product-13.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Light Purple</span>
-                                        <span className="swatch-value bg-purple-3"></span>
-                                        <img className="lazyload" data-src="/assets/images/products/fashion/product-14.jpg"
-                                            src="/assets/images/products/fashion/product-14.jpg" alt="image-product" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 14 --> */}
-                        <div className="loadItem card-product grid card-product-size" data-availability="In stock"
-                            data-brand="Vineta">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-20.jpg"
-                                        src="/assets/images/products/fashion/product-20.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-9.jpg"
-                                        src="/assets/images/products/fashion/product-9.jpg" alt="image-product" />
-                                </Link>
-                                <ul className="list-product-btn">
-                                    <li>
-                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-cart2"></span>
-                                            <span className="tooltip">Add to Cart</span>
-                                        </Link>
-                                    </li>
-                                    <li className="wishlist">
-                                        <Link to="#" className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-heart2"></span>
-                                            <span className="tooltip">Add to Wishlist</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#quickView" data-bs-toggle="modal"
-                                            className="box-icon quickview hover-tooltip tooltip-left">
-                                            <span className="icon icon-view"></span>
-                                            <span className="tooltip">Quick View</span>
-                                        </Link>
-                                    </li>
-                                    <li className="compare">
-                                        <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-compare"></span>
-                                            <span className="tooltip">Add to Compare</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                                <ul className="size-box">
-                                    <li className="size-item text-xs text-white">XS</li>
-                                    <li className="size-item text-xs text-white">S</li>
-                                    <li className="size-item text-xs text-white">M</li>
-                                    <li className="size-item text-xs text-white">L</li>
-                                    <li className="size-item text-xs text-white">XL</li>
-                                    <li className="size-item text-xs text-white">2XL</li>
-                                </ul>
-
-                            </div>
-                            <div className="card-product-info">
-                                <Link to="/product-details" className="name-product link fw-medium text-md">Long Sleeve
-                                    T-Shirt</Link>
-                                <p className="price-wrap fw-medium">
-                                    <span className="price-new">$100.00</span>
-                                </p>
-                                <ul className="list-color-product">
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                        <span className="tooltip color-filter">Black</span>
-                                        <span className="swatch-value bg-dark"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-20.jpg"
-                                            src="/assets/images/products/fashion/product-20.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Light Orange</span>
-                                        <span className="swatch-value bg-light-orange"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-16.jpg"
-                                            src="/assets/images/products/fashion/product-16.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch line hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">White</span>
-                                        <span className="swatch-value bg-white"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-1.jpg"
-                                            src="/assets/images/products/fashion/product-1.jpg" alt="image-product" />
-                                    </li>
-
-                                </ul>
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 15 --> */}
-                        <div className="loadItem card-product grid card-product-size" data-availability="Out of stock"
-                            data-brand="Zotac">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-7.jpg"
-                                        src="/assets/images/products/fashion/product-7.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-11.jpg"
-                                        src="/assets/images/products/fashion/product-11.jpg" alt="image-product" />
-                                </Link>
-                                <ul className="list-product-btn">
-                                    <li>
-                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-cart2"></span>
-                                            <span className="tooltip">Add to Cart</span>
-                                        </Link>
-                                    </li>
-                                    <li className="wishlist">
-                                        <Link to="#" className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-heart2"></span>
-                                            <span className="tooltip">Add to Wishlist</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#quickView" data-bs-toggle="modal"
-                                            className="box-icon quickview hover-tooltip tooltip-left">
-                                            <span className="icon icon-view"></span>
-                                            <span className="tooltip">Quick View</span>
-                                        </Link>
-                                    </li>
-                                    <li className="compare">
-                                        <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-compare"></span>
-                                            <span className="tooltip">Add to Compare</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                                <ul className="size-box">
-                                    <li className="size-item text-xs text-white">S</li>
-                                    <li className="size-item text-xs text-white">M</li>
-                                    <li className="size-item text-xs text-white">L</li>
-                                    <li className="size-item text-xs text-white">XL</li>
-                                    <li className="size-item text-xs text-white">2XL</li>
-                                </ul>
-
-                            </div>
-                            <div className="card-product-info">
-                                <Link to="/product-details" className="name-product link fw-medium text-md">Muscle Fit
-                                    Polo Shirt</Link>
-                                <p className="price-wrap fw-medium">
-                                    <span className="price-new">$111.00</span>
-                                </p>
-                                <ul className="list-color-product">
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot active">
-                                        <span className="tooltip color-filter">Beige</span>
-                                        <span className="swatch-value bg-beige"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-7.jpg"
-                                            src="/assets/images/products/fashion/product-7.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch line hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">White</span>
-                                        <span className="swatch-value bg-white"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-11.jpg"
-                                            src="/assets/images/products/fashion/product-11.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Light Orange</span>
-                                        <span className="swatch-value bg-light-orange"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-18.jpg"
-                                            src="/assets/images/products/fashion/product-18.jpg" alt="image-product" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        {/* <!-- Card Product 16 --> */}
-                        <div className="loadItem card-product grid" data-availability="Out of stock" data-brand="Zotac">
-                            <div className="card-product-wrapper">
-                                <Link to="/product-details" className="product-img">
-                                    <img className="img-product lazyload" data-src="/assets/images/products/fashion/product-17.jpg"
-                                        src="/assets/images/products/fashion/product-16.jpg" alt="image-product" />
-                                    <img className="img-hover lazyload" data-src="/assets/images/products/fashion/product-26.jpg"
-                                        src="/assets/images/products/fashion/product-26.jpg" alt="image-product" />
-                                </Link>
-                                <ul className="list-product-btn">
-                                    <li>
-                                        <Link to="#shoppingCart" data-bs-toggle="offcanvas"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-cart2"></span>
-                                            <span className="tooltip">Add to Cart</span>
-                                        </Link>
-                                    </li>
-                                    <li className="wishlist">
-                                        <Link to="#" className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-heart2"></span>
-                                            <span className="tooltip">Add to Wishlist</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to="#quickView" data-bs-toggle="modal"
-                                            className="box-icon quickview hover-tooltip tooltip-left">
-                                            <span className="icon icon-view"></span>
-                                            <span className="tooltip">Quick View</span>
-                                        </Link>
-                                    </li>
-                                    <li className="compare">
-                                        <Link to="#compare" data-bs-toggle="modal" aria-controls="compare"
-                                            className="box-icon hover-tooltip tooltip-left">
-                                            <span className="icon icon-compare"></span>
-                                            <span className="tooltip">Add to Compare</span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="card-product-info">
-                                <Link to="/product-details" className="name-product link fw-medium text-md">Graphic
-                                    Printed Drop Shoulder Sleeves</Link>
-                                <p className="price-wrap fw-medium">
-                                    <span className="price-new">$88.00</span>
-                                </p>
-                                <ul className="list-color-product">
-                                    <li className="list-color-item color-swatch hover-tooltip line tooltip-bot active">
-                                        <span className="tooltip color-filter">White</span>
-                                        <span className="swatch-value bg-white"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-17.jpg"
-                                            src="/assets/images/products/fashion/product-17.jpg" alt="image-product" />
-                                    </li>
-                                    <li className="list-color-item color-swatch hover-tooltip tooltip-bot">
-                                        <span className="tooltip color-filter">Light Purple</span>
-                                        <span className="swatch-value bg-light-purple-3"></span>
-                                        <img className=" lazyload" data-src="/assets/images/products/fashion/product-23.jpg"
-                                            src="/assets/images/products/fashion/product-23.jpg" alt="image-product" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        {/* <!-- Load Item --> */}
-                        <div className="wd-load d-flex justify-content-center">
-                            <button id="infiniteScrollGrid"
-                                className="tf-btn btn-dark2 tf-loading animate-btn animate-dark">
-                                <div className="spinner-circle">
-                                    <span className="spinner-circle1 spinner-child"></span>
-                                    <span className="spinner-circle2 spinner-child"></span>
-                                    <span className="spinner-circle3 spinner-child"></span>
-                                    <span className="spinner-circle4 spinner-child"></span>
-                                    <span className="spinner-circle5 spinner-child"></span>
-                                    <span className="spinner-circle6 spinner-child"></span>
-                                    <span className="spinner-circle7 spinner-child"></span>
-                                    <span className="spinner-circle8 spinner-child"></span>
-                                    <span className="spinner-circle9 spinner-child"></span>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
+                    <div className="skeleton-btn skeleton-pulse" />
                 </div>
             </div>
-        </section>
+        );
+    }
+    return (
+        <div className="skeleton-card-grid">
+            <div className="skeleton-img skeleton-pulse" />
+            <div className="skeleton-line skeleton-pulse" style={{ width: "70%", height: 16, marginTop: 12 }} />
+            <div className="skeleton-line skeleton-pulse" style={{ width: "40%", height: 14, marginTop: 6 }} />
+            <div className="skeleton-swatches">
+                {[1, 2, 3].map((s) => <div key={s} className="skeleton-swatch skeleton-pulse" />)}
+            </div>
+        </div>
+    );
+}
+
+function getSkeletonCount(layout, colsClass) {
+    const w = typeof window !== "undefined" ? window.innerWidth : 1200;
+    if (layout === "list") return w < 576 ? 3 : w < 992 ? 4 : 5;
+    const cols = colsClass === "tf-col-2" ? 2 : colsClass === "tf-col-3" ? 3 : 4;
+    if (w < 576) return 2;
+    if (w < 768) return cols === 4 ? 4 : cols;
+    return cols * 2;
+}
+
+const SORT_OPTIONS = [
+    { value: "best-selling", label: "Best selling" },
+    { value: "a-z", label: "Alphabetically, A-Z" },
+    { value: "z-a", label: "Alphabetically, Z-A" },
+    { value: "price-low-high", label: "Price, low to high" },
+    { value: "price-high-low", label: "Price, high to low" },
+];
+
+function sortProducts(products, sortValue) {
+    const list = [...products];
+    switch (sortValue) {
+        case "a-z": return list.sort((a, b) => (a.product_name || "").localeCompare(b.product_name || ""));
+        case "z-a": return list.sort((a, b) => (b.product_name || "").localeCompare(a.product_name || ""));
+        case "price-low-high": return list.sort((a, b) => Number(a.product_price || 0) - Number(b.product_price || 0));
+        case "price-high-low": return list.sort((a, b) => Number(b.product_price || 0) - Number(a.product_price || 0));
+        default: return list;
+    }
+}
+
+export default function ProductList() {
+
+    // ── slug from URL → resolve category_id from context ──
+    const { slug } = useParams();
+    const { categoriesList } = useCategories();
+    const resolvedCategory = categoriesList?.find((c) => c.category_slug === slug);
+    const categoryId = resolvedCategory?.category_id ?? null;
+    const categoryName = resolvedCategory?.category_name ?? "Products";
+
+    const [productsList, setProductsList] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [layout, setLayout] = useState("grid");
+    const [colsClass, setColsClass] = useState("tf-col-4");
+    const [sortValue, setSortValue] = useState("best-selling");
+    const [sortOpen, setSortOpen] = useState(false);
+    const [skeletonCount, setSkeletonCount] = useState(8);
+    const prevSlugRef = useRef(null);
+
+    useEffect(() => {
+        const update = () => setSkeletonCount(getSkeletonCount(layout, colsClass));
+        update();
+        window.addEventListener("resize", update);
+        return () => window.removeEventListener("resize", update);
+    }, [layout, colsClass]);
+
+    useEffect(() => {
+        if (!slug) return;
+        if (!categoriesList?.length) return;       // wait for context to load
+        if (prevSlugRef.current === slug) return;  // skip duplicate calls
+        if (!resolvedCategory) {
+            setError(`Category not found.`);
+            return;
+        }
+        prevSlugRef.current = slug;
+        document.title = `${categoryName} - BMS Book Store`;
+        loadProducts(categoryId);
+    }, [slug, categoryId, categoriesList]);
+
+    const loadProducts = async (catId) => {
+        try {
+            setLoading(true);
+            setError(null);
+            setProductsList([]);
+            const res = await fetchProductsByCategoryId(catId);
+            setProductsList(res?.data?.data || []);
+        } catch (err) {
+            console.error("Error loading products:", err);
+            setError("Failed to load products. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (!sortOpen) return;
+        const handler = () => setSortOpen(false);
+        document.addEventListener("click", handler);
+        return () => document.removeEventListener("click", handler);
+    }, [sortOpen]);
+
+    const sortedProducts = sortProducts(productsList, sortValue);
+    const currentSortLabel = SORT_OPTIONS.find((o) => o.value === sortValue)?.label || "Best selling";
+
+    const handleLayoutChange = useCallback((newLayout, newCols) => {
+        setLayout(newLayout);
+        if (newCols) setColsClass(newCols);
+    }, []);
+
+    return (
+        <PageLayout>
+            {/* <!-- Section Product --> */}
+            <section className="flat-spacing-24">
+                <style>{`
+                @keyframes skeletonPulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+                .skeleton-pulse { background:#e9e9e9; border-radius:6px; animation:skeletonPulse 1.5s ease-in-out infinite; }
+                .skeleton-card-grid { display:flex; flex-direction:column; }
+                .skeleton-card-grid .skeleton-img { width:100%; aspect-ratio:3/4; border-radius:8px; }
+                .skeleton-card-list { display:flex; gap:20px; padding:16px 0; border-bottom:1px solid #f0f0f0; }
+                .skeleton-card-list .skeleton-img { flex-shrink:0; width:180px; height:230px; border-radius:8px; }
+                .skeleton-info { flex:1; display:flex; flex-direction:column; }
+                .skeleton-line { border-radius:4px; }
+                .skeleton-swatches { display:flex; gap:8px; margin-top:12px; }
+                .skeleton-swatch { width:22px; height:22px; border-radius:50%; }
+                .skeleton-btn { width:120px; height:36px; border-radius:4px; margin-top:16px; }
+                .skeleton-grid-wrapper { display:grid; gap:20px; grid-template-columns:repeat(4,1fr); }
+                @media(max-width:991px){ .skeleton-grid-wrapper{grid-template-columns:repeat(3,1fr)} .skeleton-card-list .skeleton-img{width:140px;height:180px} }
+                @media(max-width:767px){ .skeleton-grid-wrapper{grid-template-columns:repeat(2,1fr)} .skeleton-card-list .skeleton-img{width:110px;height:140px} }
+                @media(max-width:480px){ .skeleton-grid-wrapper{grid-template-columns:repeat(2,1fr);gap:12px} }
+                @keyframes fadeInUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+                .card-product{animation:fadeInUp 0.35s ease both}
+                .card-product:nth-child(2){animation-delay:.05s} .card-product:nth-child(3){animation-delay:.10s}
+                .card-product:nth-child(4){animation-delay:.15s} .card-product:nth-child(5){animation-delay:.20s}
+                .card-product:nth-child(6){animation-delay:.25s} .card-product:nth-child(7){animation-delay:.30s}
+                .card-product:nth-child(8){animation-delay:.35s}
+                .product-state{width:100%;padding:60px 20px;text-align:center;color:#999;font-size:15px}
+                .product-state button{margin-top:16px;padding:10px 24px;background:#222;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:14px}
+                .product-state button:hover{background:#444}
+            `}</style>
+
+                <div className="container">
+                    <div className="tf-shop-control">
+                        <div className="tf-group-filter">
+                            <Link to="#filterShop" data-bs-toggle="offcanvas" aria-controls="filterShop" className="tf-btn-filter">
+                                <span className="icon icon-filter"></span><span className="text">Filter</span>
+                            </Link>
+                            <div
+                                className="tf-dropdown-sort"
+                                data-bs-toggle="dropdown"
+                                onClick={(e) => { e.stopPropagation(); setSortOpen((v) => !v); }}
+                            >
+                                <div className="btn-select">
+                                    <span className="text-sort-value">{currentSortLabel}</span>
+                                    <span className="icon icon-arr-down"></span>
+                                </div>
+                                {sortOpen && (
+                                    <div className="dropdown-menu show" onClick={(e) => e.stopPropagation()}>
+                                        {SORT_OPTIONS.map((opt) => (
+                                            <div
+                                                key={opt.value}
+                                                className={`select-item${sortValue === opt.value ? " active" : ""}`}
+                                                data-sort-value={opt.value}
+                                                onClick={() => { setSortValue(opt.value); setSortOpen(false); }}
+                                            >
+                                                <span className="text-value-item">{opt.label}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <ul className="tf-control-layout">
+                            <li
+                                className={`tf-view-layout-switch sw-layout-list list-layout${layout === "list" ? " active" : ""}`}
+                                data-value-layout="list"
+                                onClick={() => handleLayoutChange("list", null)}
+                            >
+                                <div className="item icon-list"><span></span><span></span></div>
+                            </li>
+                            <li
+                                className={`tf-view-layout-switch sw-layout-2${layout === "grid" && colsClass === "tf-col-2" ? " active" : ""}`}
+                                data-value-layout="tf-col-2"
+                                onClick={() => handleLayoutChange("grid", "tf-col-2")}
+                            >
+                                <div className="item icon-grid-2"><span></span><span></span></div>
+                            </li>
+                            <li
+                                className={`tf-view-layout-switch sw-layout-3${layout === "grid" && colsClass === "tf-col-3" ? " active" : ""}`}
+                                data-value-layout="tf-col-3"
+                                onClick={() => handleLayoutChange("grid", "tf-col-3")}
+                            >
+                                <div className="item icon-grid-3"><span></span><span></span><span></span></div>
+                            </li>
+                            <li
+                                className={`tf-view-layout-switch sw-layout-4${layout === "grid" && colsClass === "tf-col-4" ? " active" : ""}`}
+                                data-value-layout="tf-col-4"
+                                onClick={() => handleLayoutChange("grid", "tf-col-4")}
+                            >
+                                <div className="item icon-grid-4"><span></span><span></span><span></span><span></span></div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div className="wrapper-control-shop">
+                        <div className="meta-filter-shop">
+                            <div id="product-count-grid" className="count-text">
+                                {!loading && sortedProducts.length > 0 && (
+                                    <>{sortedProducts.length} product{sortedProducts.length !== 1 ? "s" : ""} in <strong>{categoryName}</strong></>
+                                )}
+                            </div>
+                            <div id="product-count-list" className="count-text"></div>
+                            <div id="applied-filters"></div>
+                            <button id="remove-all" className="remove-all-filters" style={{ display: "none" }}>
+                                <i className="icon icon-close"></i> Clear all filter
+                            </button>
+                        </div>
+
+                        {/* ── Error ── */}
+                        {error && !loading && (
+                            <div className="product-state">
+                                <p>{error}</p>
+                                <button onClick={() => { prevSlugRef.current = null; loadProducts(categoryId); }}>
+                                    Try Again
+                                </button>
+                            </div>
+                        )}
+
+                        {/* ── List layout ── */}
+                        <div className="tf-list-layout wrapper-shop" id="listLayout" style={{ display: layout === "list" ? "block" : "none" }}>
+
+                            {loading && layout === "list" &&
+                                Array.from({ length: skeletonCount }).map((_, i) => <SkeletonCard key={i} layout="list" />)
+                            }
+
+                            {!loading && !error && layout === "list" && sortedProducts.length === 0 && (
+                                <div className="product-state">No products found in this category.</div>
+                            )}
+
+                            {!loading && !error && sortedProducts.map((product, idx) => (
+                                <div
+                                    key={product.product_id || idx}
+                                    className="loadItem card-product style-list"
+                                    data-availability={product.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
+                                >
+                                    <div className="card-product-wrapper">
+                                        <Link to={`/product-details/${product.product_id}`} className="product-img">
+                                            <img
+                                                className="img-product lazyload"
+                                                data-src={product.product_image ?? DEFAULT_IMAGE}
+                                                src={product.product_image ?? DEFAULT_IMAGE}
+                                                alt={product.product_name}
+                                            />
+                                            <img
+                                                className="img-hover lazyload"
+                                                data-src={product.product_hover_image ?? product.product_image ?? DEFAULT_IMAGE}
+                                                src={product.product_hover_image ?? product.product_image ?? DEFAULT_IMAGE}
+                                                alt={product.product_name}
+                                            />
+                                        </Link>
+                                        {product.product_code && (
+                                            <div className="on-sale-wrap">
+                                                <span className="on-sale-item">{'#' + product.product_code}</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="card-product-info">
+                                        <div className="info-list">
+                                            <Link to={`/product-details/${product.product_id}`} className="name-product link fw-medium text-md">
+                                                {product.product_name}
+                                            </Link>
+                                            <p className="price-wrap fw-medium text-md">
+                                                <span className="price-new">${Number(product.product_price || 0).toFixed(2)}</span>
+                                                {product.product_old_price && (
+                                                    <span className="price-old">${Number(product.product_old_price).toFixed(2)}</span>
+                                                )}
+                                            </p>
+                                            {product.product_details && (
+                                                <p className="desc text-sm text-main text-line-clamp-2">
+                                                    {product.product_details}
+                                                </p>
+                                            )}
+                                        </div>
+                                        <div className="list-product-btn">
+                                            <Link to="#shoppingCart" data-bs-toggle="offcanvas" className="tf-btn btn-main-product add-to-cart animate-btn">
+                                                Add To Cart
+                                            </Link>
+                                            <Link to="#" className="box-icon wishlist hover-tooltip">
+                                                <span className="icon icon-heart2"></span>
+                                                <span className="tooltip">Add to Wishlist</span>
+                                            </Link>
+                                            <Link to="#quickView" data-bs-toggle="modal" className="box-icon hover-tooltip quickview">
+                                                <span className="icon icon-view"></span>
+                                                <span className="tooltip">Quick View</span>
+                                            </Link>
+                                            <Link to="#compare" data-bs-toggle="modal" aria-controls="compare" className="box-icon compare hover-tooltip">
+                                                <span className="icon icon-compare"></span>
+                                                <span className="tooltip">Add to Compare</span>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* ── Grid layout ── */}
+                        <div className={`wrapper-shop tf-grid-layout ${colsClass}`} id="gridLayout" style={{ display: layout === "grid" ? "" : "none" }}>
+
+                            {loading && layout === "grid" && (
+                                <div className="skeleton-grid-wrapper" style={{ gridColumn: "1 / -1" }}>
+                                    {Array.from({ length: skeletonCount }).map((_, i) => <SkeletonCard key={i} layout="grid" />)}
+                                </div>
+                            )}
+
+                            {!loading && !error && layout === "grid" && sortedProducts.length === 0 && (
+                                <div className="product-state" style={{ gridColumn: "1 / -1" }}>
+                                    No products found in this category.
+                                </div>
+                            )}
+
+                            {!loading && !error && sortedProducts.map((product, idx) => (
+                                <div
+                                    key={product.product_id || idx}
+                                    className="loadItem card-product grid card-product-size"
+                                    data-availability={product.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
+                                >
+                                    <div className="card-product-wrapper">
+                                        <Link to={`/product-details/${product.product_id}`} className="product-img">
+                                            <img
+                                                className="img-product lazyload"
+                                                data-src={product.product_image ?? DEFAULT_IMAGE}
+                                                src={product.product_image ?? DEFAULT_IMAGE}
+                                                alt={product.product_name}
+                                            />
+                                            <img
+                                                className="img-hover lazyload"
+                                                data-src={product.product_hover_image ?? product.product_image ?? DEFAULT_IMAGE}
+                                                src={product.product_hover_image ?? product.product_image ?? DEFAULT_IMAGE}
+                                                alt={product.product_name}
+                                            />
+                                        </Link>
+                                        {product.product_code && (
+                                            <div className="on-sale-wrap">
+                                                <span className="on-sale-item">{'#' + product.product_code}</span>
+                                            </div>
+                                        )}
+                                        <ul className="list-product-btn">
+                                            <li>
+                                                <Link to="#shoppingCart" data-bs-toggle="offcanvas" className="box-icon hover-tooltip tooltip-left">
+                                                    <span className="icon icon-cart2"></span>
+                                                    <span className="tooltip">Add to Cart</span>
+                                                </Link>
+                                            </li>
+                                            <li className="wishlist">
+                                                <Link to="#" className="box-icon hover-tooltip tooltip-left">
+                                                    <span className="icon icon-heart2"></span>
+                                                    <span className="tooltip">Add to Wishlist</span>
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link to="#quickView" data-bs-toggle="modal" className="box-icon quickview hover-tooltip tooltip-left">
+                                                    <span className="icon icon-view"></span>
+                                                    <span className="tooltip">Quick View</span>
+                                                </Link>
+                                            </li>
+                                            <li className="compare">
+                                                <Link to="#compare" data-bs-toggle="modal" aria-controls="compare" className="box-icon hover-tooltip tooltip-left">
+                                                    <span className="icon icon-compare"></span>
+                                                    <span className="tooltip">Add to Compare</span>
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div className="card-product-info">
+                                        <Link to={`/product-details/${product.product_id}`} className="name-product link fw-medium text-md">
+                                            {product.product_name}
+                                        </Link>
+                                        <p className="price-wrap fw-medium">
+                                            <span className="price-new">${Number(product.product_price || 0).toFixed(2)}</span>
+                                            {product.product_old_price && (
+                                                <span className="price-old">${Number(product.product_old_price).toFixed(2)}</span>
+                                            )}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            {/* <!-- Iconbox --> */}
+
+            <IconBoxSwiper />
+            {/* <!-- /Iconbox --> */}
+        </PageLayout>
     );
 }
