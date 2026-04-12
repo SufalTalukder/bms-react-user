@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import PageLayout from "../../PageLayout";
-import ProductList from "../../reusable-components/ProductsList";
+import ProductList from "../../reusable-components/CategoryWiseProductsList";
 import IconBoxSwiper from "../../reusable-components/IconBoxSwiper";
 
 export default function CategoryView() {

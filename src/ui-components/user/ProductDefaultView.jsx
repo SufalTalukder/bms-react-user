@@ -79,7 +79,7 @@ export default function ProductDefaultView() {
         <div className="flat-wrap-cls tf-grid-layout tf-col-2 xl-col-3">
             {paginate(list, page).map((item) => (
                 <div key={item[idKey]} className="wg-cls style-abs2 style-lg hover-img">
-                    <Link to={`${basePath}/${item[slugKey]}`} className="image-wrap relative">
+                    <Link to={`${basePath}/${item[slugKey]}`} className="image-wrap relative" style={{ backgroundColor: "#f5f5f5", borderRadius: "20px" }}>
                         <div className="image img-style">
                             <img
                                 src={item[imageKey] ?? defaultImage}
@@ -155,6 +155,7 @@ export default function ProductDefaultView() {
                             "/product-default/authors",
                             "sub_category_id",
                             "sub_category_name",
+                            "sub_category_slug",
                             "sub_category_image"
                         )}
                     </div>
@@ -174,6 +175,7 @@ export default function ProductDefaultView() {
                             "/product-default/languages",
                             "language_id",
                             "language_name",
+                            "language_slug",
                             "language_image"
                         )}
                     </div>

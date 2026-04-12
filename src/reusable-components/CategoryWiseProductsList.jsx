@@ -65,9 +65,8 @@ function sortProducts(products, sortValue) {
     }
 }
 
-export default function ProductList() {
+export default function CategoryWiseProductsList() {
 
-    // ── slug from URL → resolve category_id from context ──
     const { slug } = useParams();
     const { categoriesList } = useCategories();
     const resolvedCategory = categoriesList?.find((c) => c.category_slug === slug);
@@ -93,8 +92,8 @@ export default function ProductList() {
 
     useEffect(() => {
         if (!slug) return;
-        if (!categoriesList?.length) return;       // wait for context to load
-        if (prevSlugRef.current === slug) return;  // skip duplicate calls
+        if (!categoriesList?.length) return;
+        if (prevSlugRef.current === slug) return;
         if (!resolvedCategory) {
             setError(`Category not found.`);
             return;
@@ -112,7 +111,10 @@ export default function ProductList() {
             const res = await fetchProductsByCategoryId(catId);
             setProductsList(res?.data?.data || []);
         } catch (err) {
-            console.error("Error loading products:", err);
+            if (err?.response?.status === 404) {
+                return [];
+            }
+            console.error("Error loading products: ", err);
             setError("Failed to load products. Please try again.");
         } finally {
             setLoading(false);
@@ -232,7 +234,7 @@ export default function ProductList() {
                         <div className="meta-filter-shop">
                             <div id="product-count-grid" className="count-text">
                                 {!loading && sortedProducts.length > 0 && (
-                                    <>{sortedProducts.length} product{sortedProducts.length !== 1 ? "s" : ""} in <strong>{categoryName}</strong></>
+                                    <>{sortedProducts.length} item{sortedProducts.length !== 1 ? "s" : ""} in <strong>{categoryName}</strong></>
                                 )}
                             </div>
                             <div id="product-count-list" className="count-text"></div>
@@ -260,25 +262,25 @@ export default function ProductList() {
                             }
 
                             {!loading && !error && layout === "list" && sortedProducts.length === 0 && (
-                                <div className="product-state">No products found in this category.</div>
+                                <div className="product-state">No products found for this topic.</div>
                             )}
 
                             {!loading && !error && sortedProducts.map((product, idx) => (
                                 <div
                                     key={product.product_id || idx}
-                                    className="loadItem card-product style-list"
+                                    className={`loadItem card-product style-list pb-4 ${product?.product_stock === "IN_STOCK" ? "" : "out-of-stock"}`}
                                     data-availability={product.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
                                 >
-                                    <div className="card-product-wrapper">
+                                    <div className="card-product-wrapper" style={{ backgroundColor: "#f5f5f5" }}>
                                         <Link to={`/product-details/${product.product_id}`} className="product-img">
                                             <img
-                                                className="img-product lazyload"
+                                                className="img-product ls-is-cached lazyload"
                                                 data-src={product.product_image ?? DEFAULT_IMAGE}
                                                 src={product.product_image ?? DEFAULT_IMAGE}
                                                 alt={product.product_name}
                                             />
                                             <img
-                                                className="img-hover lazyload"
+                                                className="img-hover ls-is-cached lazyload"
                                                 data-src={product.product_hover_image ?? product.product_image ?? DEFAULT_IMAGE}
                                                 src={product.product_hover_image ?? product.product_image ?? DEFAULT_IMAGE}
                                                 alt={product.product_name}
@@ -286,7 +288,8 @@ export default function ProductList() {
                                         </Link>
                                         {product.product_code && (
                                             <div className="on-sale-wrap">
-                                                <span className="on-sale-item">{'#' + product.product_code}</span>
+                                                <span className="on-sale-item">{'Code: #' + product.product_code}</span>
+                                                <span className="on-sale-item" style={{ backgroundColor: "rgba(44, 163, 21, 0.1)", color: "#1d770b" }}>{'Available Items: ' + product?.product_availability}</span>
                                             </div>
                                         )}
                                     </div>
@@ -340,34 +343,35 @@ export default function ProductList() {
 
                             {!loading && !error && layout === "grid" && sortedProducts.length === 0 && (
                                 <div className="product-state" style={{ gridColumn: "1 / -1" }}>
-                                    No products found in this category.
+                                    No products found for this topic.
                                 </div>
                             )}
 
                             {!loading && !error && sortedProducts.map((product, idx) => (
                                 <div
                                     key={product.product_id || idx}
-                                    className="loadItem card-product grid card-product-size"
-                                    data-availability={product.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
+                                    className={`loadItem card-product grid card-product-size ${product?.product_stock === "IN_STOCK" ? "" : "out-of-stock"}`}
+                                    data-availability={product?.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
                                 >
-                                    <div className="card-product-wrapper">
-                                        <Link to={`/product-details/${product.product_id}`} className="product-img">
+                                    <div className="card-product-wrapper" style={{ backgroundColor: "#f5f5f5" }}>
+                                        <Link to={`/product-details/${product?.product_id}`} className="product-img">
                                             <img
-                                                className="img-product lazyload"
-                                                data-src={product.product_image ?? DEFAULT_IMAGE}
-                                                src={product.product_image ?? DEFAULT_IMAGE}
-                                                alt={product.product_name}
+                                                className="img-product ls-is-cached lazyload"
+                                                data-src={product?.product_image ?? DEFAULT_IMAGE}
+                                                src={product?.product_image ?? DEFAULT_IMAGE}
+                                                alt={product?.product_name}
                                             />
                                             <img
-                                                className="img-hover lazyload"
-                                                data-src={product.product_hover_image ?? product.product_image ?? DEFAULT_IMAGE}
-                                                src={product.product_hover_image ?? product.product_image ?? DEFAULT_IMAGE}
-                                                alt={product.product_name}
+                                                className="img-hover ls-is-cached lazyload"
+                                                data-src={product?.product_hover_image ?? product?.product_image ?? DEFAULT_IMAGE}
+                                                src={product?.product_hover_image ?? product?.product_image ?? DEFAULT_IMAGE}
+                                                alt={product?.product_name}
                                             />
                                         </Link>
-                                        {product.product_code && (
-                                            <div className="on-sale-wrap">
-                                                <span className="on-sale-item">{'#' + product.product_code}</span>
+                                        {product?.product_code && (
+                                            <div className="on-sale-wrap d-flex flex-column align-items-start">
+                                                <span className="on-sale-item">{'Code: #' + product?.product_code}</span>
+                                                <span className="on-sale-item" style={{ backgroundColor: "rgba(44, 163, 21, 0.1)", color: "#1d770b" }}>{'Available Items: ' + product?.product_availability}</span>
                                             </div>
                                         )}
                                         <ul className="list-product-btn">
@@ -403,9 +407,6 @@ export default function ProductList() {
                                         </Link>
                                         <p className="price-wrap fw-medium">
                                             <span className="price-new">${Number(product.product_price || 0).toFixed(2)}</span>
-                                            {product.product_old_price && (
-                                                <span className="price-old">${Number(product.product_old_price).toFixed(2)}</span>
-                                            )}
                                         </p>
                                     </div>
                                 </div>

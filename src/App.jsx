@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import HomeView from "./ui-components/user/HomeView";
-import CategoryView from "./ui-components/user/ProductCategoryWiseView";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import ProductDetailsView from "./ui-components/user/ProductDetailsView";
 import ProductDefaultView from "./ui-components/user/ProductDefaultView";
@@ -18,7 +17,9 @@ import { UserProvider } from "./context/UserContext";
 import { CategoryProvider } from "./context/CategoryContext";
 import { SubCategoryProvider } from "./context/SubCategoryContext";
 import { LanguageProvider } from "./context/LanguageContext";
-import ProductList from "./reusable-components/ProductsList";
+import CategoryWiseProductsList from "./reusable-components/CategoryWiseProductsList";
+import SubCategoryWiseProductsList from "./reusable-components/SubCategoryWiseProductsList";
+import LanguageWiseProductsList from "./reusable-components/LanguageWiseProductsList";
 
 export default function App() {
   return (
@@ -87,8 +88,9 @@ export default function App() {
                 <Route path="/" element={<HomeView />} />
                 <Route path="/product-details" element={<ProductDetailsView />} />
                 <Route path="/product-default" element={<ProductDefaultView />} />
-                {/* category/topic list view */}
-                <Route path="/product-default/topics/:slug" element={<ProductList />} />
+                <Route path="/product-default/topics/:slug" element={<CategoryWiseProductsList />} />
+                <Route path="/product-default/authors/:slug" element={<SubCategoryWiseProductsList />} />
+                <Route path="/product-default/languages/:slug" element={<LanguageWiseProductsList />} />
                 <Route path="/return-refund" element={<ReturnAndRefundView />} />
 
                 {/* Protected Routes */}

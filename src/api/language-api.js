@@ -5,3 +5,9 @@ const languageApi = handleApi(BASE_URLS.USER);
 // FETCH ALL CATEGORIES
 export const fetchAllLanguages = () =>
     languageApi.get("/api/v1/language-list");
+
+// FETCH ALL PRODUCTS BY LANGUAGE ID
+export const fetchProductsByLanguageId = (languageId) =>
+    languageApi.post("/api/v1/language-wise-products", {
+        language_id: languageId
+    });
