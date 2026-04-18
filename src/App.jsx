@@ -91,6 +91,7 @@ export default function App() {
                 <Route path="/product-default/topics/:slug" element={<CategoryWiseProductsList />} />
                 <Route path="/product-default/authors/:slug" element={<SubCategoryWiseProductsList />} />
                 <Route path="/product-default/languages/:slug" element={<LanguageWiseProductsList />} />
+                <Route path="/product-details/:slug" element={<ProductDetailsView />} />
                 <Route path="/return-refund" element={<ReturnAndRefundView />} />
 
                 {/* Protected Routes */}

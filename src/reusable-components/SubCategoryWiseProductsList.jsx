@@ -272,7 +272,7 @@ export default function SubCategoryWiseProductsList() {
                                     data-availability={product?.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
                                 >
                                     <div className="card-product-wrapper" style={{ backgroundColor: "#f5f5f5" }}>
-                                        <Link to={`/product-details/${product?.product_id}`} className="product-img">
+                                        <Link to={`/product-details/${product?.product_slug}`} className="product-img">
                                             <img
                                                 className="img-product ls-is-cached lazyload"
                                                 data-src={product?.product_image ?? DEFAULT_IMAGE}
@@ -304,7 +304,7 @@ export default function SubCategoryWiseProductsList() {
                                                     <span className="price-old">${Number(product?.product_old_price).toFixed(2)}</span>
                                                 )}
                                             </p>
-                                            {product.product_details && (
+                                            {product?.product_details && (
                                                 <p className="desc text-sm text-main text-line-clamp-2">
                                                     {product?.product_details}
                                                 </p>
@@ -349,12 +349,12 @@ export default function SubCategoryWiseProductsList() {
 
                             {!loading && !error && sortedProducts.map((product, idx) => (
                                 <div
-                                    key={product.product_id || idx}
+                                    key={product?.product_id || idx}
                                     className={`loadItem card-product grid card-product-size ${product?.product_stock === "IN_STOCK" ? "" : "out-of-stock"}`}
                                     data-availability={product?.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
                                 >
                                     <div className="card-product-wrapper" style={{ backgroundColor: "#f5f5f5" }}>
-                                        <Link to={`/product-details/${product?.product_id}`} className="product-img">
+                                        <Link to={`/product-details/${product?.product_slug}`} className="product-img">
                                             <img
                                                 className="img-product ls-is-cached lazyload"
                                                 data-src={product?.product_image ?? DEFAULT_IMAGE}
@@ -402,7 +402,7 @@ export default function SubCategoryWiseProductsList() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info">
-                                        <Link to={`/product-details/${product?.product_id}`} className="name-product link fw-medium text-md">
+                                        <Link to={`/product-details/${product?.product_slug}`} className="name-product link fw-medium text-md">
                                             {product?.product_name}
                                         </Link>
                                         <p className="price-wrap fw-medium">

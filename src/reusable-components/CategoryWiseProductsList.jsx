@@ -17,9 +17,6 @@ function SkeletonCard({ layout = "grid" }) {
                     <div className="skeleton-line skeleton-pulse" style={{ width: "30%", height: 16, marginTop: 8 }} />
                     <div className="skeleton-line skeleton-pulse" style={{ width: "90%", height: 12, marginTop: 12 }} />
                     <div className="skeleton-line skeleton-pulse" style={{ width: "80%", height: 12, marginTop: 6 }} />
-                    <div className="skeleton-swatches">
-                        {[1, 2, 3].map((s) => <div key={s} className="skeleton-swatch skeleton-pulse" />)}
-                    </div>
                     <div className="skeleton-btn skeleton-pulse" />
                 </div>
             </div>
@@ -30,9 +27,6 @@ function SkeletonCard({ layout = "grid" }) {
             <div className="skeleton-img skeleton-pulse" />
             <div className="skeleton-line skeleton-pulse" style={{ width: "70%", height: 16, marginTop: 12 }} />
             <div className="skeleton-line skeleton-pulse" style={{ width: "40%", height: 14, marginTop: 6 }} />
-            <div className="skeleton-swatches">
-                {[1, 2, 3].map((s) => <div key={s} className="skeleton-swatch skeleton-pulse" />)}
-            </div>
         </div>
     );
 }
@@ -267,46 +261,46 @@ export default function CategoryWiseProductsList() {
 
                             {!loading && !error && sortedProducts.map((product, idx) => (
                                 <div
-                                    key={product.product_id || idx}
+                                    key={product?.product_id || idx}
                                     className={`loadItem card-product style-list pb-4 ${product?.product_stock === "IN_STOCK" ? "" : "out-of-stock"}`}
-                                    data-availability={product.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
+                                    data-availability={product?.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
                                 >
                                     <div className="card-product-wrapper" style={{ backgroundColor: "#f5f5f5" }}>
-                                        <Link to={`/product-details/${product.product_id}`} className="product-img">
+                                        <Link to={`/product-details/${product?.product_slug}`} className="product-img">
                                             <img
                                                 className="img-product ls-is-cached lazyload"
-                                                data-src={product.product_image ?? DEFAULT_IMAGE}
-                                                src={product.product_image ?? DEFAULT_IMAGE}
-                                                alt={product.product_name}
+                                                data-src={product?.product_image ?? DEFAULT_IMAGE}
+                                                src={product?.product_image ?? DEFAULT_IMAGE}
+                                                alt={product?.product_name}
                                             />
                                             <img
                                                 className="img-hover ls-is-cached lazyload"
-                                                data-src={product.product_hover_image ?? product.product_image ?? DEFAULT_IMAGE}
-                                                src={product.product_hover_image ?? product.product_image ?? DEFAULT_IMAGE}
-                                                alt={product.product_name}
+                                                data-src={product?.product_hover_image ?? product?.product_image ?? DEFAULT_IMAGE}
+                                                src={product?.product_hover_image ?? product?.product_image ?? DEFAULT_IMAGE}
+                                                alt={product?.product_name}
                                             />
                                         </Link>
                                         {product.product_code && (
                                             <div className="on-sale-wrap">
-                                                <span className="on-sale-item">{'Code: #' + product.product_code}</span>
+                                                <span className="on-sale-item">{'Code: #' + product?.product_code}</span>
                                                 <span className="on-sale-item" style={{ backgroundColor: "rgba(44, 163, 21, 0.1)", color: "#1d770b" }}>{'Available Items: ' + product?.product_availability}</span>
                                             </div>
                                         )}
                                     </div>
                                     <div className="card-product-info">
                                         <div className="info-list">
-                                            <Link to={`/product-details/${product.product_id}`} className="name-product link fw-medium text-md">
-                                                {product.product_name}
+                                            <Link to={`/product-details/${product?.product_slug}`} className="name-product link fw-medium text-md">
+                                                {product?.product_name}
                                             </Link>
                                             <p className="price-wrap fw-medium text-md">
-                                                <span className="price-new">${Number(product.product_price || 0).toFixed(2)}</span>
-                                                {product.product_old_price && (
-                                                    <span className="price-old">${Number(product.product_old_price).toFixed(2)}</span>
+                                                <span className="price-new">${Number(product?.product_price || 0).toFixed(2)}</span>
+                                                {product?.product_old_price && (
+                                                    <span className="price-old">${Number(product?.product_old_price).toFixed(2)}</span>
                                                 )}
                                             </p>
-                                            {product.product_details && (
+                                            {product?.product_details && (
                                                 <p className="desc text-sm text-main text-line-clamp-2">
-                                                    {product.product_details}
+                                                    {product?.product_details}
                                                 </p>
                                             )}
                                         </div>
@@ -349,12 +343,12 @@ export default function CategoryWiseProductsList() {
 
                             {!loading && !error && sortedProducts.map((product, idx) => (
                                 <div
-                                    key={product.product_id || idx}
+                                    key={product?.product_id || idx}
                                     className={`loadItem card-product grid card-product-size ${product?.product_stock === "IN_STOCK" ? "" : "out-of-stock"}`}
                                     data-availability={product?.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
                                 >
                                     <div className="card-product-wrapper" style={{ backgroundColor: "#f5f5f5" }}>
-                                        <Link to={`/product-details/${product?.product_id}`} className="product-img">
+                                        <Link to={`/product-details/${product?.product_slug}`} className="product-img">
                                             <img
                                                 className="img-product ls-is-cached lazyload"
                                                 data-src={product?.product_image ?? DEFAULT_IMAGE}
@@ -402,11 +396,11 @@ export default function CategoryWiseProductsList() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info">
-                                        <Link to={`/product-details/${product.product_id}`} className="name-product link fw-medium text-md">
-                                            {product.product_name}
+                                        <Link to={`/product-details/${product?.product_slug}`} className="name-product link fw-medium text-md">
+                                            {product?.product_name}
                                         </Link>
                                         <p className="price-wrap fw-medium">
-                                            <span className="price-new">${Number(product.product_price || 0).toFixed(2)}</span>
+                                            <span className="price-new">${Number(product?.product_price || 0).toFixed(2)}</span>
                                         </p>
                                     </div>
                                 </div>
