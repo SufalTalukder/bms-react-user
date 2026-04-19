@@ -79,7 +79,7 @@ export default function ProductDefaultView() {
         <div className="flat-wrap-cls tf-grid-layout tf-col-2 xl-col-3">
             {paginate(list, page).map((item) => (
                 <div key={item[idKey]} className="wg-cls style-abs2 style-lg hover-img">
-                    <Link to={`${basePath}/${item[slugKey]}`} className="image-wrap relative" style={{ backgroundColor: "#f5f5f5", borderRadius: "20px" }}>
+                    <Link to={`${basePath}/${item[slugKey]}/marketplace=Vineta`} className="image-wrap relative" style={{ backgroundColor: "#f5f5f5", borderRadius: "20px" }}>
                         <div className="image img-style">
                             <img
                                 src={item[imageKey] ?? defaultImage}
@@ -94,7 +94,7 @@ export default function ProductDefaultView() {
                         <span className="tf-overlay"></span>
                     </Link>
                     <div className="cls-content text-center">
-                        <Link to={`${basePath}/${item[slugKey]}`} className="text-type text-xl-2 fw-medium link">
+                        <Link to={`${basePath}/${item[slugKey]}/marketplace=Vineta`} className="text-type text-xl-2 fw-medium link">
                             {item[nameKey]}
                         </Link>
                     </div>

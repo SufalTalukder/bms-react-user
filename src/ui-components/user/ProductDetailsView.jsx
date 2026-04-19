@@ -125,7 +125,7 @@ const StarRating = ({ rating = 5, count }) => {
 
 export default function ProductDetailsView() {
 
-    const { slug } = useParams();
+    const { slug } = useParams(1);
     const [productDetails, setProductDetails] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -133,12 +133,15 @@ export default function ProductDetailsView() {
     const [selectedColor, setSelectedColor] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
     const prevSlugRef = useRef(null);
+    const hasFetched = useRef(false);
 
     useEffect(() => {
         document.title = "Product Details";
     }, []);
 
     useEffect(() => {
+        if (hasFetched.current) return;
+        hasFetched.current = true;
         if (slug) {
             loadProductDetails(slug);
         }
@@ -227,7 +230,7 @@ export default function ProductDetailsView() {
                                         <div className="breadcrumb-item dot"><span /></div>
                                         <Link
                                             className="breadcrumb-item"
-                                            to={`/product-default/topics/${product?.category_slug}`}
+                                            to={`/product-default/topics/${product?.category_slug}/marketplace=Vineta`}
                                         >
                                             {categoryName}
                                         </Link>
@@ -238,7 +241,7 @@ export default function ProductDetailsView() {
                                         <div className="breadcrumb-item dot"><span /></div>
                                         <Link
                                             className="breadcrumb-item"
-                                            to={`/product-default/authors/${product?.sub_category_slug}`}
+                                            to={`/product-default/authors/${product?.sub_category_slug}/marketplace=Vineta`}
                                         >
                                             {subCategoryName}
                                         </Link>
@@ -249,7 +252,7 @@ export default function ProductDetailsView() {
                                         <div className="breadcrumb-item dot"><span /></div>
                                         <Link
                                             className="breadcrumb-item"
-                                            to={`/product-default/languages/${product?.language_slug}`}
+                                            to={`/product-default/languages/${product?.language_slug}/marketplace=Vineta`}
                                         >
                                             {languageName}
                                         </Link>
@@ -260,7 +263,7 @@ export default function ProductDetailsView() {
                             </div>
                             <div className="breadcrumb-prev-next">
                                 <Link to="#" className="breadcrumb-prev"><i className="icon icon-arr-left" /></Link>
-                                <Link to="/products" className="breadcrumb-back"><i className="icon icon-shop" /></Link>
+                                <Link to="/product-default/marketplace=Vineta" className="breadcrumb-back"><i className="icon icon-shop" /></Link>
                                 <Link to="#" className="breadcrumb-next"><i className="icon icon-arr-right2" /></Link>
                             </div>
                         </div>
@@ -291,7 +294,7 @@ export default function ProductDetailsView() {
                             <div className="text-center py-5">
                                 <h4>Product Not Found</h4>
                                 <p className="text-main-4">The product you're looking for doesn't exist or has been removed.</p>
-                                <Link to="/products" className="tf-btn btn-primary animate-btn mt-3">
+                                <Link to="/product-default/marketplace=Vineta" className="tf-btn btn-primary animate-btn mt-3">
                                     Browse Products
                                 </Link>
                             </div>

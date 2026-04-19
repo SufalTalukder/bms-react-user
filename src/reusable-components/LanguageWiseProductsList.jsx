@@ -272,7 +272,7 @@ export default function LanguageWiseProductsList() {
                                     data-availability={product?.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
                                 >
                                     <div className="card-product-wrapper" style={{ backgroundColor: "#f5f5f5" }}>
-                                        <Link to={`/product-details/${product?.product_slug}`} className="product-img">
+                                        <Link to={`/product-details/${product?.product_slug}/marketplace=Vineta`} className="product-img">
                                             <img
                                                 className="img-product ls-is-cached lazyload"
                                                 data-src={product?.product_image ?? DEFAULT_IMAGE}
@@ -295,7 +295,7 @@ export default function LanguageWiseProductsList() {
                                     </div>
                                     <div className="card-product-info">
                                         <div className="info-list">
-                                            <Link to={`/product-details/${product?.product_slug}`} className="name-product link fw-medium text-md">
+                                            <Link to={`/product-details/${product?.product_slug}/marketplace=Vineta`} className="name-product link fw-medium text-md">
                                                 {product?.product_name}
                                             </Link>
                                             <p className="price-wrap fw-medium text-md">
@@ -354,7 +354,7 @@ export default function LanguageWiseProductsList() {
                                     data-availability={product?.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
                                 >
                                     <div className="card-product-wrapper" style={{ backgroundColor: "#f5f5f5" }}>
-                                        <Link to={`/product-details/${product?.product_slug}`} className="product-img">
+                                        <Link to={`/product-details/${product?.product_slug}/marketplace=Vineta`} className="product-img">
                                             <img
                                                 className="img-product ls-is-cached lazyload"
                                                 data-src={product?.product_image ?? DEFAULT_IMAGE}
@@ -402,7 +402,7 @@ export default function LanguageWiseProductsList() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info">
-                                        <Link to={`/product-details/${product?.product_slug}`} className="name-product link fw-medium text-md">
+                                        <Link to={`/product-details/${product?.product_slug}/marketplace=Vineta`} className="name-product link fw-medium text-md">
                                             {product?.product_name}
                                         </Link>
                                         <p className="price-wrap fw-medium">

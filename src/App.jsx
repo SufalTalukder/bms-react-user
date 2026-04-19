@@ -86,22 +86,21 @@ export default function App() {
               <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<HomeView />} />
-                <Route path="/product-details" element={<ProductDetailsView />} />
-                <Route path="/product-default" element={<ProductDefaultView />} />
-                <Route path="/product-default/topics/:slug" element={<CategoryWiseProductsList />} />
-                <Route path="/product-default/authors/:slug" element={<SubCategoryWiseProductsList />} />
-                <Route path="/product-default/languages/:slug" element={<LanguageWiseProductsList />} />
-                <Route path="/product-details/:slug" element={<ProductDetailsView />} />
-                <Route path="/return-refund" element={<ReturnAndRefundView />} />
+                <Route path="/product-default/marketplace=Vineta" element={<ProductDefaultView />} />
+                <Route path="/product-default/topics/:slug/marketplace=Vineta" element={<CategoryWiseProductsList />} />
+                <Route path="/product-default/authors/:slug/marketplace=Vineta" element={<SubCategoryWiseProductsList />} />
+                <Route path="/product-default/languages/:slug/marketplace=Vineta" element={<LanguageWiseProductsList />} />
+                <Route path="/product-details/:slug/marketplace=Vineta" element={<ProductDetailsView />} />
+                <Route path="/return-refund/marketplace=Vineta" element={<ReturnAndRefundView />} />
 
                 {/* Protected Routes */}
                 <Route element={<PrivateRoute />}>
-                  <Route path="/wish-list" element={<WishlistView />} />
-                  <Route path="/cart-list" element={<AddToCartView />} />
-                  <Route path="/my-account" element={<DashboardView />} />
-                  <Route path="/my-orders" element={<MyOrdersView />} />
-                  <Route path="/my-addresses" element={<MyAddressView />} />
-                  <Route path="/my-account-details" element={<MyAccountDetails />} />
+                  <Route path="/wish-list/marketplace=Vineta" element={<WishlistView />} />
+                  <Route path="/cart-list/marketplace=Vineta" element={<AddToCartView />} />
+                  <Route path="/my-account/marketplace=Vineta" element={<DashboardView />} />
+                  <Route path="/my-orders/marketplace=Vineta" element={<MyOrdersView />} />
+                  <Route path="/my-addresses/marketplace=Vineta" element={<MyAddressView />} />
+                  <Route path="/my-account-details/marketplace=Vineta" element={<MyAccountDetails />} />
                 </Route>
 
                 {/* 404 */}
