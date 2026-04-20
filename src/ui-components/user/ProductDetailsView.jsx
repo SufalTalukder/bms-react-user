@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import PageLayout from "../../PageLayout";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import ProductGallery from "../../reusable-components/ProductGallery";
 import RecentlyViewed from "../../reusable-components/RecentlyViewedSwiper";
 import IconBoxSwiper from "../../reusable-components/IconBoxSwiper";
@@ -125,7 +125,11 @@ const StarRating = ({ rating = 5, count }) => {
 
 export default function ProductDetailsView() {
 
-    const { slug } = useParams(1);
+    const { slug } = useParams();
+    const { search } = useLocation();
+    const query = new URLSearchParams(search);
+    const marketplace = query.get("marketplace");
+    const eventId = query.get("eid");
     const [productDetails, setProductDetails] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -142,10 +146,10 @@ export default function ProductDetailsView() {
     useEffect(() => {
         if (hasFetched.current) return;
         hasFetched.current = true;
-        if (slug) {
-            loadProductDetails(slug);
+        if (slug && eventId) {
+            loadProductDetails(slug, eventId);
         }
-    }, [slug]);
+    }, [slug, eventId]);
 
     useEffect(() => {
         if (productDetails?.product_name) {
@@ -153,12 +157,16 @@ export default function ProductDetailsView() {
         }
     }, [productDetails]);
 
-    const loadProductDetails = async (productSlug) => {
+    const loadProductDetails = async (productSlug, eventId) => {
         try {
+            const payloadData = {
+                product_slug: productSlug,
+                event_id: eventId,
+            };
             setLoading(true);
             setError(null);
             const isSameProduct = prevSlugRef.current === productSlug;
-            const res = await fetchProductDetailsByProductSlug(isSameProduct ? null : productSlug);
+            const res = await fetchProductDetailsByProductSlug(isSameProduct ? null : payloadData);
             const data = res.data?.data || null;
             setProductDetails(data);
             prevSlugRef.current = productSlug;
@@ -230,7 +238,7 @@ export default function ProductDetailsView() {
                                         <div className="breadcrumb-item dot"><span /></div>
                                         <Link
                                             className="breadcrumb-item"
-                                            to={`/product-default/topics/${product?.category_slug}/marketplace=Vineta`}
+                                            to={`/product-default/topics/${product?.category_slug}?eid=${product?.c_event_id}&marketplace=Vineta`}
                                         >
                                             {categoryName}
                                         </Link>
@@ -241,7 +249,7 @@ export default function ProductDetailsView() {
                                         <div className="breadcrumb-item dot"><span /></div>
                                         <Link
                                             className="breadcrumb-item"
-                                            to={`/product-default/authors/${product?.sub_category_slug}/marketplace=Vineta`}
+                                            to={`/product-default/authors/${product?.sub_category_slug}?eid=${product?.sc_event_id}&marketplace=Vineta`}
                                         >
                                             {subCategoryName}
                                         </Link>
@@ -252,7 +260,7 @@ export default function ProductDetailsView() {
                                         <div className="breadcrumb-item dot"><span /></div>
                                         <Link
                                             className="breadcrumb-item"
-                                            to={`/product-default/languages/${product?.language_slug}/marketplace=Vineta`}
+                                            to={`/product-default/languages/${product?.language_slug}?eid=${product?.l_event_id}&marketplace=Vineta`}
                                         >
                                             {languageName}
                                         </Link>
@@ -263,7 +271,7 @@ export default function ProductDetailsView() {
                             </div>
                             <div className="breadcrumb-prev-next">
                                 <Link to="#" className="breadcrumb-prev"><i className="icon icon-arr-left" /></Link>
-                                <Link to="/product-default/marketplace=Vineta" className="breadcrumb-back"><i className="icon icon-shop" /></Link>
+                                <Link to="/product-default?marketplace=Vineta" className="breadcrumb-back"><i className="icon icon-shop" /></Link>
                                 <Link to="#" className="breadcrumb-next"><i className="icon icon-arr-right2" /></Link>
                             </div>
                         </div>
@@ -294,7 +302,7 @@ export default function ProductDetailsView() {
                             <div className="text-center py-5">
                                 <h4>Product Not Found</h4>
                                 <p className="text-main-4">The product you're looking for doesn't exist or has been removed.</p>
-                                <Link to="/product-default/marketplace=Vineta" className="tf-btn btn-primary animate-btn mt-3">
+                                <Link to="/product-default?marketplace=Vineta" className="tf-btn btn-primary animate-btn mt-3">
                                     Browse Products
                                 </Link>
                             </div>

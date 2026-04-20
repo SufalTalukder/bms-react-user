@@ -7,7 +7,5 @@ export const fetchAllLanguages = () =>
     languageApi.get("/api/v1/language-list");
 
 // FETCH ALL PRODUCTS BY LANGUAGE ID
-export const fetchProductsByLanguageId = (languageId) =>
-    languageApi.post("/api/v1/language-wise-products", {
-        language_id: languageId
-    });
+export const fetchProductsByLanguageId = (data) =>
+    languageApi.post("/api/v1/language-wise-products", data);

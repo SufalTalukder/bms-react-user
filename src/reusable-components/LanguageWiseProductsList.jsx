@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import IconBoxSwiper from "./IconBoxSwiper";
 import PageLayout from "../PageLayout";
 import { useLanguages } from "../context/LanguageContext";
@@ -68,6 +68,10 @@ function sortProducts(products, sortValue) {
 export default function LanguageWiseProductsList() {
 
     const { slug } = useParams();
+    const { search } = useLocation();
+    const query = new URLSearchParams(search);
+    const marketplace = query.get("marketplace");
+    const eventId = query.get("eid");
     const { languagesList } = useLanguages();
     const resolvedLanguage = languagesList?.find((l) => l.language_slug === slug);
     const languageId = resolvedLanguage?.language_id ?? null;
@@ -100,15 +104,19 @@ export default function LanguageWiseProductsList() {
         }
         prevSlugRef.current = slug;
         document.title = `${languageName} - BMS Book Store`;
-        loadProducts(languageId);
-    }, [slug, languageId, languagesList]);
+        loadProducts(languageId, eventId);
+    }, [slug, languageId, eventId, languagesList]);
 
-    const loadProducts = async (langId) => {
+    const loadProducts = async (langId, eventId) => {
         try {
+            const data = {
+                language_id: langId,
+                event_id: eventId,
+            };
             setLoading(true);
             setError(null);
             setProductsList([]);
-            const res = await fetchProductsByLanguageId(langId);
+            const res = await fetchProductsByLanguageId(data);
             setProductsList(res?.data?.data || []);
         } catch (err) {
             if (err?.response?.status === 404) {
@@ -272,7 +280,7 @@ export default function LanguageWiseProductsList() {
                                     data-availability={product?.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
                                 >
                                     <div className="card-product-wrapper" style={{ backgroundColor: "#f5f5f5" }}>
-                                        <Link to={`/product-details/${product?.product_slug}/marketplace=Vineta`} className="product-img">
+                                        <Link to={`/product-details/${product?.product_slug}?eid=${product?.event_id}&marketplace=Vineta`} className="product-img">
                                             <img
                                                 className="img-product ls-is-cached lazyload"
                                                 data-src={product?.product_image ?? DEFAULT_IMAGE}
@@ -295,7 +303,7 @@ export default function LanguageWiseProductsList() {
                                     </div>
                                     <div className="card-product-info">
                                         <div className="info-list">
-                                            <Link to={`/product-details/${product?.product_slug}/marketplace=Vineta`} className="name-product link fw-medium text-md">
+                                            <Link to={`/product-details/${product?.product_slug}?eid=${product?.event_id}&marketplace=Vineta`} className="name-product link fw-medium text-md">
                                                 {product?.product_name}
                                             </Link>
                                             <p className="price-wrap fw-medium text-md">
@@ -354,7 +362,7 @@ export default function LanguageWiseProductsList() {
                                     data-availability={product?.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
                                 >
                                     <div className="card-product-wrapper" style={{ backgroundColor: "#f5f5f5" }}>
-                                        <Link to={`/product-details/${product?.product_slug}/marketplace=Vineta`} className="product-img">
+                                        <Link to={`/product-details/${product?.product_slug}?eid=${product?.event_id}&marketplace=Vineta`} className="product-img">
                                             <img
                                                 className="img-product ls-is-cached lazyload"
                                                 data-src={product?.product_image ?? DEFAULT_IMAGE}
@@ -402,7 +410,7 @@ export default function LanguageWiseProductsList() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info">
-                                        <Link to={`/product-details/${product?.product_slug}/marketplace=Vineta`} className="name-product link fw-medium text-md">
+                                        <Link to={`/product-details/${product?.product_slug}?eid=${product?.event_id}&marketplace=Vineta`} className="name-product link fw-medium text-md">
                                             {product?.product_name}
                                         </Link>
                                         <p className="price-wrap fw-medium">

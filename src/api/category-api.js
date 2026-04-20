@@ -7,7 +7,5 @@ export const fetchAllCategories = () =>
     categoryApi.get("/api/v1/category-list");
 
 // FETCH ALL PRODUCTS BY CATEGORY ID
-export const fetchProductsByCategoryId = (categoryId) =>
-    categoryApi.post("/api/v1/category-wise-products", {
-        category_id: categoryId
-    });
+export const fetchProductsByCategoryId = (data) =>
+    categoryApi.post("/api/v1/category-wise-products", data);

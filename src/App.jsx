@@ -86,11 +86,11 @@ export default function App() {
               <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<HomeView />} />
-                <Route path="/product-default/marketplace=Vineta" element={<ProductDefaultView />} />
-                <Route path="/product-default/topics/:slug/marketplace=Vineta" element={<CategoryWiseProductsList />} />
-                <Route path="/product-default/authors/:slug/marketplace=Vineta" element={<SubCategoryWiseProductsList />} />
-                <Route path="/product-default/languages/:slug/marketplace=Vineta" element={<LanguageWiseProductsList />} />
-                <Route path="/product-details/:slug/marketplace=Vineta" element={<ProductDetailsView />} />
+                <Route path="/product-default" element={<ProductDefaultView />} />
+                <Route path="/product-default/topics/:slug" element={<CategoryWiseProductsList />} />
+                <Route path="/product-default/authors/:slug" element={<SubCategoryWiseProductsList />} />
+                <Route path="/product-default/languages/:slug" element={<LanguageWiseProductsList />} />
+                <Route path="/product-details/:slug" element={<ProductDetailsView />} />
                 <Route path="/return-refund/marketplace=Vineta" element={<ReturnAndRefundView />} />
 
                 {/* Protected Routes */}

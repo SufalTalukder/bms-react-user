@@ -86,7 +86,7 @@ function ProductCard({ product }) {
     return (
         <div className="card-product style-3 style-center style-book style-primary style-border-3 none-hover-img">
             <div className="card-product-wrapper">
-                <Link to={`/product-details/${product.product_slug}/marketplace=Vineta`} className="product-img">
+                <Link to={`/product-details/${product.product_slug}?eid=${product?.p_event_id}&marketplace=Vineta`} className="product-img">
                     <img
                         className="img-product lazyload"
                         src={imageUrl}
@@ -137,7 +137,7 @@ function ProductCard({ product }) {
             </div>
             <div className="card-product-info text-center">
                 <Link
-                    to={`/product-details/${product.product_slug}/marketplace=Vineta`}
+                    to={`/product-details/${product.product_slug}?eid=${product?.p_event_id}&marketplace=Vineta`}
                     className="name-product link fw-medium text-md"
                 >
                     {product.product_name}

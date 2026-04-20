@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { fetchProductsByCategoryId } from "../api/category-api";
 import { useCategories } from "../context/CategoryContext";
 import IconBoxSwiper from "./IconBoxSwiper";
@@ -62,6 +62,10 @@ function sortProducts(products, sortValue) {
 export default function CategoryWiseProductsList() {
 
     const { slug } = useParams();
+    const { search } = useLocation();
+    const query = new URLSearchParams(search);
+    const marketplace = query.get("marketplace");
+    const eventId = query.get("eid");
     const { categoriesList } = useCategories();
     const resolvedCategory = categoriesList?.find((c) => c.category_slug === slug);
     const categoryId = resolvedCategory?.category_id ?? null;
@@ -94,15 +98,19 @@ export default function CategoryWiseProductsList() {
         }
         prevSlugRef.current = slug;
         document.title = `${categoryName} - Vineta Book Store`;
-        loadProducts(categoryId);
-    }, [slug, categoryId, categoriesList]);
+        loadProducts(categoryId, eventId);
+    }, [slug, categoryId, eventId, categoriesList]);
 
-    const loadProducts = async (catId) => {
+    const loadProducts = async (catId, eventId) => {
         try {
+            const data = {
+                category_id: catId,
+                event_id: eventId,
+            };
             setLoading(true);
             setError(null);
             setProductsList([]);
-            const res = await fetchProductsByCategoryId(catId);
+            const res = await fetchProductsByCategoryId(data);
             setProductsList(res?.data?.data || []);
         } catch (err) {
             if (err?.response?.status === 404) {
@@ -266,7 +274,7 @@ export default function CategoryWiseProductsList() {
                                     data-availability={product?.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
                                 >
                                     <div className="card-product-wrapper" style={{ backgroundColor: "#f5f5f5" }}>
-                                        <Link to={`/product-details/${product?.product_slug}/marketplace=Vineta`} className="product-img">
+                                        <Link to={`/product-details/${product?.product_slug}?eid=${product?.event_id}&marketplace=Vineta`} className="product-img">
                                             <img
                                                 className="img-product ls-is-cached lazyload"
                                                 data-src={product?.product_image ?? DEFAULT_IMAGE}
@@ -289,7 +297,7 @@ export default function CategoryWiseProductsList() {
                                     </div>
                                     <div className="card-product-info">
                                         <div className="info-list">
-                                            <Link to={`/product-details/${product?.product_slug}/marketplace=Vineta`} className="name-product link fw-medium text-md">
+                                            <Link to={`/product-details/${product?.product_slug}?eid=${product?.event_id}&marketplace=Vineta`} className="name-product link fw-medium text-md">
                                                 {product?.product_name}
                                             </Link>
                                             <p className="price-wrap fw-medium text-md">
@@ -348,7 +356,7 @@ export default function CategoryWiseProductsList() {
                                     data-availability={product?.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
                                 >
                                     <div className="card-product-wrapper" style={{ backgroundColor: "#f5f5f5" }}>
-                                        <Link to={`/product-details/${product?.product_slug}/marketplace=Vineta`} className="product-img">
+                                        <Link to={`/product-details/${product?.product_slug}?eid=${product?.event_id}&marketplace=Vineta`} className="product-img">
                                             <img
                                                 className="img-product ls-is-cached lazyload"
                                                 data-src={product?.product_image ?? DEFAULT_IMAGE}
@@ -396,7 +404,7 @@ export default function CategoryWiseProductsList() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info">
-                                        <Link to={`/product-details/${product?.product_slug}/marketplace=Vineta`} className="name-product link fw-medium text-md">
+                                        <Link to={`/product-details/${product?.product_slug}?eid=${product?.event_id}&marketplace=Vineta`} className="name-product link fw-medium text-md">
                                             {product?.product_name}
                                         </Link>
                                         <p className="price-wrap fw-medium">

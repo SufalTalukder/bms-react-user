@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import IconBoxSwiper from "./IconBoxSwiper";
 import PageLayout from "../PageLayout";
 import { fetchProductsBySubCategoryId } from "../api/sub-category-api";
@@ -68,6 +68,10 @@ function sortProducts(products, sortValue) {
 export default function SubCategoryWiseProductsList() {
 
     const { slug } = useParams();
+    const { search } = useLocation();
+    const query = new URLSearchParams(search);
+    const marketplace = query.get("marketplace");
+    const eventId = query.get("eid");
     const { subCategoriesList } = useSubCategories();
     const resolvedSubCategory = subCategoriesList?.find((sc) => sc.sub_category_slug === slug);
     const subCategoryId = resolvedSubCategory?.sub_category_id ?? null;
@@ -100,15 +104,19 @@ export default function SubCategoryWiseProductsList() {
         }
         prevSlugRef.current = slug;
         document.title = `${subCategoryName} - BMS Book Store`;
-        loadProducts(subCategoryId);
-    }, [slug, subCategoryId, subCategoriesList]);
+        loadProducts(subCategoryId, eventId);
+    }, [slug, subCategoryId, eventId, subCategoriesList]);
 
-    const loadProducts = async (scatId) => {
+    const loadProducts = async (scatId, eventId) => {
         try {
+            const data = {
+                sub_category_id: scatId,
+                event_id: eventId,
+            };
             setLoading(true);
             setError(null);
             setProductsList([]);
-            const res = await fetchProductsBySubCategoryId(scatId);
+            const res = await fetchProductsBySubCategoryId(data);
             setProductsList(res?.data?.data || []);
         } catch (err) {
             if (err?.response?.status === 404) {
@@ -272,7 +280,7 @@ export default function SubCategoryWiseProductsList() {
                                     data-availability={product?.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
                                 >
                                     <div className="card-product-wrapper" style={{ backgroundColor: "#f5f5f5" }}>
-                                        <Link to={`/product-details/${product?.product_slug}/marketplace=Vineta`} className="product-img">
+                                        <Link to={`/product-details/${product?.product_slug}?eid=${product?.event_id}&marketplace=Vineta`} className="product-img">
                                             <img
                                                 className="img-product ls-is-cached lazyload"
                                                 data-src={product?.product_image ?? DEFAULT_IMAGE}
@@ -295,7 +303,7 @@ export default function SubCategoryWiseProductsList() {
                                     </div>
                                     <div className="card-product-info">
                                         <div className="info-list">
-                                            <Link to={`/product-details/${product?.product_id}/marketplace=Vineta`} className="name-product link fw-medium text-md">
+                                            <Link to={`/product-details/${product?.product_id}?eid=${product?.event_id}&marketplace=Vineta`} className="name-product link fw-medium text-md">
                                                 {product?.product_name}
                                             </Link>
                                             <p className="price-wrap fw-medium text-md">
@@ -354,7 +362,7 @@ export default function SubCategoryWiseProductsList() {
                                     data-availability={product?.product_stock === "IN_STOCK" ? "In stock" : "Out of stock"}
                                 >
                                     <div className="card-product-wrapper" style={{ backgroundColor: "#f5f5f5" }}>
-                                        <Link to={`/product-details/${product?.product_slug}/marketplace=Vineta`} className="product-img">
+                                        <Link to={`/product-details/${product?.product_slug}?eid=${product?.event_id}&marketplace=Vineta`} className="product-img">
                                             <img
                                                 className="img-product ls-is-cached lazyload"
                                                 data-src={product?.product_image ?? DEFAULT_IMAGE}
@@ -402,7 +410,7 @@ export default function SubCategoryWiseProductsList() {
                                         </ul>
                                     </div>
                                     <div className="card-product-info">
-                                        <Link to={`/product-details/${product?.product_slug}/marketplace=Vineta`} className="name-product link fw-medium text-md">
+                                        <Link to={`/product-details/${product?.product_slug}?eid=${product?.event_id}&marketplace=Vineta`} className="name-product link fw-medium text-md">
                                             {product?.product_name}
                                         </Link>
                                         <p className="price-wrap fw-medium">

@@ -147,7 +147,7 @@ export default function Header() {
                                 <ul className="mega-categories rgb-primary" style={{ maxHeight: "350px", overflowY: "scroll" }}>
                                     {categoriesList.map((item, index) => (
                                         <li key={index}>
-                                            <Link to={`/product-default/topics/${item?.category_slug}/marketplace=Vineta`} className="cate-item">
+                                            <Link to={`/product-default/topics/${item?.category_slug}?eid=${item?.event_id}&marketplace=Vineta`} className="cate-item">
                                                 <div className="img"><img src={item?.category_image ?? defaultCategoryImage} alt="topics" />
                                                 </div>
                                                 <span className="name-cate">{item?.category_name}</span>
@@ -163,7 +163,7 @@ export default function Header() {
                                 <ul className="mega-categories rgb-primary" style={{ maxHeight: "350px", overflowY: "scroll" }}>
                                     {subCategoriesList.map((item, index) => (
                                         <li key={index}>
-                                            <Link to={`/product-default/authors/${item?.sub_category_slug}/marketplace=Vineta`} className="cate-item">
+                                            <Link to={`/product-default/authors/${item?.sub_category_slug}?eid=${item?.event_id}&marketplace=Vineta`} className="cate-item">
                                                 <div className="img"><img src={item?.sub_category_image ?? defaultSubCategoryImage} alt="authors" />
                                                 </div>
                                                 <span className="name-cate">{item?.sub_category_name}</span>
@@ -179,7 +179,7 @@ export default function Header() {
                                 <ul className="mega-categories rgb-primary" style={{ maxHeight: "350px", overflowY: "scroll" }}>
                                     {languagesList.map((item, index) => (
                                         <li key={index}>
-                                            <Link to={`/product-default/languages/${item?.language_slug}/marketplace=Vineta`} className="cate-item">
+                                            <Link to={`/product-default/languages/${item?.language_slug}?eid=${item?.event_id}&marketplace=Vineta`} className="cate-item">
                                                 <div className="img"><img src={item?.language_image ?? defaultLanguageImage} alt="languages" />
                                                 </div>
                                                 <span className="name-cate">{item?.language_name}</span>
@@ -189,7 +189,7 @@ export default function Header() {
                                 </ul>
                             </div>
                             <div className="tf-mega-categories">
-                                <Link to="/product-default/marketplace=Vineta" className="categories-title"><i className="icon icon-categories"></i>
+                                <Link to="/product-default?marketplace=Vineta" className="categories-title"><i className="icon icon-categories"></i>
                                     browse all
                                 </Link>
                             </div>
