@@ -44,7 +44,7 @@ const reviews = [
 
 export default function CustomerReviewsSwiper() {
     return (
-        <section className="flat-spacing-3 pt-0">
+        <section className="flat-spacing-3 pt-5">
             <div className="container">
                 <div className="flat-title-2 wow fadeInUp">
                     <h3 className="display-lg-2 title text-center fw-semibold text-dark-10">

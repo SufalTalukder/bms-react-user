@@ -37,10 +37,6 @@ export default function HomeView() {
       <CategorySwiper />
       {/* <!-- /Categories --> */}
 
-      {/* <!-- Featured Products --> */}
-      <FeaturedProductsSwiper />
-      {/* <!-- /Featured Products --> */}
-
       {/* <!-- Customer Reviews --> */}
       <CustomerReviewsSwiper />
       {/* <!-- /Customer Reviews --> */}

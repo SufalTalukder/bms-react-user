@@ -4,6 +4,8 @@ import IconBoxSwiper from "./IconBoxSwiper";
 import PageLayout from "../PageLayout";
 import { useLanguages } from "../context/LanguageContext";
 import { fetchProductsByLanguageId } from "../api/language-api";
+import { fetchWishlistStatusByProductAndUser, manageWishlist } from "../api/product-api";
+import toast from "react-hot-toast";
 
 const DEFAULT_IMAGE = "/assets/images/cls-categories/book/fiction.png";
 
@@ -76,6 +78,8 @@ export default function LanguageWiseProductsList() {
     const resolvedLanguage = languagesList?.find((l) => l.language_slug === slug);
     const languageId = resolvedLanguage?.language_id ?? null;
     const languageName = resolvedLanguage?.language_name ?? "Products";
+    const userData = sessionStorage.getItem("user") ?? null;
+    const userId = userData ? JSON.parse(userData)?.user_id : null;
 
     const [productsList, setProductsList] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -87,7 +91,12 @@ export default function LanguageWiseProductsList() {
     const [skeletonCount, setSkeletonCount] = useState(8);
     const prevSlugRef = useRef(null);
 
+    // Wishlist state
+    const [wishlistMap, setWishlistMap] = useState({});
+    const [wishlistLoadingMap, setWishlistLoadingMap] = useState({});
+
     useEffect(() => {
+        window.scrollTo(0, 0);
         const update = () => setSkeletonCount(getSkeletonCount(layout, colsClass));
         update();
         window.addEventListener("resize", update);
@@ -107,25 +116,71 @@ export default function LanguageWiseProductsList() {
         loadProducts(languageId, eventId);
     }, [slug, languageId, eventId, languagesList]);
 
+    const loadAllWishlistStatuses = useCallback(async (productList) => {
+        if (!userId || !productList?.length) return;
+
+        await Promise.all(
+            productList.map(async (p) => {
+                try {
+                    const res = await fetchWishlistStatusByProductAndUser({
+                        product_id: p.product_id,
+                        user_id: userId,
+                    });
+                    const status = res?.data?.data?.add_to_wishlist_status ?? 'NO';
+                    setWishlistMap(prev => ({ ...prev, [p.product_id]: status }));
+                } catch (err) {
+                    if (err?.response?.status === 404) {
+                        setWishlistMap(prev => ({ ...prev, [p.product_id]: 'NO' }));
+                    }
+                }
+            })
+        );
+    }, [userId]);
+
     const loadProducts = async (langId, eventId) => {
         try {
-            const data = {
-                language_id: langId,
-                event_id: eventId,
-            };
             setLoading(true);
             setError(null);
             setProductsList([]);
-            const res = await fetchProductsByLanguageId(data);
-            setProductsList(res?.data?.data || []);
+            const res = await fetchProductsByLanguageId({ language_id: langId, event_id: eventId });
+            const fetched = res?.data?.data || [];
+            setProductsList(fetched);
+            await loadAllWishlistStatuses(fetched);
         } catch (err) {
-            if (err?.response?.status === 404) {
-                return [];
-            }
+            if (err?.response?.status === 404) return [];
             console.error("Error loading products: ", err);
             setError("Failed to load products. Please try again.");
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleWishlistToggle = async (productId) => {
+        if (!userId) {
+            toast.error("Please log in to manage your wishlist.");
+            return;
+        }
+        if (wishlistLoadingMap[productId] || !productId) return;
+
+        setWishlistLoadingMap(prev => ({ ...prev, [productId]: true }));
+        try {
+            await manageWishlist({ product_id: productId, user_id: userId });
+
+            setWishlistMap(prev => {
+                const current = prev[productId] ?? 'NO';
+                return { ...prev, [productId]: current === 'NO' ? 'YES' : 'NO' };
+            });
+
+            toast.success(
+                (wishlistMap[productId] ?? 'NO') === 'NO'
+                    ? "Added to wishlist."
+                    : "Removed from wishlist."
+            );
+        } catch (err) {
+            console.error("Wishlist toggle failed:", err?.response?.data?.message || err?.message);
+            toast.error("Failed to update wishlist. Please try again.");
+        } finally {
+            setWishlistLoadingMap(prev => ({ ...prev, [productId]: false }));
         }
     };
 
@@ -265,6 +320,14 @@ export default function LanguageWiseProductsList() {
                         {/* ── List layout ── */}
                         <div className="tf-list-layout wrapper-shop" id="listLayout" style={{ display: layout === "list" ? "block" : "none" }}>
 
+                            {loading && layout === "list" && (
+                                <div style={{
+                                    height: "14px", width: "200px", borderRadius: "5px", marginBottom: "0px",
+                                    background: "linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%)",
+                                    backgroundSize: "200% 100%", animation: "wl-shimmer 1.4s infinite",
+                                }} />
+                            )}
+
                             {loading && layout === "list" &&
                                 Array.from({ length: skeletonCount }).map((_, i) => <SkeletonCard key={i} layout="list" />)
                             }
@@ -322,6 +385,31 @@ export default function LanguageWiseProductsList() {
                                             <Link to="#shoppingCart" data-bs-toggle="offcanvas" className="tf-btn btn-main-product add-to-cart animate-btn">
                                                 Add To Cart
                                             </Link>
+                                            <Link
+                                                to="#"
+                                                className={`box-icon wishlist hover-tooltip ${wishlistLoadingMap[product.product_id] ? 'disabled' : ''}`}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    handleWishlistToggle(product.product_id);
+                                                }}
+                                            >
+                                                {wishlistLoadingMap[product.product_id] ? (
+                                                    <>
+                                                        <span className="icon icon-loading">...</span>
+                                                        <span className="tooltip">Updating...</span>
+                                                    </>
+                                                ) : (wishlistMap[product.product_id] ?? 'NO') === 'NO' ? (
+                                                    <>
+                                                        <span className="icon icon-heart2" />
+                                                        <span className="tooltip">Add to Wishlist</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <span className="icon icon-trash" />
+                                                        <span className="tooltip">Remove Wishlist</span>
+                                                    </>
+                                                )}
+                                            </Link>
                                             <Link to="#" className="box-icon wishlist hover-tooltip">
                                                 <span className="icon icon-heart2"></span>
                                                 <span className="tooltip">Add to Wishlist</span>
@@ -342,6 +430,14 @@ export default function LanguageWiseProductsList() {
 
                         {/* ── Grid layout ── */}
                         <div className={`wrapper-shop tf-grid-layout ${colsClass}`} id="gridLayout" style={{ display: layout === "grid" ? "" : "none" }}>
+
+                            {loading && layout === "grid" && (
+                                <div style={{
+                                    height: "14px", width: "200px", borderRadius: "5px", marginBottom: "0px",
+                                    background: "linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%)",
+                                    backgroundSize: "200% 100%", animation: "wl-shimmer 1.4s infinite",
+                                }} />
+                            )}
 
                             {loading && layout === "grid" && (
                                 <div className="skeleton-grid-wrapper" style={{ gridColumn: "1 / -1" }}>
@@ -390,9 +486,30 @@ export default function LanguageWiseProductsList() {
                                                 </Link>
                                             </li>
                                             <li className="wishlist">
-                                                <Link to="#" className="box-icon hover-tooltip tooltip-left">
-                                                    <span className="icon icon-heart2"></span>
-                                                    <span className="tooltip">Add to Wishlist</span>
+                                                <Link
+                                                    to="#"
+                                                    className={`box-icon hover-tooltip tooltip-left ${wishlistLoadingMap[product.product_id] ? 'disabled' : ''}`}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        handleWishlistToggle(product.product_id);
+                                                    }}
+                                                >
+                                                    {wishlistLoadingMap[product.product_id] ? (
+                                                        <>
+                                                            <span className="icon icon-loading">...</span>
+                                                            <span className="tooltip">Updating...</span>
+                                                        </>
+                                                    ) : (wishlistMap[product.product_id] ?? 'NO') === 'NO' ? (
+                                                        <>
+                                                            <span className="icon icon-heart2" />
+                                                            <span className="tooltip">Add to Wishlist</span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <span className="icon icon-trash" />
+                                                            <span className="tooltip">Remove Wishlist</span>
+                                                        </>
+                                                    )}
                                                 </Link>
                                             </li>
                                             <li>

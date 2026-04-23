@@ -95,12 +95,12 @@ export default function App() {
 
                 {/* Protected Routes */}
                 <Route element={<PrivateRoute />}>
-                  <Route path="/wish-list/marketplace=Vineta" element={<WishlistView />} />
-                  <Route path="/cart-list/marketplace=Vineta" element={<AddToCartView />} />
-                  <Route path="/my-account/marketplace=Vineta" element={<DashboardView />} />
-                  <Route path="/my-orders/marketplace=Vineta" element={<MyOrdersView />} />
-                  <Route path="/my-addresses/marketplace=Vineta" element={<MyAddressView />} />
-                  <Route path="/my-account-details/marketplace=Vineta" element={<MyAccountDetails />} />
+                  <Route path="/wish-list" element={<WishlistView />} />
+                  <Route path="/cart-list" element={<AddToCartView />} />
+                  <Route path="/my-account" element={<DashboardView />} />
+                  <Route path="/my-orders" element={<MyOrdersView />} />
+                  <Route path="/my-addresses" element={<MyAddressView />} />
+                  <Route path="/my-account-details" element={<MyAccountDetails />} />
                 </Route>
 
                 {/* 404 */}
