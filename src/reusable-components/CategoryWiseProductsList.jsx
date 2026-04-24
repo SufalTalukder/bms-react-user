@@ -5,7 +5,7 @@ import { useCategories } from "../context/CategoryContext";
 import IconBoxSwiper from "./IconBoxSwiper";
 import PageLayout from "../PageLayout";
 import toast from "react-hot-toast";
-import { fetchWishlistStatusByProductAndUser, manageWishlist } from "../api/product-api";
+import { fetchCartStatusByProductAndUser, fetchWishlistStatusByProductAndUser, manageCart, manageWishlist } from "../api/product-api";
 
 const DEFAULT_IMAGE = "/assets/images/cls-categories/book/fiction.png";
 
@@ -89,6 +89,10 @@ export default function CategoryWiseProductsList() {
     const [wishlistMap, setWishlistMap] = useState({});
     const [wishlistLoadingMap, setWishlistLoadingMap] = useState({});
 
+    // Cart state
+    const [cartMap, setCartMap] = useState({});
+    const [cartLoadingMap, setCartLoadingMap] = useState({});
+
     useEffect(() => {
         window.scrollTo(0, 0);
         const update = () => setSkeletonCount(getSkeletonCount(layout, colsClass));
@@ -110,7 +114,7 @@ export default function CategoryWiseProductsList() {
         loadProducts(categoryId, eventId);
     }, [slug, categoryId, eventId, categoriesList]);
 
-    const loadAllWishlistStatuses = useCallback(async (productList) => {
+    const loadUserWishlistStatuses = useCallback(async (productList) => {
         if (!userId || !productList?.length) return;
 
         await Promise.all(
@@ -131,6 +135,26 @@ export default function CategoryWiseProductsList() {
         );
     }, [userId]);
 
+    const loadUserCartStatuses = useCallback(async (productList) => {
+        if (!userId || !productList?.length) return;
+        await Promise.all(
+            productList.map(async (p) => {
+                try {
+                    const res = await fetchCartStatusByProductAndUser({
+                        product_id: p.product_id,
+                        user_id: userId,
+                    });
+                    const status = res?.data?.data?.add_to_cart_status ?? 'NO';
+                    setCartMap(prev => ({ ...prev, [p.product_id]: status }));
+                } catch (err) {
+                    if (err?.response?.status === 404) {
+                        setCartMap(prev => ({ ...prev, [p.product_id]: 'NO' }));
+                    }
+                }
+            })
+        );
+    }, [userId]);
+
     const loadProducts = async (catId, eventId) => {
         try {
             setLoading(true);
@@ -139,7 +163,8 @@ export default function CategoryWiseProductsList() {
             const res = await fetchProductsByCategoryId({ category_id: catId, event_id: eventId });
             const fetched = res?.data?.data || [];
             setProductsList(fetched);
-            await loadAllWishlistStatuses(fetched);
+            await loadUserWishlistStatuses(fetched);
+            await loadUserCartStatuses(fetched);
         } catch (err) {
             if (err?.response?.status === 404) return [];
             console.error("Error loading products: ", err);
@@ -175,6 +200,32 @@ export default function CategoryWiseProductsList() {
             toast.error("Failed to update wishlist. Please try again.");
         } finally {
             setWishlistLoadingMap(prev => ({ ...prev, [productId]: false }));
+        }
+    };
+
+    const handleUserCartToggle = async (productId) => {
+        if (!userId) {
+            toast.error("Please log in to manage your cart.");
+            return;
+        }
+        if (cartLoadingMap[productId] || !productId) return;
+
+        setCartLoadingMap(prev => ({ ...prev, [productId]: true }));
+        try {
+            const action = (cartMap[productId] ?? 'NO') === 'NO' ? 'add' : 'remove';
+            await manageCart({ product_id: productId, user_id: userId, action });
+
+            setCartMap(prev => {
+                const current = prev[productId] ?? 'NO';
+                return { ...prev, [productId]: current === 'NO' ? 'YES' : 'NO' };
+            });
+
+            toast.success(action === 'add' ? "Added to cart." : "Removed from cart.");
+        } catch (err) {
+            console.error("Cart toggle failed:", err?.response?.data?.message || err?.message);
+            toast.error("Failed to update cart. Please try again.");
+        } finally {
+            setCartLoadingMap(prev => ({ ...prev, [productId]: false }));
         }
     };
 
@@ -321,7 +372,7 @@ export default function CategoryWiseProductsList() {
                                     backgroundSize: "200% 100%", animation: "wl-shimmer 1.4s infinite",
                                 }} />
                             )}
-                            
+
                             {loading && layout === "list" &&
                                 Array.from({ length: skeletonCount }).map((_, i) => <SkeletonCard key={i} layout="list" />)
                             }
@@ -376,8 +427,20 @@ export default function CategoryWiseProductsList() {
                                             )}
                                         </div>
                                         <div className="list-product-btn">
-                                            <Link to="#shoppingCart" data-bs-toggle="offcanvas" className="tf-btn btn-main-product add-to-cart animate-btn">
-                                                Add To Cart
+                                            <Link
+                                                to="#"
+                                                className={`tf-btn btn-main-product add-to-cart animate-btn ${cartLoadingMap[product.product_id] ? 'disabled' : ''}`}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    handleUserCartToggle(product.product_id);
+                                                }}
+                                            >
+                                                {cartLoadingMap[product.product_id]
+                                                    ? "Updating..."
+                                                    : (cartMap[product.product_id] ?? 'NO') === 'NO'
+                                                        ? "Add To Cart"
+                                                        : "Remove From Cart"
+                                                }
                                             </Link>
                                             <Link
                                                 to="#"
@@ -400,7 +463,7 @@ export default function CategoryWiseProductsList() {
                                                 ) : (
                                                     <>
                                                         <span className="icon icon-trash" />
-                                                        <span className="tooltip">Remove Wishlist</span>
+                                                        <span className="tooltip">Remove from Wishlist</span>
                                                     </>
                                                 )}
                                             </Link>
@@ -470,9 +533,30 @@ export default function CategoryWiseProductsList() {
                                         )}
                                         <ul className="list-product-btn">
                                             <li>
-                                                <Link to="#shoppingCart" data-bs-toggle="offcanvas" className="box-icon hover-tooltip tooltip-left">
-                                                    <span className="icon icon-cart2"></span>
-                                                    <span className="tooltip">Add to Cart</span>
+                                                <Link
+                                                    to="#"
+                                                    className={`box-icon hover-tooltip tooltip-left ${cartLoadingMap[product.product_id] ? 'disabled' : ''}`}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        handleUserCartToggle(product.product_id);
+                                                    }}
+                                                >
+                                                    {cartLoadingMap[product.product_id] ? (
+                                                        <>
+                                                            <span className="icon icon-loading">...</span>
+                                                            <span className="tooltip">Updating...</span>
+                                                        </>
+                                                    ) : (cartMap[product.product_id] ?? 'NO') === 'NO' ? (
+                                                        <>
+                                                            <span className="icon icon-cart2"></span>
+                                                            <span className="tooltip">Add to Cart</span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <span className="icon icon-trash"></span>
+                                                            <span className="tooltip">Remove from Cart</span>
+                                                        </>
+                                                    )}
                                                 </Link>
                                             </li>
                                             <li className="wishlist">
@@ -497,7 +581,7 @@ export default function CategoryWiseProductsList() {
                                                     ) : (
                                                         <>
                                                             <span className="icon icon-trash" />
-                                                            <span className="tooltip">Remove Wishlist</span>
+                                                            <span className="tooltip">Remove from Wishlist</span>
                                                         </>
                                                     )}
                                                 </Link>

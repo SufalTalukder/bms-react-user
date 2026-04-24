@@ -4,6 +4,38 @@ import { useEffect, useRef, useState } from "react";
 import { fetchUser, updateUser } from "../../api/my-account-api";
 import toast from "react-hot-toast";
 
+function AccountDashboardSkeleton() {
+    const fields = [
+        { label: 68, value: "58%" },
+        { label: 46, value: "74%" },
+        { label: 90, value: "48%" },
+        { label: 78, value: "38%" },
+        { label: 84, value: "44%" },
+    ];
+
+    return (
+        <div className="my-acount-content account-dashboard">
+            <div className="skeleton" style={{ height: 20, width: 140, marginBottom: "1.75rem" }} />
+
+            <form className="form-edit-account">
+                {fields.map((f, i) => (
+                    <div key={i} className="tf-field style-2 style-3" style={{ position: "relative" }}>
+                        <div className="skeleton" style={{
+                            position: "absolute", top: -8, left: 14,
+                            height: 11, width: f.label,
+                            background: "#fff", padding: "0 4px",
+                        }} />
+                        <div style={{ border: "1px solid #e5e5e5", borderRadius: 8, padding: "22px 16px 14px" }}>
+                            <div className="skeleton" style={{ height: 15, width: f.value }} />
+                        </div>
+                    </div>
+                ))}
+                <div className="skeleton" style={{ height: 52, width: 170, borderRadius: "99px", marginTop: "52px", marginLeft: "auto", marginRight: "auto" }}></div>
+            </form>
+        </div>
+    );
+}
+
 export default function MyAccountDetails() {
 
     const activeURI = window.location.pathname;
@@ -82,28 +114,6 @@ export default function MyAccountDetails() {
 
     return (
         <PageLayout>
-            {/* <!-- Loading Overlay --> */}
-            {loading && (
-                <div
-                    style={{
-                        position: "fixed",
-                        inset: 0,
-                        backgroundColor: "rgba(0, 0, 0, 0.45)",
-                        zIndex: 9999,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: "16px",
-                    }}
-                >
-                    <div className="spinner-border text-light" role="status" style={{ width: "48px", height: "48px" }} />
-                    <p style={{ color: "#fff", fontSize: "1.1rem", fontWeight: 600, margin: 0 }}>
-                        Loading...
-                    </p>
-                </div>
-            )}
-
             {/* <!-- Title Page --> */}
             <section className="tf-page-title">
                 <div className="container">
@@ -165,38 +175,40 @@ export default function MyAccountDetails() {
                                 </li>
                             </ul>
                         </div>
-                        <div className="my-acount-content account-dashboard">
-                            <form className="form-edit-account" onSubmit={handleSubmit}>
-                                <h6 className="display-xs title-form">Account Details</h6>
-                                <div className="form-name">
-                                    <div className="tf-field style-2 style-3">
-                                        <input className="tf-field-input tf-input" id="fullName" placeholder="Full name*" type="text" name="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} autoComplete="none" />
-                                        <label className="tf-field-label" htmlFor="fullName">First name</label>
+                        {loading ? <AccountDashboardSkeleton /> : (
+                            <div className="my-acount-content account-dashboard">
+                                <form className="form-edit-account" onSubmit={handleSubmit}>
+                                    <h6 className="display-xs title-form">Account Details</h6>
+                                    <div className="form-name">
+                                        <div className="tf-field style-2 style-3">
+                                            <input className="tf-field-input tf-input" id="fullName" placeholder="Full name*" type="text" name="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} autoComplete="none" />
+                                            <label className="tf-field-label" htmlFor="fullName">First name</label>
+                                        </div>
+                                        <div className="tf-field style-2 style-3">
+                                            <input className="tf-field-input tf-input" id="email" placeholder=" " type="email"
+                                                name="email" value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)} autoComplete="new-email-address" />
+                                            <label className="tf-field-label" htmlFor="email">Email</label>
+                                        </div>
+                                        <div className="tf-field style-2 style-3">
+                                            <input className="tf-field-input tf-input" id="phone" placeholder=" " type="tel"
+                                                name="phone" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} autoComplete="new-phone" disabled />
+                                            <label className="tf-field-label" htmlFor="phone">Phone number</label>
+                                        </div>
+                                        <div className="tf-field style-2 style-3">
+                                            <input className="tf-field-input tf-input" id="dob" placeholder=" " type="date"
+                                                name="dob" value={dob} onChange={(e) => setDOB(e.target.value)} />
+                                            <label className="tf-field-label" htmlFor="dob">Date of Birth</label>
+                                        </div>
+                                        <div className="tf-field style-2 style-3">
+                                            <input className="tf-field-input tf-input" id="referralCode" placeholder=" " type="text"
+                                                name="referralCode" value={userReferralCode} onChange={(e) => setUserReferralCode(e.target.value)} disabled />
+                                            <label className="tf-field-label" htmlFor="referralCode">Referral Code</label>
+                                        </div>
                                     </div>
-                                    <div className="tf-field style-2 style-3">
-                                        <input className="tf-field-input tf-input" id="email" placeholder=" " type="email"
-                                            name="email" value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)} autoComplete="new-email-address" />
-                                        <label className="tf-field-label" htmlFor="email">Email</label>
-                                    </div>
-                                    <div className="tf-field style-2 style-3">
-                                        <input className="tf-field-input tf-input" id="phone" placeholder=" " type="tel"
-                                            name="phone" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} autoComplete="new-phone" disabled />
-                                        <label className="tf-field-label" htmlFor="phone">Phone number</label>
-                                    </div>
-                                    <div className="tf-field style-2 style-3">
-                                        <input className="tf-field-input tf-input" id="dob" placeholder=" " type="date"
-                                            name="dob" value={dob} onChange={(e) => setDOB(e.target.value)} />
-                                        <label className="tf-field-label" htmlFor="dob">Date of Birth</label>
-                                    </div>
-                                    <div className="tf-field style-2 style-3">
-                                        <input className="tf-field-input tf-input" id="referralCode" placeholder=" " type="text"
-                                            name="referralCode" value={userReferralCode} onChange={(e) => setUserReferralCode(e.target.value)} disabled />
-                                        <label className="tf-field-label" htmlFor="referralCode">Referral Code</label>
-                                    </div>
-                                </div>
-                                <button type="submit" className="tf-btn animate-btn">Save Changes</button>
-                            </form>
-                        </div>
+                                    <button type="submit" className="tf-btn animate-btn">Save Changes</button>
+                                </form>
+                            </div>
+                        )}
                     </div>
                     {/* <!-- /Account --> */}
                 </div>

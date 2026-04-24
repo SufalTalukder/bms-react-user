@@ -33,3 +33,17 @@ export const fetchWishlistProductsByUser = (userId) =>
     productApi.post("/api/v1/fetch-all-wishlists", {
         user_id: userId,
     });
+
+// MANAGE CART (ADD, UPDATE OR REMOVE)
+export const manageCart = (data) =>
+    productApi.post("/api/v1/user/manage-cart", data);
+
+// FETCH CART STATUS BY PRODUCT AND USER
+export const fetchCartStatusByProductAndUser = (data) =>
+    productApi.post("/api/v1/user/fetch-cart", data);
+
+// FETCH CART PRODUCTS BY USER
+export const fetchCartProductsByUser = (userId) =>
+    productApi.post("/api/v1/user/fetch-all-carts", {
+        user_id: userId,
+    });
