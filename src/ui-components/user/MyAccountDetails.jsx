@@ -3,6 +3,7 @@ import PageLayout from "../../PageLayout";
 import { useEffect, useRef, useState } from "react";
 import { fetchUser, updateUser } from "../../api/my-account-api";
 import toast from "react-hot-toast";
+import { useUser } from "../../context/UserContext";
 
 function AccountDashboardSkeleton() {
     const fields = [
@@ -47,6 +48,9 @@ export default function MyAccountDetails() {
     const [dob, setDOB] = useState("");
     const [userReferralCode, setUserReferralCode] = useState("");
 
+    const { logout } = useUser();
+    const [loggingOut, setLoggingOut] = useState(false);
+
     const [loading, setLoading] = useState(false);
     const hasFetched = useRef(false);
 
@@ -56,6 +60,13 @@ export default function MyAccountDetails() {
         hasFetched.current = true;
         fetchUserDetails();
     }, []);
+
+    const handleLogout = async (e) => {
+        e.preventDefault();
+        setLoggingOut(true);
+        await logout();
+        setLoggingOut(false);
+    };
 
     // FETCH DETAILS
     const fetchUserDetails = async () => {
@@ -145,33 +156,60 @@ export default function MyAccountDetails() {
                         <div className="sidebar-account-wrap sidebar-content-wrap sticky-top d-lg-block d-none">
                             <ul className="my-account-nav">
                                 <li>
-                                    <Link to="/my-account"
-                                        className="text-sm link fw-medium my-account-nav-item">Dashboard</Link>
+                                    <Link to="/my-account?marketplace=Vineta"
+                                        className="text-sm link fw-medium my-account-nav-item">
+                                        Dashboard
+                                    </Link>
                                 </li>
                                 <li>
-                                    <Link to="/my-orders" className="text-sm link fw-medium my-account-nav-item">My
-                                        Orders</Link>
+                                    <Link to="/my-orders?marketplace=Vineta" className="text-sm link fw-medium my-account-nav-item">
+                                        My Orders
+                                    </Link>
                                 </li>
                                 <li>
-                                    <Link to="/wish-list" className="text-sm link fw-medium my-account-nav-item">My
-                                        Wishlist</Link>
+                                    <Link to="/wish-list?marketplace=Vineta" className="text-sm link fw-medium my-account-nav-item">
+                                        My Wishlist
+                                    </Link>
                                 </li>
                                 <li>
-                                    <Link to="/my-addresses"
-                                        className="text-sm link fw-medium my-account-nav-item">Addresses</Link>
+                                    <Link to="/my-addresses?marketplace=Vineta"
+                                        className="text-sm link fw-medium my-account-nav-item">
+                                        Addresses
+                                    </Link>
                                 </li>
                                 {activeURI === "/bms-book-store/my-account-details" ?
                                     <li>
-                                        <NavLink to="/my-account-details"
-                                            className="text-sm link fw-medium my-account-nav-item">Account Details</NavLink>
+                                        <NavLink to="/my-account-details?marketplace=Vineta"
+                                            className="text-sm link fw-medium my-account-nav-item">
+                                            Account Details
+                                        </NavLink>
                                     </li> : <li>
-                                        <Link to="/my-account-details"
-                                            className="text-sm link fw-medium my-account-nav-item">Account Details</Link>
+                                        <Link to="/my-account-details?marketplace=Vineta"
+                                            className="text-sm link fw-medium my-account-nav-item">
+                                            Account Details
+                                        </Link>
                                     </li>
                                 }
                                 <li>
-                                    <Link to="#" className="text-sm link fw-medium my-account-nav-item">Log
-                                        Out</Link>
+                                    <Link
+                                        to="#"
+                                        className={`text-sm link fw-medium my-account-nav-item ${loggingOut ? "disabled" : ""}`}
+                                        onClick={handleLogout}
+                                        style={{ pointerEvents: loggingOut ? "none" : "auto", opacity: loggingOut ? 0.6 : 1 }}
+                                    >
+                                        {loggingOut ? (
+                                            <>
+                                                <span
+                                                    className="spinner-border spinner-border-sm me-2"
+                                                    role="status"
+                                                    aria-hidden="true"
+                                                />
+                                                Logging out...
+                                            </>
+                                        ) : (
+                                            "Log Out"
+                                        )}
+                                    </Link>
                                 </li>
                             </ul>
                         </div>

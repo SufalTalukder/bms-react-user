@@ -3,6 +3,54 @@ import toast from "react-hot-toast";
 import PageLayout from "../../PageLayout";
 import { Link, NavLink } from "react-router-dom";
 import { fetchAddressDetails, fetchAllAddresses, addUpdateAddress, deleteAddress } from "../../api/my-account-api";
+import { useUser } from "../../context/UserContext";
+
+function AddressSkeleton() {
+    return (
+        <div className="my-acount-content account-address">
+
+            {/* Title: "Your Addresses (n)" */}
+            <div className="skeleton" style={{ height: 20, width: 180, marginBottom: "1.5rem", borderRadius: 5 }} />
+
+            <div className="widget-inner-address">
+
+                {/* Add New Address button */}
+                <div className="skeleton" style={{ height: 42, width: 170, borderRadius: 6, marginBottom: "1.5rem" }} />
+
+                {/* Address cards grid */}
+                <ul className="list-account-address tf-grid-layout md-col-2" style={{ listStyle: "none", padding: 0 }}>
+                    {[1, 2, 3, 4].map((i) => (
+                        <li key={i} className="account-address-item">
+                            <div style={{
+                                border: "1px solid #ebebeb",
+                                borderRadius: 8,
+                                padding: "18px 16px",
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 10,
+                            }}>
+                                {/* Address type badge + address line */}
+                                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                                    <div className="skeleton" style={{ height: 20, width: 52, borderRadius: 4 }} />
+                                    <div className="skeleton" style={{ height: 14, width: "55%", borderRadius: 4 }} />
+                                </div>
+
+                                {/* City, State, Country, Pincode line */}
+                                <div className="skeleton" style={{ height: 13, width: "80%", borderRadius: 4 }} />
+
+                                {/* Edit / Delete buttons */}
+                                <div style={{ display: "flex", gap: 10, marginTop: 4 }}>
+                                    <div className="skeleton" style={{ height: 34, width: 72, borderRadius: 5 }} />
+                                    <div className="skeleton" style={{ height: 34, width: 72, borderRadius: 5 }} />
+                                </div>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    );
+}
 
 const EMPTY_FORM = {
     address_type: "",
@@ -17,8 +65,6 @@ const EMPTY_FORM = {
 const ADDRESS_TYPES = ["Home", "Office", "Others"];
 
 function AddressForm({ activePanel, form, onChange, onSubmit, onCancel, submitLabel, loading }) {
-    console.log(form);
-    
     return (
         <form
             onSubmit={onSubmit}
@@ -162,6 +208,9 @@ export default function MyAddressView() {
     const [editingId, setEditingId] = useState(null);
     const [form, setForm] = useState(EMPTY_FORM);
 
+    const { logout } = useUser();
+    const [loggingOut, setLoggingOut] = useState(false);
+
     const hasFetched = useRef(false);
 
     useEffect(() => {
@@ -170,6 +219,13 @@ export default function MyAddressView() {
         hasFetched.current = true;
         loadAddresses();
     }, []);
+
+    const handleLogout = async (e) => {
+        e.preventDefault();
+        setLoggingOut(true);
+        await logout();
+        setLoggingOut(false);
+    };
 
     // RESET PANEL
     const resetPanel = () => {
@@ -283,24 +339,6 @@ export default function MyAddressView() {
 
     return (
         <PageLayout>
-
-            {/* Loading Overlay */}
-            {loading && (
-                <div style={{
-                    position: "fixed", inset: 0,
-                    backgroundColor: "rgba(0,0,0,0.45)",
-                    zIndex: 9999,
-                    display: "flex", flexDirection: "column",
-                    alignItems: "center", justifyContent: "center", gap: "16px",
-                }}>
-                    <div className="spinner-border text-light" role="status"
-                        style={{ width: "48px", height: "48px" }} />
-                    <p style={{ color: "#fff", fontSize: "1.1rem", fontWeight: 600, margin: 0 }}>
-                        Loading…
-                    </p>
-                </div>
-            )}
-
             {/* Page Title */}
             <section className="tf-page-title">
                 <div className="container">
@@ -331,144 +369,164 @@ export default function MyAddressView() {
                         <div className="sidebar-account-wrap sidebar-content-wrap sticky-top d-lg-block d-none">
                             <ul className="my-account-nav">
                                 <li>
-                                    <Link to="/my-account" className="text-sm link fw-medium my-account-nav-item">
+                                    <Link to="/my-account?marketplace=Vineta" className="text-sm link fw-medium my-account-nav-item">
                                         Dashboard
                                     </Link>
                                 </li>
                                 <li>
-                                    <NavLink to="/my-orders" className="text-sm link fw-medium my-account-nav-item">
+                                    <NavLink to="/my-orders?marketplace=Vineta" className="text-sm link fw-medium my-account-nav-item">
                                         My Orders
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <Link to="/wish-list" className="text-sm link fw-medium my-account-nav-item">
+                                    <Link to="/wish-list?marketplace=Vineta" className="text-sm link fw-medium my-account-nav-item">
                                         My Wishlist
                                     </Link>
                                 </li>
                                 <li>
                                     {activeURI === "/bms-book-store/my-addresses" ? (
-                                        <NavLink to="/my-addresses" className="text-sm link fw-medium my-account-nav-item">
+                                        <NavLink to="/my-addresses?marketplace=Vineta" className="text-sm link fw-medium my-account-nav-item">
                                             Addresses
                                         </NavLink>
                                     ) : (
-                                        <Link to="/my-addresses" className="text-sm link fw-medium my-account-nav-item">
+                                        <Link to="/my-addresses?marketplace=Vineta" className="text-sm link fw-medium my-account-nav-item">
                                             My Addresses
                                         </Link>
                                     )}
                                 </li>
                                 <li>
-                                    <Link to="/my-account-details" className="text-sm link fw-medium my-account-nav-item">
+                                    <Link to="/my-account-details?marketplace=Vineta" className="text-sm link fw-medium my-account-nav-item">
                                         Account Details
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="" className="text-sm link fw-medium my-account-nav-item">
-                                        Log Out
+                                    <Link
+                                        to="#"
+                                        className={`text-sm link fw-medium my-account-nav-item ${loggingOut ? "disabled" : ""}`}
+                                        onClick={handleLogout}
+                                        style={{ pointerEvents: loggingOut ? "none" : "auto", opacity: loggingOut ? 0.6 : 1 }}
+                                    >
+                                        {loggingOut ? (
+                                            <>
+                                                <span
+                                                    className="spinner-border spinner-border-sm me-2"
+                                                    role="status"
+                                                    aria-hidden="true"
+                                                />
+                                                Logging out...
+                                            </>
+                                        ) : (
+                                            "Log Out"
+                                        )}
                                     </Link>
                                 </li>
                             </ul>
                         </div>
 
                         {/* Account Content */}
-                        <div className="my-acount-content account-address">
-                            <h6 className="title-account">
-                                Your Addresses ({addressList.length})
-                            </h6>
+                        {loading && addressList.length === 0 ? (
+                            <AddressSkeleton />
+                        ) : (
+                            <div className="my-acount-content account-address">
+                                <h6 className="title-account">
+                                    Your Addresses ({addressList.length})
+                                </h6>
 
-                            <div className="widget-inner-address">
-                                {activePanel === "add" ? (
-                                    <></>
-                                ) : (
-                                    <button
-                                        className="tf-btn btn-add-address animate-btn"
-                                        onClick={handleOpenAdd}
-                                    >
-                                        + Add New Address
-                                    </button>
-                                )}
-
-                                {activePanel === "add" && (
-                                    <AddressForm
-                                        activePanel={activePanel}
-                                        form={form}
-                                        onChange={handleChange}
-                                        onSubmit={handleSubmit}
-                                        onCancel={resetPanel}
-                                        submitLabel="Save Address"
-                                        loading={loading}
-                                    />
-                                )}
-
-                                {addressList.length === 0 && !loading && (
-                                    <p className="text-md" style={{ marginTop: "1rem", color: "#888" }}>
-                                        No addresses saved yet.
-                                    </p>
-                                )}
-
-                                <ul className="list-account-address tf-grid-layout md-col-2">
-                                    {addressList.map((row) => (
-                                        <li
-                                            className="account-address-item"
-                                            key={row.user_address_id}
-                                            id={`address-${row.user_address_id}`}
+                                <div className="widget-inner-address">
+                                    {activePanel === "add" ? (
+                                        <></>
+                                    ) : (
+                                        <button
+                                            className="tf-btn btn-add-address animate-btn"
+                                            onClick={handleOpenAdd}
                                         >
-                                            {activePanel === "edit" && editingId === row.user_address_id ? (
-                                                <AddressForm
-                                                    activePanel={activePanel}
-                                                    form={form}
-                                                    onChange={handleChange}
-                                                    onSubmit={handleSubmit}
-                                                    onCancel={resetPanel}
-                                                    submitLabel="Update Address"
-                                                    loading={loading}
-                                                />
-                                            ) : (
-                                                <>
-                                                    <p className="title text-md fw-medium">
-                                                        {row.address_type && (
-                                                            <span style={{
-                                                                marginRight: "6px",
-                                                                fontSize: "0.72rem",
-                                                                background: "#e8f0fe",
-                                                                color: "#1a56db",
-                                                                padding: "2px 8px",
-                                                                borderRadius: "4px",
-                                                                fontWeight: 600,
-                                                            }}>
-                                                                {row.address_type}
-                                                            </span>
-                                                        )}
-                                                        {row.user_address}
-                                                    </p>
-                                                    <div className="info-detail">
-                                                        <p className="text-md">
-                                                            {[row.user_city, row.user_state, row.user_country, row.user_pincode]
-                                                                .filter(Boolean)
-                                                                .join(", ")}
-                                                        </p>
-                                                        <div className="box-btn" style={{ marginTop: "10px" }}>
-                                                            <button
-                                                                className="tf-btn btn-out-line-dark btn-edit-address"
-                                                                onClick={() => handleEdit(row.user_address_id)}
-                                                            >
-                                                                Edit
-                                                            </button>
-                                                            <button
-                                                                className="tf-btn btn-out-line-dark btn-delete-address"
-                                                                onClick={() => handleDelete(row.user_address_id)}
-                                                            >
-                                                                Delete
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            )}
-                                        </li>
-                                    ))}
-                                </ul>
+                                            + Add New Address
+                                        </button>
+                                    )}
 
+                                    {activePanel === "add" && (
+                                        <AddressForm
+                                            activePanel={activePanel}
+                                            form={form}
+                                            onChange={handleChange}
+                                            onSubmit={handleSubmit}
+                                            onCancel={resetPanel}
+                                            submitLabel="Save Address"
+                                            loading={loading}
+                                        />
+                                    )}
+
+                                    {addressList.length === 0 && !loading && (
+                                        <p className="text-md" style={{ marginTop: "1rem", color: "#888" }}>
+                                            No addresses saved yet.
+                                        </p>
+                                    )}
+
+                                    <ul className="list-account-address tf-grid-layout md-col-2">
+                                        {addressList.map((row) => (
+                                            <li
+                                                className="account-address-item"
+                                                key={row.user_address_id}
+                                                id={`address-${row.user_address_id}`}
+                                            >
+                                                {activePanel === "edit" && editingId === row.user_address_id ? (
+                                                    <AddressForm
+                                                        activePanel={activePanel}
+                                                        form={form}
+                                                        onChange={handleChange}
+                                                        onSubmit={handleSubmit}
+                                                        onCancel={resetPanel}
+                                                        submitLabel="Update Address"
+                                                        loading={loading}
+                                                    />
+                                                ) : (
+                                                    <>
+                                                        <p className="title text-md fw-medium">
+                                                            {row.address_type && (
+                                                                <span style={{
+                                                                    marginRight: "6px",
+                                                                    fontSize: "0.72rem",
+                                                                    background: "#e8f0fe",
+                                                                    color: "#1a56db",
+                                                                    padding: "2px 8px",
+                                                                    borderRadius: "4px",
+                                                                    fontWeight: 600,
+                                                                }}>
+                                                                    {row.address_type}
+                                                                </span>
+                                                            )}
+                                                            {row.user_address}
+                                                        </p>
+                                                        <div className="info-detail">
+                                                            <p className="text-md">
+                                                                {[row.user_city, row.user_state, row.user_country, row.user_pincode]
+                                                                    .filter(Boolean)
+                                                                    .join(", ")}
+                                                            </p>
+                                                            <div className="box-btn" style={{ marginTop: "10px" }}>
+                                                                <button
+                                                                    className="tf-btn btn-out-line-dark btn-edit-address"
+                                                                    onClick={() => handleEdit(row.user_address_id)}
+                                                                >
+                                                                    Edit
+                                                                </button>
+                                                                <button
+                                                                    className="tf-btn btn-out-line-dark btn-delete-address"
+                                                                    onClick={() => handleDelete(row.user_address_id)}
+                                                                >
+                                                                    Delete
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </>
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
+
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             </div>

@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
-import { fetchProductsByFeaturedType, fetchWishlistStatusByProductAndUser, manageWishlist } from "../api/product-api";
-import toast from "react-hot-toast";
+import { fetchProductsByFeaturedType } from "../api/product-api";
 
 const TABS = [
     {
@@ -71,7 +70,7 @@ function SkeletonCard() {
     );
 }
 
-function ProductCard({ product, wishlistMap, wishlistLoadingMap, onWishlistToggle }) {
+function ProductCard({ product }) {
     const imageUrl = product.product_image
         ? `/storage/${product.product_image}`
         : "/assets/images/products/book/book9.jpg";
@@ -85,33 +84,6 @@ function ProductCard({ product, wishlistMap, wishlistLoadingMap, onWishlistToggl
                     <img className="img-product lazyload" src={imageUrl} alt={product.product_name} />
                 </Link>
                 <ul className="list-product-btn">
-                    <li>
-                        <Link
-                            to="#"
-                            className={`box-icon hover-tooltip wishlist box-shadow1 ${wishlistLoadingMap[product.product_id] ? "disabled" : ""}`}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                onWishlistToggle(product.product_id);
-                            }}
-                        >
-                            {wishlistLoadingMap[product.product_id] ? (
-                                <>
-                                    <span className="icon icon-loading">...</span>
-                                    <span className="tooltip">Updating...</span>
-                                </>
-                            ) : (wishlistMap[product.product_id] ?? 'NO') === 'NO' ? (
-                                <>
-                                    <span className="icon icon-heart2" />
-                                    <span className="tooltip">Add to Wishlist</span>
-                                </>
-                            ) : (
-                                <>
-                                    <span className="icon icon-trash" />
-                                    <span className="tooltip">Remove from Wishlist</span>
-                                </>
-                            )}
-                        </Link>
-                    </li>
                     <li>
                         <Link to="#quickView" data-bs-toggle="modal" className="box-icon hover-tooltip quickview box-shadow1">
                             <span className="icon icon-view" />
@@ -140,16 +112,13 @@ function ProductCard({ product, wishlistMap, wishlistLoadingMap, onWishlistToggl
                 <p className="price-wrap fw-medium">
                     {hasDiscount ? (
                         <>
-                            <span className="price-new">${Number(product.discount_price).toFixed(2)}</span>
-                            <span className="price-old">${Number(product.product_price).toFixed(2)}</span>
+                            <span className="price-new">₹{Number(product.discount_price).toFixed(2)}</span>
+                            <span className="price-old">₹{Number(product.product_price).toFixed(2)}</span>
                         </>
                     ) : (
-                        <span className="price-new text-dark">${Number(product.product_price).toFixed(2)}</span>
+                        <span className="price-new">₹{Number(product.product_price).toFixed(2)}</span>
                     )}
                 </p>
-                <Link to="#shoppingCart" data-bs-toggle="offcanvas" className="tf-btn mt_10 fw-semibold">
-                    <span className="text-md fw-medium">Add to Cart</span>
-                </Link>
             </div>
         </div>
     );
@@ -206,35 +175,7 @@ export default function FeaturedProductsTab() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const hasFetched = useRef(false);
-    const userData = sessionStorage.getItem("user") ?? null;
-    const userId = userData ? JSON.parse(userData)?.user_id : null;
-
     const currentTab = TABS.find((t) => t.key === activeTab);
-
-    // Wishlist state
-    const [wishlistMap, setWishlistMap] = useState({});
-    const [wishlistLoadingMap, setWishlistLoadingMap] = useState({});
-
-    const loadAllWishlistStatuses = useCallback(async (productList) => {
-        if (!userId || !productList?.length) return;
-
-        await Promise.all(
-            productList.map(async (p) => {
-                try {
-                    const res = await fetchWishlistStatusByProductAndUser({
-                        product_id: p.product_id,
-                        user_id: userId,
-                    });
-                    const status = res?.data?.data?.add_to_wishlist_status ?? 'NO';
-                    setWishlistMap(prev => ({ ...prev, [p.product_id]: status }));
-                } catch (err) {
-                    if (err?.response?.status === 404) {
-                        setWishlistMap(prev => ({ ...prev, [p.product_id]: 'NO' }));
-                    }
-                }
-            })
-        );
-    }, [userId]);
 
     const loadProducts = useCallback(async (tab, force = false) => {
         if (!force && cache[tab.key] !== undefined) return;
@@ -245,7 +186,6 @@ export default function FeaturedProductsTab() {
             const res = await fetchProductsByFeaturedType(tab.payload);
             const products = res?.data?.data ?? [];
             setCache(prev => ({ ...prev, [tab.key]: products }));
-            await loadAllWishlistStatuses(products);  // ← add this
         } catch (err) {
             if (err?.response?.status === 404) {
                 setCache(prev => ({ ...prev, [tab.key]: [] }));
@@ -255,36 +195,7 @@ export default function FeaturedProductsTab() {
         } finally {
             setLoading(false);
         }
-    }, [cache, loadAllWishlistStatuses]);
-
-    const handleWishlistToggle = async (productId) => {
-        if (!userId) {
-            toast.error("Please log in to manage your wishlist.");
-            return;
-        }
-        if (wishlistLoadingMap[productId] || !productId) return;
-
-        setWishlistLoadingMap(prev => ({ ...prev, [productId]: true }));
-        try {
-            await manageWishlist({ product_id: productId, user_id: userId });
-
-            setWishlistMap(prev => {
-                const current = prev[productId] ?? 'NO';
-                return { ...prev, [productId]: current === 'NO' ? 'YES' : 'NO' };
-            });
-
-            toast.success(
-                (wishlistMap[productId] ?? 'NO') === 'NO'
-                    ? "Added to wishlist."
-                    : "Removed from wishlist."
-            );
-        } catch (err) {
-            console.error("Wishlist toggle failed:", err?.response?.data?.message || err?.message);
-            toast.error("Failed to update wishlist. Please try again.");
-        } finally {
-            setWishlistLoadingMap(prev => ({ ...prev, [productId]: false }));
-        }
-    };
+    }, [cache]);
 
     useEffect(() => {
         if (hasFetched.current) return;
@@ -347,7 +258,7 @@ export default function FeaturedProductsTab() {
                                 {/* Loading skeleton */}
                                 {loading && (
                                     <div className="tf-grid-layout lg-gap-24 tf-col-2 md-col-3 xl-col-4">
-                                        {Array.from({ length: 8 }).map((_, i) => (
+                                        {Array.from({ length: 4 }).map((_, i) => (
                                             <SkeletonCard key={i} />
                                         ))}
                                     </div>
@@ -370,9 +281,6 @@ export default function FeaturedProductsTab() {
                                             <ProductCard
                                                 key={product.product_id}
                                                 product={product}
-                                                wishlistMap={wishlistMap}
-                                                wishlistLoadingMap={wishlistLoadingMap}
-                                                onWishlistToggle={handleWishlistToggle}
                                             />
                                         ))}
                                     </div>

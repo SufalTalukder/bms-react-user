@@ -72,39 +72,39 @@ export default function DashboardView() {
                             <ul className="my-account-nav">
                                 {activeURI === "/bms-book-store/my-account" ? (
                                     <li>
-                                        <NavLink to="/my-account"
+                                        <NavLink to="/my-account?marketplace=Vineta"
                                             className="text-sm link fw-medium my-account-nav-item">
                                             Dashboard
                                         </NavLink>
                                     </li>
                                 ) : (
                                     <li>
-                                        <Link to="/my-account"
+                                        <Link to="/my-account?marketplace=Vineta"
                                             className="text-sm link fw-medium my-account-nav-item">
                                             Dashboard
                                         </Link>
                                     </li>
                                 )}
                                 <li>
-                                    <Link to="/my-orders"
+                                    <Link to="/my-orders?marketplace=Vineta"
                                         className="text-sm link fw-medium my-account-nav-item">
                                         My Orders
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="/wish-list"
+                                    <Link to="/wish-list?marketplace=Vineta"
                                         className="text-sm link fw-medium my-account-nav-item">
                                         My Wishlist
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="/my-addresses"
+                                    <Link to="/my-addresses?marketplace=Vineta"
                                         className="text-sm link fw-medium my-account-nav-item">
                                         Addresses
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="/my-account-details"
+                                    <Link to="/my-account-details?marketplace=Vineta"
                                         className="text-sm link fw-medium my-account-nav-item">
                                         Account Details
                                     </Link>
@@ -149,14 +149,14 @@ export default function DashboardView() {
                                 </p>
                                 <p className="notice text-sm">
                                     Today is a great day to check your account page. You can check{" "}
-                                    <Link to="/my-orders" className="text-primary text-decoration-underline">
+                                    <Link to="/my-orders?marketplace=Vineta" className="text-primary text-decoration-underline">
                                         your last orders
                                     </Link>{" "}
                                     or have a look at{" "}
-                                    <Link to="/wish-list" className="text-primary text-decoration-underline">
+                                    <Link to="/wish-list?marketplace=Vineta" className="text-primary text-decoration-underline">
                                         your wishlist
                                     </Link>. Or maybe you can start to shop{" "}
-                                    <Link to="/product-default" className="text-primary text-decoration-underline">
+                                    <Link to="/product-default?marketplace=Vineta" className="text-primary text-decoration-underline">
                                         our latest offers
                                     </Link>?
                                 </p>

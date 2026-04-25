@@ -6,8 +6,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { fetchProductsByFeaturedType, fetchWishlistStatusByProductAndUser, manageWishlist } from "../api/product-api";
-import toast from "react-hot-toast";
+import { fetchProductsByFeaturedType } from "../api/product-api";
 
 function SkeletonCard() {
     return (
@@ -129,33 +128,6 @@ export default function FeaturedProductsSwiper() {
     const [error, setError] = useState(false);
     const hasFetched = useRef(false);
     const payload = { best_seller: "NO", new_arrival: "NO", deal: "YES" };
-    const userData = sessionStorage.getItem("user") ?? null;
-    const userId = userData ? JSON.parse(userData)?.user_id : null;
-
-    // Wishlist state
-    const [wishlistMap, setWishlistMap] = useState({});
-    const [wishlistLoadingMap, setWishlistLoadingMap] = useState({});
-
-    const loadAllWishlistStatuses = useCallback(async (productList) => {
-        if (!userId || !productList?.length) return;
-
-        await Promise.all(
-            productList.map(async (p) => {
-                try {
-                    const res = await fetchWishlistStatusByProductAndUser({
-                        product_id: p.product_id,
-                        user_id: userId,
-                    });
-                    const status = res?.data?.data?.add_to_wishlist_status ?? 'NO';
-                    setWishlistMap(prev => ({ ...prev, [p.product_id]: status }));
-                } catch (err) {
-                    if (err?.response?.status === 404) {
-                        setWishlistMap(prev => ({ ...prev, [p.product_id]: 'NO' }));
-                    }
-                }
-            })
-        );
-    }, [userId]);
 
     const loadProducts = useCallback(async () => {
         setLoading(true);
@@ -164,43 +136,13 @@ export default function FeaturedProductsSwiper() {
             const res = await fetchProductsByFeaturedType(payload);
             const fetched = res?.data?.data ?? [];
             setProducts(fetched);
-            await loadAllWishlistStatuses(fetched);
         } catch (err) {
             if (err?.response?.status === 404) setProducts([]);
             else setError(true);
         } finally {
             setLoading(false);
         }
-    }, [loadAllWishlistStatuses]);
-
-    const handleWishlistToggle = async (productId) => {
-        if (!userId) {
-            toast.error("Please log in to manage your wishlist.");
-            return;
-        }
-        if (wishlistLoadingMap[productId] || !productId) return;
-
-        setWishlistLoadingMap(prev => ({ ...prev, [productId]: true }));
-        try {
-            await manageWishlist({ product_id: productId, user_id: userId });
-
-            setWishlistMap(prev => {
-                const current = prev[productId] ?? 'NO';
-                return { ...prev, [productId]: current === 'NO' ? 'YES' : 'NO' };
-            });
-
-            toast.success(
-                (wishlistMap[productId] ?? 'NO') === 'NO'
-                    ? "Added to wishlist."
-                    : "Removed from wishlist."
-            );
-        } catch (err) {
-            console.error("Wishlist toggle failed:", err?.response?.data?.message || err?.message);
-            toast.error("Failed to update wishlist. Please try again.");
-        } finally {
-            setWishlistLoadingMap(prev => ({ ...prev, [productId]: false }));
-        }
-    };
+    }, []);
 
     useEffect(() => {
         if (hasFetched.current) return;
@@ -263,7 +205,7 @@ export default function FeaturedProductsSwiper() {
                         const eventId = p.p_event_id ?? "";
                         const imgSrc = p.product_image ? p.product_image : defaultImg;
                         const price = p.product_price != null
-                            ? `$${parseFloat(p.product_price).toFixed(2)}`
+                            ? `₹${parseFloat(p.product_price).toFixed(2)}`
                             : null;
                         const isDeal = p.deal === "YES";
                         const saleLabel = isDeal ? "Deal" : null;
@@ -288,33 +230,6 @@ export default function FeaturedProductsSwiper() {
                                         )}
 
                                         <ul className="list-product-btn">
-                                            <li>
-                                                <Link
-                                                    to="#"
-                                                    className={`box-icon hover-tooltip wishlist box-shadow1 ${wishlistLoadingMap[p.product_id] ? 'disabled' : ''}`}
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        handleWishlistToggle(p.product_id);
-                                                    }}
-                                                >
-                                                    {wishlistLoadingMap[p.product_id] ? (
-                                                        <>
-                                                            <span className="icon icon-loading">...</span>
-                                                            <span className="tooltip">Updating...</span>
-                                                        </>
-                                                    ) : (wishlistMap[p.product_id] ?? 'NO') === 'NO' ? (
-                                                        <>
-                                                            <span className="icon icon-heart2" />
-                                                            <span className="tooltip">Add to Wishlist</span>
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <span className="icon icon-trash" />
-                                                            <span className="tooltip">Remove from Wishlist</span>
-                                                        </>
-                                                    )}
-                                                </Link>
-                                            </li>
                                             <li>
                                                 <Link
                                                     to="#quickView"
@@ -349,14 +264,6 @@ export default function FeaturedProductsSwiper() {
                                         <p className="price-wrap fw-medium">
                                             {price && <span className="price-new">{price}</span>}
                                         </p>
-
-                                        <Link
-                                            to="#shoppingCart"
-                                            data-bs-toggle="offcanvas"
-                                            className="tf-btn rgb-primary mt_10"
-                                        >
-                                            <span className="text-md fw-medium">Add to Cart</span>
-                                        </Link>
                                     </div>
                                 </div>
                             </SwiperSlide>
@@ -375,7 +282,7 @@ export default function FeaturedProductsSwiper() {
             <div className="container">
                 <div className="flat-title-2 wow fadeInUp">
                     <h3 className="display-lg-2 title text-center fw-semibold text-dark-10">
-                        Featured Products
+                        Deal Products
                     </h3>
                 </div>
                 {renderContent()}

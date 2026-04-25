@@ -11,6 +11,8 @@ import {
     fetchRecentlyViewedProducts,
     fetchWishlistStatusByProductAndUser,
     manageWishlist,
+    manageCart,
+    fetchCartStatusByProductAndUser,
 } from "../../api/product-api";
 import toast from "react-hot-toast";
 
@@ -224,6 +226,10 @@ export default function ProductDetailsView() {
     const [addToWishlistStatus, setAddToWishlistStatus] = useState('NO');
     const [wishlistLoading, setWishlistLoading] = useState(false);
 
+    // Cart state
+    const [addToCartStatus, setAddToCartStatus] = useState('NO');
+    const [cartLoading, setCartLoading] = useState(false);
+
     // Recently Viewed state
     const [rvProducts, setRvProducts] = useState([]);
     const [rvLoading, setRvLoading] = useState(false);
@@ -275,11 +281,58 @@ export default function ProductDetailsView() {
         }
     }, []);
 
+    // FETCH CART STATUS ON LOAD
+    const loadCartStatus = useCallback(async (productId, userId) => {
+        if (!productId || !userId) return;
+        try {
+            const res = await fetchCartStatusByProductAndUser({ product_id: productId, user_id: userId });
+            setAddToCartStatus(res?.data?.data?.add_to_cart_status ?? 'NO');
+        } catch (err) {
+            if (err?.response?.status === 404) {
+                setAddToCartStatus('NO');
+            } else {
+                console.warn("Failed to fetch cart status:", err?.response?.data?.message || err?.message);
+            }
+        }
+    }, []);
+
     useEffect(() => {
         loadWishlistStatus(productDetails?.product_id, userId);
-    }, [productDetails?.product_id, userId, loadWishlistStatus]);
+        loadCartStatus(productDetails?.product_id, userId);
+    }, [productDetails?.product_id, userId, loadWishlistStatus, loadCartStatus]);
 
-    const handleWishlistToggle = async () => {
+    const handleCartAction = async () => {
+        if (!userId) {
+            toast.error("Please log in to manage your cart.");
+            return;
+        }
+        if (cartLoading || !productDetails?.product_id) return;
+
+        const action = addToCartStatus === 'NO' ? 'add' : 'remove';
+
+        setCartLoading(true);
+        try {
+            const res = await manageCart({
+                product_id: productDetails.product_id,
+                user_id: userId,
+                action,
+            });
+
+            if (res.data?.status === 'Success') {
+                setAddToCartStatus(prev => prev === 'NO' ? 'YES' : 'NO');
+                toast.success(action === 'add' ? "Added to cart." : "Removed from cart.");
+            } else {
+                toast.error(res.data?.message || "Failed to update cart.");
+            }
+        } catch (err) {
+            console.error("Cart toggle failed:", err?.response?.data?.message || err?.message);
+            toast.error("Failed to update cart. Please try again.");
+        } finally {
+            setCartLoading(false);
+        }
+    };
+
+    const handleWishlistAction = async () => {
         if (!userId) {
             toast.error("Please log in to manage your wishlist.");
             return;
@@ -574,14 +627,32 @@ export default function ProductDetailsView() {
 
                                                 <div className="tf-product-total-quantity">
                                                     <div className="group-btn">
-                                                        <div className="wg-quantity">
-                                                            <button className="btn-quantity btn-decrease" onClick={() => handleQuantityChange(-1)} disabled={quantity <= 1}>-</button>
-                                                            <input className="quantity-product" type="text" name="number" value={quantity} onChange={handleQuantityInput} />
-                                                            <button className="btn-quantity btn-increase" onClick={() => handleQuantityChange(1)} disabled={!isInStock || (stockCount > 0 && quantity >= stockCount)}>+</button>
-                                                        </div>
                                                         {isInStock ? (
-                                                            <Link to="#shoppingCart" data-bs-toggle="offcanvas" className="tf-btn animate-btn btn-add-to-cart">
-                                                                Add to cart
+                                                            <Link
+                                                                to="#"
+                                                                className={`tf-btn animate-btn btn-add-to-cart ${cartLoading ? "disabled" : ""}`}
+                                                                style={{ pointerEvents: cartLoading ? "none" : "auto" }}
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleCartAction();
+                                                                }}
+                                                            >
+                                                                {cartLoading ? (
+                                                                    <>
+                                                                        <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" />
+                                                                        <span>Updating...</span>
+                                                                    </>
+                                                                ) : addToCartStatus === 'NO' ? (
+                                                                    <>
+                                                                        <i className="icon add icon-cart2" />
+                                                                        <span>Add to cart</span>
+                                                                    </>
+                                                                ) : (
+                                                                    <>
+                                                                        <i className="icon remove icon-trash" />
+                                                                        <span>Remove from cart</span>
+                                                                    </>
+                                                                )}
                                                             </Link>
                                                         ) : (
                                                             <button className="tf-btn animate-btn" disabled>Out of Stock</button>
@@ -601,7 +672,7 @@ export default function ProductDetailsView() {
                                                         className={`product-extra-icon link btn-add-wishlist ${wishlistLoading ? "disabled" : ""}`}
                                                         onClick={(e) => {
                                                             e.preventDefault();
-                                                            handleWishlistToggle();
+                                                            handleWishlistAction();
                                                         }}
                                                     >
                                                         {wishlistLoading ? (

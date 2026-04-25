@@ -47,3 +47,7 @@ export const fetchCartProductsByUser = (userId) =>
     productApi.post("/api/v1/user/fetch-all-carts", {
         user_id: userId,
     });
+
+// SEARCH PRODUCTS BY KEYWORD
+export const searchProductsByKeyword = (keyword) =>
+    productApi.post("/api/v1/search-products", { query: keyword });
