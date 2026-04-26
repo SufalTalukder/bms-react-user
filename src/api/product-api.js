@@ -51,3 +51,11 @@ export const fetchCartProductsByUser = (userId) =>
 // SEARCH PRODUCTS BY KEYWORD
 export const searchProductsByKeyword = (keyword) =>
     productApi.post("/api/v1/search-products", { query: keyword });
+
+// FETCH PRODUCT REVIEWS BY PRODUCT ID
+export const fetchProductReviews = (product_id) =>
+    productApi.post("/api/v1/user/fetch-product-reviews", { product_id });
+
+// MANAGE REVIEW (ADD OR UPDATE OR DELETE)
+export const manageReviewProduct = (payload) =>
+    productApi.post("/api/v1/user/review-product", payload);

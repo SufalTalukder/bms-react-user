@@ -67,6 +67,7 @@ export const UserProvider = ({ children }) => {
             setUser(userData);
             setOtpStep("PHONE");
             setPendingUserId(null);
+            window.dispatchEvent(new Event("userSessionChanged"));
 
             toast.success("OTP verified.");
             return true;
@@ -95,6 +96,7 @@ export const UserProvider = ({ children }) => {
             sessionStorage.clear();
             setUser(null);
             resetOtpFlow();
+            window.dispatchEvent(new Event("userSessionChanged"));
             navigate("/", { replace: true });
         }
     };

@@ -6,6 +6,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useCategories } from "../context/CategoryContext";
+import { useState } from "react";
 
 function CategorySkeletonCard() {
     return (
@@ -51,11 +52,35 @@ function CategorySkeletonCard() {
     );
 }
 
+function ErrorState({ onRetry }) {
+    return (
+        <div style={{ textAlign: "center", padding: "60px 20px", color: "#c0392b" }}>
+            <div style={{ fontSize: "48px", marginBottom: "12px" }}>⚠️</div>
+            <p style={{ fontSize: "16px", fontWeight: 500 }}>Failed to load categories.</p>
+            <button
+                onClick={onRetry}
+                style={{
+                    marginTop: "14px",
+                    padding: "8px 24px",
+                    borderRadius: "6px",
+                    border: "1px solid #c0392b",
+                    background: "transparent",
+                    color: "#c0392b",
+                    cursor: "pointer",
+                    fontWeight: 600,
+                }}
+            >
+                Try Again
+            </button>
+        </div>
+    );
+}
+
 const SKELETON_COUNT = 6;
 
 export default function CategorySwiper() {
 
-    const { categoriesList, defaultCategoryImage, loading } = useCategories();
+    const { categoriesList, defaultCategoryImage, loading, error, refetch } = useCategories();
 
     return (
         <section>
@@ -72,6 +97,11 @@ export default function CategorySwiper() {
                         Categories
                     </h3>
                 </div>
+
+                {/* Error */}
+                {!loading && error && (
+                    <ErrorState onRetry={refetch} />
+                )}
 
                 <Swiper
                     modules={[Navigation, Pagination]}

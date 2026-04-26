@@ -15,6 +15,7 @@ import {
     fetchCartStatusByProductAndUser,
 } from "../../api/product-api";
 import toast from "react-hot-toast";
+import { ReviewSection } from "../../reusable-components/ReviewSection";
 
 const RV_SKELETON_COUNT = 5;
 const DEFAULT_IMG = "/assets/images/products/book/book9.jpg";
@@ -213,8 +214,11 @@ export default function ProductDetailsView() {
     const { slug } = useParams();
     const { search } = useLocation();
     const eventId = new URLSearchParams(search).get("eid");
-    const userData = sessionStorage.getItem("user") ?? null;
-    const userId = userData ? JSON.parse(userData)?.user_id : null;
+
+    const [userId, setUserId] = useState(() => {
+        const userData = sessionStorage.getItem("user");
+        return userData ? JSON.parse(userData)?.user_id : null;
+    });
 
     // Product state
     const [productDetails, setProductDetails] = useState(null);
@@ -235,6 +239,15 @@ export default function ProductDetailsView() {
     const [rvLoading, setRvLoading] = useState(false);
     const [rvError, setRvError] = useState(false);
     const recentlyAddedRef = useRef(false);
+
+    useEffect(() => {
+        const syncUserId = () => {
+            const userData = sessionStorage.getItem("user");
+            setUserId(userData ? JSON.parse(userData)?.user_id : null);
+        };
+        window.addEventListener("userSessionChanged", syncUserId);
+        return () => window.removeEventListener("userSessionChanged", syncUserId);
+    }, []);
 
     useEffect(() => { document.title = "Product Details"; }, []);
 
@@ -842,44 +855,18 @@ export default function ProductDetailsView() {
                             </div>
 
                             <div className="widget-accordion wd-product-descriptions">
-                                <div className="accordion-title collapsed" data-bs-target="#reviews" data-bs-toggle="collapse" aria-expanded="false" role="button">
-                                    <span>Reviews</span><span className="icon icon-arrow-down" />
+                                <div
+                                    className="accordion-title collapsed"
+                                    data-bs-target="#reviews"
+                                    data-bs-toggle="collapse"
+                                    aria-expanded="false"
+                                    role="button"
+                                >
+                                    <span>Reviews</span>
+                                    <span className="icon icon-arrow-down" />
                                 </div>
-                                <div id="reviews" className="collapse">
-                                    <div className="accordion-body wd-customer-review">
-                                        <div className="review-heading">
-                                            <h6 className="title">Customer Reviews</h6>
-                                            <p className="text-md text-main-4">No reviews yet. Be the first to review this product!</p>
-                                            <Link href="#form-review" className="tf-btn btn-dark2 animate-btn">Write a review</Link>
-                                        </div>
-                                        <div className="review-section">
-                                            <form id="form-review" action="#" className="form-review">
-                                                <h6 className="title">Write a Review</h6>
-                                                <p className="note text-md text-main-4">Your email address will not be published. Required fields are marked *</p>
-                                                <div className="box-rating">
-                                                    <span className="text-md">Your rating *</span>
-                                                    <div className="list-rating-check">
-                                                        {[5, 4, 3, 2, 1].map(star => (
-                                                            <span key={star}>
-                                                                <input type="radio" id={`star${star}`} name="rate" value={star} />
-                                                                <label htmlFor={`star${star}`} title={`${star} star`} />
-                                                            </span>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                                <div className="group-2-ip">
-                                                    <input type="text" placeholder="Name *" />
-                                                    <input type="email" placeholder="Email *" />
-                                                </div>
-                                                <textarea name="note" id="note" placeholder="Your review *" />
-                                                <div className="check-save">
-                                                    <input type="checkbox" className="tf-check" id="checksave" />
-                                                    <label htmlFor="checksave" className="label text-md">Save my name and email for the next time I comment.</label>
-                                                </div>
-                                                <button type="submit" className="tf-btn animate-btn">Submit</button>
-                                            </form>
-                                        </div>
-                                    </div>
+                                <div id="reviews" className="collapse show">
+                                    <ReviewSection productId={productDetails?.product_id} userId={userId} />
                                 </div>
                             </div>
                         </>
